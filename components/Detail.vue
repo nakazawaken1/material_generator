@@ -7,11 +7,13 @@
           <h2>Fabric Modify</h2>
           <dl>
             <dt>Fabric Weight</dt>
-            <dd><input type="range" v-model="item.fabricWeight" :min="0" :max="100" /><span>{{ item.fabricWeight
+            <dd><input type="range" v-model="item.fabricWeight" :min="0" :max="100" /><span>{{
+              item.fabricWeight
             }}</span>
             </dd>
             <dt>Fabric Height</dt>
-            <dd><input type="range" v-model="item.fabricHeight" :min="0" :max="100" /><span>{{ item.fabricHeight
+            <dd><input type="range" v-model="item.fabricHeight" :min="0" :max="100" /><span>{{
+              item.fabricHeight
             }}</span>
             </dd>
             <dt>GH Ratio</dt>
@@ -34,17 +36,14 @@
         </footer>
       </div>
       <div class="preview">
-        <img src="~/assets/fox.jpg" />
-        <ul>
-          <li><img src="~/assets/fox2.jpg" /></li>
-          <li><img src="~/assets/fox3.jpg" /></li>
-        </ul>
+        <Materialimage :fabricName="fabricNo[numberid]" />
+        <!-- <img src="~/assets/fox.jpg" ref="materialimg" /> -->
       </div>
       <div class="info">
         <h2>Fabric Information</h2>
         <dl>
           <dt>Fabric Number</dt>
-          <dd>00000000</dd>
+          <dd>{{ fabricNo[numberid] }}</dd>
           <dt>Composition</dt>
           <dd>
             <dl>
@@ -73,17 +72,23 @@
 
 <script lang="ts" setup>
 import { Item } from "~~/composables/models/Item"
+
 export interface Props {
   isOpen: boolean,
+  numberid: number,
   item: Item | null,
+  fabricNo: String[],
 }
 export interface Emits {
   (e: "update:isOpen", button: false): void
 }
+
 const props = withDefaults(defineProps<Props>(), {
-  isOpen: false
+  isOpen: false,
 })
 const emits = defineEmits<Emits>()
+
+
 </script>
 
 <style lang="scss" scoped>

@@ -169,8 +169,8 @@
 </template>
 
 <script lang="ts" setup>
-const SearchedComposition = shallowRef(resolveComponent("SearchedComposition"))
-const SearchedImage = shallowRef(resolveComponent("SearchedImage"))
+const SearchedComposition = resolveComponent("SearchedComposition") //shallowRefが付いていると動的コンポーネントが動作不良
+const SearchedImage = resolveComponent("SearchedImage") //shallowRefが付いていると動的コンポーネントが動作不良
 const component = ref(SearchedComposition)
 const searched = ref(false)
 const sharings = [
