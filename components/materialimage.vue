@@ -16,7 +16,7 @@ const canvas = ref<HTMLCanvasElement>()
 let img = new Image()
 const msg = ref(0)
 const scale = window.devicePixelRatio
-const canvasSize = 700;
+const canvasSize = 600;
 const MAX_SCALE = 5
 const SCALE_STEP = 0.2
 const x_preloadcount: number = 17
@@ -25,8 +25,8 @@ let imageScale = 1, imageScaleIndex = 0
 let isDown = false
 let startX
 let startY
-const width = 3072
-const height = 3072
+const width = 2500
+const height = 2500
 var i = 1
 var r = 1
 var g = 1
@@ -121,8 +121,8 @@ const DrawCanvas = () => {
     }
 
     if (canvas.value?.style) {
-        canvas.value.style.width = "700px"
-        canvas.value.style.height = "700px"
+        canvas.value.style.width = "600px"
+        canvas.value.style.height = "600px"
     }
 
     if (canvas.value?.width) {

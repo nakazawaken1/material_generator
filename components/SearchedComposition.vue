@@ -33,21 +33,21 @@
 
 <script lang="ts" setup>
 import { Item, example } from "~~/composables/models/Item"
-const fabricNo = ["T2203-05", "T2203-06", "T2203-07", "T2203-08", "T2203-09"] //FabricNo
+const fabricNo = ["T2202-01", "T2203-05"] //FabricNo
 const numberid = ref<number>(0) //listnumber
-const imageUrl = ["./T2203-05.jpg", "./T2203-06.jpg", "./T2203-07.jpg", "./T2203-08.jpg", "./T2203-09.jpg"] //imageUrl
+const imageUrl = ["./T2202-01.jpg", "./T2203-05.jpg"] //imageUrl
 //以下compositiondata
-const elplist = ["18x51", "18x51", "18x51", "18x51", "27x51"]
-const mcslist = ["4.4x32", "4.4x32", "4.4x32", "4.4x32", "4.4x32"]
+const elplist = ["27x76", "18x51", "18x51", "18x51", "27x51"]
+const mcslist = ["7.8x32", "4.4x32", "4.4x32", "4.4x32", "4.4x32"]
 const elpratio = ["30%", "50%", "30%", "30%", "30%"]
 const mcsratio = ["70%", "50%", "70%", "70%", "70%"]
-const pileheight = ["19/22", "19/22", "13/15", "19/22", "19/22"]
-const fabricWeight = [1100, 1010, 980, 660, 1040]
-const width = [152, 150, 152, 148, 149]
+const pileheight = ["NonCut", "19/22", "13/15", "19/22", "19/22"]
+const fabricWeight = [1800, 1010, 980, 660, 1040]
+const width = [153, 150, 152, 148, 149]
 //以上compositiondata
 
 const detail = ref<Item | null>(null)
-const table = Array.from(Array(5)).map((_, i) => [
+const table = Array.from(Array(2)).map((_, i) => [
   [i + 1, fabricNo[i], "Modacrylic", "ELP", elplist[i], elpratio[i], "#28-2", pileheight[i], "Plain", pileheight[i], fabricWeight[i], width[i], imageUrl[i]],
   ["MCS", mcslist[i], mcsratio[i], "#EM4-5"]
 ])
