@@ -1,17 +1,16 @@
 <template>
-    <div>{{ msg }}/118</div>
     <canvas id="canvas" ref="canvas" @mousedown="mousedown" @mouseleave="mouseleave" @mouseup="mouseup"
-        @mousemove="mousemove" @wheel="mousezoom" :fabricname="fabricName" />
+        @mousemove="mousemove" @wheel="mousezoom" />
 </template>
 
 <script lang="ts" setup>
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
+import { Item, fabricTypesTable, filteredList, filteredImage } from "~~/composables/models/Item"
 import { count } from 'console';
-
 const props = defineProps([
-    "fabricName"
+    "fabricName", "fabricweight", "imageitem"
 ])
-const fabricNo = inject('fabricNo')
+console.log(props.imageitem.fabricNumber)
 const canvas = ref<HTMLCanvasElement>()
 let img = new Image()
 const msg = ref(0)
@@ -30,8 +29,8 @@ const height = 2500
 var i = 1
 var r = 1
 var g = 1
-const furid: string = props.fabricName
-let furName = '_' + props.fabricName + '_1.'
+let furid: string = props.imageitem.fabricNumber
+let furName = '_' + props.imageitem.fabricNumber + '_1.'
 // マウス座標
 let mouseX, mouseY
 
@@ -41,8 +40,7 @@ let zoomWidth, zoomHeight, zoomLeft = 0, zoomTop = 0
 //初期実行
 onMounted(() => {
     bodyScrollLock();
-    preload();
-
+    loaded()
 })
 
 //離脱時実行
@@ -50,6 +48,14 @@ onUnmounted(() => {
     bodyScrollUnLock()
 })
 
+watchEffect(() => {
+    console.log(props.imageitem.fabricWeight)
+    furid = props.imageitem.fabricNumber
+    furName = '_' + props.imageitem.fabricNumber + '_1.'
+    const imagePath = new URL('../' + furid + '/x-' + Math.trunc(r) + furName + Math.trunc(i) + '.jpg', import.meta.url).href //localhost 
+    //console.log(materialimg.value?.src)
+    img.src = imagePath
+})
 //list
 const itemlists
     = ref([''])
@@ -86,7 +92,6 @@ const preload = () => {
 
 const loaded = () => {
     console.log("complet")
-    console.log(fabricNo)
     DrawCanvas()
 }
 
@@ -147,7 +152,6 @@ const DrawCanvas = () => {
         };
 
         const imagePath = new URL('../' + furid + '/x-' + Math.trunc(r) + furName + Math.trunc(i) + '.jpg', import.meta.url).href //localhost 
-        //console.log(materialimg.value?.src)
         img.src = imagePath
     }
 }

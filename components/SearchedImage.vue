@@ -1,23 +1,36 @@
 <template>
   <ul class="SearchedImage">
-    <li v-for="item of items" :key="item.nth" @click="(detail = example), (numberid = item.no)">
-      <img :src="imageUrl[item.no]" />
-      <label>{{ item.name }}</label>
+    <li v-for="item of filteredList(fabricType.label)" :key="item.id" @click="(detail = example), (detail.fabricnumber = item.fabricNumber), (detail.fabricWeight = item.fabricWeight),
+      (detail.fabricWeightMin = item.minfabricWeight), (detail.fabricWeightMax = item.maxfabricWeight),
+      (detail.fabricWeightStep = item.stepfabricWeight), (detail.fabricPileHeight = item.pileheight),
+      (detail.width = item.width), (detail.label = item.label), (detail.ghFiness = item.ghFiness),
+      (detail.ghRatio = item.ghRatio), (detail.fabricHeight = item.pileheight),
+      (detail.fabricHeightMin = item.minpileheight),
+      (detail.fabricHeightMax = item.maxpileheight), (detail.fabricHeightStep = item.steppileheight)">
+      <img :src="item.imageicon" />
+      <label>{{ item.label }}</label>
     </li>
   </ul>
-  <Detail :isOpen="detail != null" @update:isOpen="detail = null" :item="detail" :fabricNo="fabricNo"
-    :numberid="numberid" />
+<Detail :isOpen="detail != null" :item="detail" @update:isOpen="detail = null" />
 </template>
 
 <script lang="ts" setup>
-import { Item, example } from "~~/composables/models/Item"
+import { Item, example, filteredList } from "~~/composables/models/Item"
+const props = defineProps([
+  "fabricType"
+])
+
 const detail = ref<Item | null>(null)
-const fabricNo = ["T2203-05", "T2203-06", "T2203-07", "T2203-08", "T2203-09"] //FabricNo
+
+const furkinds = ["Fox", "Mink", "Rabbit"]
+const fabricTypes: string = ""//FabricNo
 const numberid = ref<number>(0) //listnumber
-const imageUrl = ["./T2203-05.jpg", "./T2203-06.jpg", "./T2203-07.jpg", "./T2203-08.jpg", "./T2203-09.jpg"] //imageUrl
-const items = Array.from(Array(5)).map((_, i) => (
-  { nth: i + 1, no: i, image: imageUrl[i], name: "FOX : Modacrylic" }
+const imageUrl = ["./T2202-01.jpg", "./T2203-05.jpg", "./T2202-12.jpg"] //imageUrl
+const furname = ["Fox : Modacrylic", "MINK: Modacrylic", "Rabbit: Modacrylic"]
+const items = Array.from(Array(3)).map((_, i) => (
+  { nth: i + 1, no: i, image: imageUrl[i], name: furname[i], label: furkinds[i] }
 ))
+
 </script>
 
 <style lang="scss" scoped>

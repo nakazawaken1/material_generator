@@ -4,56 +4,47 @@
       <tr>
         <th></th>
         <th>Fabric Type</th>
-        <th>Material</th>
-        <th>Spec</th>
-        <th>Composition</th>
-        <th>Ratio(%)</th>
-        <th>Pantone</th>
-        <th>シャーリング<br />加工(mm)</th>
-        <th>Knitting</th>
         <th>Pile Height<br />(mm)</th>
         <th>Fabric<br />Weight(g/m)</th>
         <th>Width(cm)</th>
         <th>Image</th>
       </tr>
     </thead>
-    <tbody v-for="(rows, n) of table" :key="n" @click="(detail = example), (numberid = n)">
-      <tr v-for=" (row, y) of rows" :key="y">
-        <td :class="{ head: x == 0 && y == 0 }" v-for="(cell, x) of row"
-          :rowspan="y != 0 || [3, 4, 5, 6].includes(x) ? undefined : 3">
-          <img v-if="(x == 12)" :src="imageUrl[n]" />
-          <template v-else>{{ cell }}</template>
+    <tbody v-for="(item, n) in filteredList(fabricType.label)" :key="n" @click="(detail = example), (detail.fabricnumber = item.fabricNumber),
+      (detail.fabricWeight = item.fabricWeight), (detail.fabricWeightMin = item.minfabricWeight),
+      (detail.fabricWeightMax = item.maxfabricWeight), (detail.fabricWeightStep = item.stepfabricWeight),
+      (detail.fabricPileHeight = item.pileheight), (detail.width = item.width),
+      (detail.label = item.label), (detail.ghFiness = item.ghFiness),
+      (detail.ghRatio = item.ghRatio), (detail.fabricHeight = item.pileheight),
+      (detail.fabricHeightMin = item.minpileheight),
+      (detail.fabricHeightMax = item.maxpileheight), (detail.fabricHeightStep = item.steppileheight)">
+      <tr>
+        <td>{{ n + 1 }}</td>
+        <td>{{ item.fabricNumber }}</td>
+        <td>{{ item.pileheight }}</td>
+        <td>{{ item.fabricWeight }}</td>
+        <td>{{ item.width }}</td>
+        <td>
+          <img :src="item.imageicon" />
         </td>
       </tr>
+
     </tbody>
   </table>
-  <Detail :isOpen="detail != null" @update:isOpen="detail = null" :item="detail" :fabricNo="fabricNo"
-    :numberid="numberid" />
+<Detail :isOpen="detail != null" @update:isOpen="detail = null" :item="detail" />
 </template>
 
 <script lang="ts" setup>
-import { Item, example } from "~~/composables/models/Item"
-const fabricNo = ["T2202-01", "T2203-05"] //FabricNo
-const numberid = ref<number>(0) //listnumber
-const imageUrl = ["./T2202-01.jpg", "./T2203-05.jpg"] //imageUrl
-//以下compositiondata
-const elplist = ["27x76", "18x51", "18x51", "18x51", "27x51"]
-const mcslist = ["7.8x32", "4.4x32", "4.4x32", "4.4x32", "4.4x32"]
-const elpratio = ["30%", "50%", "30%", "30%", "30%"]
-const mcsratio = ["70%", "50%", "70%", "70%", "70%"]
-const pileheight = ["NonCut", "19/22", "13/15", "19/22", "19/22"]
-const fabricWeight = [1800, 1010, 980, 660, 1040]
-const width = [153, 150, 152, 148, 149]
+import { Item, example, fabricTypesTable, filteredList } from "~~/composables/models/Item"
+const props = defineProps([
+  "fabricType"
+])
+const fabricNumber = ref<string>("")//FabricNo
+const fabricWeight = ref<number>(0)
 //以上compositiondata
 
 const detail = ref<Item | null>(null)
-const table = Array.from(Array(2)).map((_, i) => [
-  [i + 1, fabricNo[i], "Modacrylic", "ELP", elplist[i], elpratio[i], "#28-2", pileheight[i], "Plain", pileheight[i], fabricWeight[i], width[i], imageUrl[i]],
-  ["MCS", mcslist[i], mcsratio[i], "#EM4-5"]
-])
 
-provide('fabricNo', fabricNo)
-provide('numberid', numberid)
 </script>
 
 <style lang="scss" scoped>

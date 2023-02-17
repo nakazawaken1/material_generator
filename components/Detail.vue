@@ -7,26 +7,35 @@
           <h2>Fabric Modify</h2>
           <dl>
             <dt>Fabric Weight</dt>
-            <dd><input type="range" v-model="item.fabricWeight" :min="0" :max="100" /><span>{{
-              item.fabricWeight
-            }}</span>
+            <dd><input type="range" v-model="item.fabricWeight" :min="item.fabricWeightMin" :max="item.fabricWeightMax"
+                :step="item.fabricWeightStep" /><span>{{
+                  item.fabricWeight
+                }}</span>
             </dd>
-            <dt>Fabric Height</dt>
-            <dd><input type="range" v-model="item.fabricHeight" :min="0" :max="100" /><span>{{
-              item.fabricHeight
-            }}</span>
+
+            <dt>
+              Fabric Height</dt>
+            <dd>
+              <input type="range" v-model="item.fabricHeight" :min="item.fabricHeightMin" :max="item.fabricHeightMax"
+                :step="item.fabricHeightStep" /><span
+                v-for="rangevalue of rangetest(item.label, item.fabricHeight, item.fabricWeight, item.ghFiness, item.ghRatio)"
+                :key="rangevalue.id">{{ item.fabricHeight = rangevalue.pileheight }}</span>
             </dd>
-            <dt>GH Ratio</dt>
-            <dd><input type="range" v-model="item.ghRatio" :min="0" :max="100" /><span>{{ item.ghRatio }}</span></dd>
-            <dt>GH Finess</dt>
-            <dd><input type="range" v-model="item.ghFiness" :min="0" :max="100" /><span>{{ item.ghFiness }}</span>
-            </dd>
+            <template v-if="false">
+              <dt>GH Ratio</dt>
+              <dd><input type="range" v-model="item.ghRatio" :min="0" :max="100" /><span>{{ item.ghRatio }}</span></dd>
+              <dt>GH Finess</dt>
+              <dd><input type="range" v-model="item.ghFiness" :min="0" :max="100" /><span>{{ item.ghFiness }}</span>
+              </dd>
+            </template>
           </dl>
-          <ul>
-            <li><label><input type="radio" name="type" v-model="item.type" value="Standard" />Standard</label></li>
-            <li><label><input type="radio" name="type" v-model="item.type" value="Sustainable" />Sustainable</label>
-            </li>
-          </ul>
+          <template v-if="false">
+            <ul>
+              <li><label><input type="radio" name="type" v-model="item.type" value="Standard" />Standard</label></li>
+              <li><label><input type="radio" name="type" v-model="item.type" value="Sustainable" />Sustainable</label>
+              </li>
+            </ul>
+          </template>
         </header>
         <footer>
           <label>Color Modify</label>
@@ -35,57 +44,66 @@
           <span>#ffffff</span>
         </footer>
       </div>
-      <div class="preview">
-        <Materialimage :fabricName="fabricNo[numberid]" />
-        <!-- <img src="~/assets/fox.jpg" ref="materialimg" /> -->
-      </div>
-      <div class="info">
-        <h2>Fabric Information</h2>
-        <dl>
-          <dt>Fabric Number</dt>
-          <dd>{{ fabricNo[numberid] }}</dd>
-          <dt>Composition</dt>
-          <dd>
-            <dl>
-              <dt>Modacrylic</dt>
-              <dd>70%</dd>
-              <dt>Recycled polyester</dt>
-              <dd>30%</dd>
-            </dl>
-          </dd>
-          <dt>Pile Height</dt>
-          <dd>102mm</dd>
-          <dt>Fabric Weight</dt>
-          <dd>1,800g/wm(width 153cm)</dd>
-          <dt>Color</dt>
-          <dd>TGX#8888</dd>
-        </dl>
-        <footer><Button>Composition Check</Button></footer>
-      </div>
+      <template v-if="true"
+        v-for="rangevalue of rangetest(item.label, item.fabricHeight, item.fabricWeight, item.ghFiness, item.ghRatio)"
+        :key="rangevalue.id">
+        <div class="preview"
+          v-for="fabricItem of filteredImage(item.label, item.fabricWeight, rangevalue.pileheight, item.ghFiness, item.ghRatio)"
+          :key="fabricItem.id" v-if="(item != null)">
+          <Materialimage :fabricName="item.fabricnumber" :fabricweight="item.fabricWeight" :imageitem="fabricItem" />
+          <!-- <img src="~/assets/fox.jpg" ref="materialimg" /> -->
+        </div>
+        <div class="info">
+          <h2>Fabric Information</h2>
+          <dl
+            v-for="fabricItem of filteredImage(item.label, item.fabricWeight, rangevalue.pileheight, item.ghFiness, item.ghRatio)">
+            <dt>Fabric Number</dt>
+            <dd>{{ fabricItem.fabricNumber }}</dd>
+            <dt>Composition</dt>
+            <dd>
+              <dl>
+                <dt>Modacrylic</dt>
+                <dd>70%</dd>
+                <dt>Recycled polyester</dt>
+                <dd>30%</dd>
+              </dl>
+            </dd>
+            <dt>Pile Height</dt>
+            <dd>{{ fabricItem.pileheight }}</dd>
+            <dt>Fabric Weight</dt>
+            <dd>{{ fabricItem.fabricWeight }}g/m(width: {{ fabricItem.width }})</dd>
+            <dt>Color</dt>
+            <dd>TGX#8888</dd>
+          </dl>
+          <footer><Button>Composition Check</Button></footer>
+        </div>
+      </template>
       <Button>View Fabric Motion</Button>
       <Button>View Product Image</Button>
       <Button>Download Production Details</Button>
       <Button class="download">Download File</Button>
     </article>
-  </Popup>
+</Popup>
 </template>
 
 <script lang="ts" setup>
-import { Item } from "~~/composables/models/Item"
+import { isTemplateElement, PROPERTY_TYPES } from "@babel/types";
+import { Item, filteredImage, fabricTypesTable, example, filteredList, rangetest } from "~~/composables/models/Item"
 
-export interface Props {
-  isOpen: boolean,
-  numberid: number,
-  item: Item | null,
-  fabricNo: String[],
-}
 export interface Emits {
   (e: "update:isOpen", button: false): void
 }
+interface Props {
+  isOpen: boolean,
+  item: Item | null,
+}
 
+
+const detail = ref<Item | null>(null)
 const props = withDefaults(defineProps<Props>(), {
-  isOpen: false,
+  isOpen: false
 })
+
 const emits = defineEmits<Emits>()
 
 

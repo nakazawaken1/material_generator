@@ -23,14 +23,15 @@
             {{ label }}
           </label>
         </dd>
+
+        <dt class="disabled">シャーリング加工（㎜）</dt>
+        <dd class="disabled">
+          <label v-for="label of fabricType.sharings" :key="label">
+            <input type="radio" :value="label" v-model="sharing" :disabled="true" />
+            {{ label }}
+          </label>
+        </dd>
       </template>
-      <dt>シャーリング加工（㎜）</dt>
-      <dd>
-        <label v-for="label of fabricType.sharings" :key="label">
-          <input type="radio" :value="label" v-model="sharing" />
-          {{ label }}
-        </label>
-      </dd>
       <template v-if="false">
         <dt class="disabled">チッププリント</dt>
         <dd class="disabled">
@@ -39,26 +40,26 @@
             {{ label }}
           </label>
         </dd>
+        <dt class="disabled">生地幅（cm）</dt>
+        <dd class="disabled">
+          <label v-for="label of kijihabas" :key="label">
+            <input type="radio" :value="label" v-model.number="kijihaba" :disabled="true" />
+            {{ label }}
+          </label>
+        </dd>
+        <dt class="disabled">Fabric Weight(g/M) 単位：㎡</dt>
+        <dd class="disabled">
+          <input type="range" v-model="fablicWeight1" :min="fabricType.min" :max="fabricType.max" :step="fablicWeihtStep"
+            :disabled="true" />
+          <label>{{ fablicWeight1 }}</label>
+        </dd>
+        <dt class="disabled">Fabric Weight(g/M) 生地幅に対して</dt>
+        <dd class="disabled">
+          <input type="range" v-model="fablicWeight2" :min="calcFablicWeight(fabricType.min! * kijihaba / 100)"
+            :max="calcFablicWeight(fabricType.max! * kijihaba / 100)" :step="fablicWeihtStep" :disabled="true" />
+          <label>{{ fablicWeight2 }}</label>
+        </dd>
       </template>
-      <dt>生地幅（cm）</dt>
-      <dd>
-        <label v-for="label of kijihabas" :key="label">
-          <input type="radio" :value="label" v-model.number="kijihaba" />
-          {{ label }}
-        </label>
-      </dd>
-      <dt>Fabric Weight(g/M) 単位：㎡</dt>
-      <dd>
-        <input type="range" v-model="fablicWeight1" :min="fabricType.min" :max="fabricType.max"
-          :step="fablicWeihtStep" />
-        <label>{{ fablicWeight1 }}</label>
-      </dd>
-      <dt>Fabric Weight(g/M) 生地幅に対して</dt>
-      <dd>
-        <input type="range" v-model="fablicWeight2" :min="calcFablicWeight(fabricType.min! * kijihaba / 100)"
-          :max="calcFablicWeight(fabricType.max! * kijihaba / 100)" :step="fablicWeihtStep" />
-        <label>{{ fablicWeight2 }}</label>
-      </dd>
       <template v-if="false">
         <dt class="disabled">特殊加工</dt>
         <dd class="disabled">
@@ -88,64 +89,70 @@
     </dl>
     <table>
       <tr>
-        <th colspan="2">Options</th>
-        <th>Material</th>
-        <th>Spec</th>
-        <th>Cross<br />Section</th>
-        <th>Lustor</th>
-        <th>Finess<br />(dt)</th>
-        <th>Cut Length<br />(mm)</th>
-        <th>Sliver<br />Ratio(%)</th>
+        <template v-if="false">
+          <th colspan="2">Options</th>
+          <th>Material</th>
+          <th>Spec</th>
+          <th>Cross<br />Section</th>
+          <th>Lustor</th>
+          <th>Finess<br />(dt)</th>
+          <th>Cut Length<br />(mm)</th>
+          <th>Sliver<br />Ratio(%)</th>
+        </template>
         <th>Color<br />Pantone#<br />TPX TPG</th>
       </tr>
+
       <tr v-for="n of 3" :key="n">
-        <th v-if="(n == 1)" rowspan="3">Sliver① Composition</th>
-        <th>Fiber{{ n }}<template v-if="(n == 1)">(GH)</template></th>
-        <td>
-          <label v-for="label of fabricType.fiber1!.materials" :key="label">
-            <input type="radio" :value="label" v-model="fiber1.material" />
-            {{ label }}
-          </label>
-        </td>
-        <td>
-          <label v-for="label of fabricType.fiber1!.specs" :key="label">
-            <input type="radio" :value="label" v-model="fiber1.spec" />
-            {{ label }}
-          </label>
-        </td>
-        <td>
-          <label v-for="label of fabricType.fiber1!.crossSections" :key="label">
-            <input type="radio" :value="label" v-model="fiber1.crossSection" />
-            {{ label }}
-          </label>
-        </td>
-        <td>
-          <label v-for="label of fabricType.fiber1!.lustors" :key="label">
-            <input type="radio" :value="label" v-model="fiber1.lustor" />
-            {{ label }}
-          </label>
-        </td>
-        <td>
-          <label v-for="label of fabricType.fiber1!.finesses" :key="label">
-            <input type="radio" :value="label" v-model.number="fiber1.finess" />
-            {{ label }}
-          </label>
-        </td>
-        <td>
-          <ul>
-            <li v-for="label of fabricType.fiber1!.cutLengths" :key="label">
-              <label>
-                <input type="radio" :value="label" v-model.number="fiber1.cutLength" />
-                {{ label }}
-              </label>
-            </li>
-          </ul>
-        </td>
-        <td>
-          <input type="range" v-model="fiber1.sliverRatio" :min="fabricType.sliverRatioMin"
-            :max="fabricType.sliverRatioMax" :step="sliverRatioStep" />
-          <label>{{ fiber1.sliverRatio }}%</label>
-        </td>
+        <template v-if="false">
+          <th v-if="(n == 1)" rowspan="3">Sliver① Composition</th>
+          <th>Fiber{{ n }}<template v-if="(n == 1)">(GH)</template></th>
+          <td>
+            <label v-for="label of fabricType.fiber1!.materials" :key="label">
+              <input type="radio" :value="label" v-model="fiber1.material" />
+              {{ label }}
+            </label>
+          </td>
+          <td>
+            <label v-for="label of fabricType.fiber1!.specs" :key="label">
+              <input type="radio" :value="label" v-model="fiber1.spec" />
+              {{ label }}
+            </label>
+          </td>
+          <td>
+            <label v-for="label of fabricType.fiber1!.crossSections" :key="label">
+              <input type="radio" :value="label" v-model="fiber1.crossSection" />
+              {{ label }}
+            </label>
+          </td>
+          <td>
+            <label v-for="label of fabricType.fiber1!.lustors" :key="label">
+              <input type="radio" :value="label" v-model="fiber1.lustor" />
+              {{ label }}
+            </label>
+          </td>
+          <td>
+            <label v-for="label of fabricType.fiber1!.finesses" :key="label">
+              <input type="radio" :value="label" v-model.number="fiber1.finess" />
+              {{ label }}
+            </label>
+          </td>
+          <td>
+            <ul>
+              <li v-for="label of fabricType.fiber1!.cutLengths" :key="label">
+                <label>
+                  <input type="radio" :value="label" v-model.number="fiber1.cutLength" />
+                  {{ label }}
+                </label>
+              </li>
+            </ul>
+          </td>
+          <td>
+            <input type="range" v-model="fiber1.sliverRatio" :min="fabricType.sliverRatioMin"
+              :max="fabricType.sliverRatioMax" :step="sliverRatioStep" />
+            <label>{{ fiber1.sliverRatio }}%</label>
+          </td>
+        </template>
+
         <td v-if="(n == 1)" rowspan="3">
           <section class="color"><input type="color" v-model="fiber1.color" />
             <label>{{ fiber1.color }}</label>
@@ -154,7 +161,7 @@
       </tr>
     </table>
     <nav>
-      <Button @click="(searched = true)">検索</Button>
+      <Button @click="(searched = true)">search</Button>
     </nav>
     <section v-if="searched">
       <nav>
@@ -163,9 +170,9 @@
         <label for="image"><input id="image" type="radio" name="component" :value="SearchedImage" v-model="component" />
           Image</label>
       </nav>
-      <component :is="component" />
+      <component :is="component" :fabricType="fabricType" />
     </section>
-  </main>
+</main>
 </template>
 
 <script lang="ts" setup>
@@ -231,9 +238,11 @@ const fabricTypes = [
     }
   },
   {
-    label: 'Sable', min: 450, max: 1100, sharings: [4, 5].map(i => sharings[i]), sliverRatioMin: 10, sliverRatioMax: 50, fiber1: {
+    label: 'Sable', disabled: true,
+    min: 450, max: 1100, sharings: [4, 5].map(i => sharings[i]), sliverRatioMin: 10, sliverRatioMax: 50, fiber1: {
       materials: [0].map(i => materials[i]),
-      specs: [0, 1].map(i => specs[i])
+      specs: [0, 1].map(i => specs[i]),
+
     }
   },
   {
@@ -243,7 +252,7 @@ const fabricTypes = [
     }
   },
   {
-    label: 'Rabbit', min: 300, max: 1000, sharings: [1, 2, 3].map(i => sharings[i]), sliverRatioMin: 30, sliverRatioMax: 80, fiber1: {
+    label: 'Rabbit', disabled: true, min: 300, max: 1000, sharings: [1, 2, 3].map(i => sharings[i]), sliverRatioMin: 30, sliverRatioMax: 80, fiber1: {
       materials: [0, 1].map(i => materials[i]),
       specs: [1, 2].map(i => specs[i])
     }
