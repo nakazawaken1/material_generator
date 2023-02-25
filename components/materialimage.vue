@@ -1,16 +1,23 @@
 <template>
-    <canvas id="canvas" ref="canvas" @mousedown="mousedown" @mouseleave="mouseleave" @mouseup="mouseup"
-        @mousemove="mousemove" @wheel="mousezoom" />
+    <div id="aaa">
+        <canvas id="canvas" ref="canvas" @mousedown="mousedown" @mouseleave="mouseleave" @mouseup="mouseup"
+            @mousemove="mousemove" @wheel="mousezoom" />
+    </div>
 </template>
 
 <script lang="ts" setup>
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import { Item, fabricTypesTable, filteredList, filteredImage } from "~~/composables/models/Item"
 import { count } from 'console';
+import $ from "jquery";
+
 const props = defineProps([
-    "fabricName", "fabricweight", "imageitem"
+    "fabricName", "fabricweight", "imageitem", "cloth"
 ])
+
+
 console.log(props.imageitem.fabricNumber)
+
 const canvas = ref<HTMLCanvasElement>()
 let img = new Image()
 const msg = ref(0)
@@ -31,6 +38,7 @@ var r = 1
 var g = 1
 let furid: string = props.imageitem.fabricNumber
 let furName = '_' + props.imageitem.fabricNumber + '_1.'
+const extension: string = '.jpg'
 // マウス座標
 let mouseX, mouseY
 
@@ -49,11 +57,19 @@ onUnmounted(() => {
 })
 
 watchEffect(() => {
+    console.log(props.cloth)
     console.log(props.imageitem.fabricWeight)
-    furid = props.imageitem.fabricNumber
-    furName = '_' + props.imageitem.fabricNumber + '_1.'
-    const imagePath = new URL('../' + furid + '/x-' + Math.trunc(r) + furName + Math.trunc(i) + '.jpg', import.meta.url).href //localhost 
-    //console.log(materialimg.value?.src)
+    if (props.cloth) {
+        furid = props.imageitem.fabricNumber
+        furName = '_' + props.imageitem.fabricNumber + '_1.'
+    }
+    // 着衣モデルに変更
+    // else {
+    //     furid = "T2203-05"
+    //     furName = '_' + "T2203-05" + '_1.'
+    // }
+
+    const imagePath = new URL('../' + furid + '/x-' + Math.trunc(r) + furName + Math.trunc(i) + extension, import.meta.url).href //localhost 
     img.src = imagePath
 })
 //list
@@ -68,9 +84,9 @@ const preload = () => {
         board[countI] = new Array()
         for (let countJ = 0; countJ < x_preloadcount; countJ++) {
             board[countI][countJ] = new Image()
-            board[countI][countJ].src = new URL('../' + furid + '/x-' + Math.trunc(countI) + furName + Math.trunc(countJ + 1) + '.jpg', import.meta.url).href
+            board[countI][countJ].src = new URL('../' + furid + '/x-' + Math.trunc(countI) + furName + Math.trunc(countJ + 1) + extension, import.meta.url).href
 
-            itemlists.value.push('../' + furid + '/x-' + Math.trunc(countI) + furName + Math.trunc(countJ + 1) + '.jpg')
+            itemlists.value.push('../' + furid + '/x-' + Math.trunc(countI) + furName + Math.trunc(countJ + 1) + extension)
             board[countI][countJ].onload = () => {
                 console.log(i)
                 i++
@@ -115,12 +131,14 @@ const drawImage = () => {
         ctx.strokeStyle = 'black'
         ctx.lineWidth = 2
         ctx.strokeText('x' + imageScale.toFixed(1), 0, 100)
+
     }
 }
 //canvasに画像読み込み
 const DrawCanvas = () => {
 
     const ctx = canvas.value?.getContext("2d");
+
     if (ctx?.imageSmoothingEnabled) {
         ctx.imageSmoothingEnabled = false
     }
@@ -128,6 +146,9 @@ const DrawCanvas = () => {
     if (canvas.value?.style) {
         canvas.value.style.width = "600px"
         canvas.value.style.height = "600px"
+        //canvas.value.style.filter = 'hue-rotate(60deg) saturate(0%) brightness(100%)'
+
+
     }
 
     if (canvas.value?.width) {
@@ -139,19 +160,11 @@ const DrawCanvas = () => {
     if (ctx) {
         img.onload = function () {
             ctx.drawImage(img, zoomLeft, zoomTop, width / imageScale, height / imageScale, 0, 0, canvasSize * scale, canvasSize * scale);
-            // 倍率の描画
-            ctx.font = '30px "arial black"'
-            ctx.fillStyle = 'white'
-            ctx.fillText('x' + imageScale.toFixed(1), 0, 100)
-            ctx.strokeStyle = 'black'
-            ctx.lineWidth = 2
-            ctx.strokeText('x' + imageScale.toFixed(1), 0, 100)
 
             // 枠の描画
 
         };
-
-        const imagePath = new URL('../' + furid + '/x-' + Math.trunc(r) + furName + Math.trunc(i) + '.jpg', import.meta.url).href //localhost 
+        const imagePath = new URL('../' + furid + '/x-' + Math.trunc(r) + furName + Math.trunc(i) + extension, import.meta.url).href //localhost 
         img.src = imagePath
     }
 }
@@ -250,8 +263,9 @@ const mousemove = (event: MouseEvent) => {
         r = 0
     }
 
-    const imagePath = new URL('../' + furid + '/x-' + Math.trunc(r) + furName + Math.trunc(i) + '.jpg?url', import.meta.url).href //localhost 
+    const imagePath = new URL('../' + furid + '/x-' + Math.trunc(r) + furName + Math.trunc(i) + extension, import.meta.url).href //localhost 
     img.src = imagePath
 }
+
 
 </script>

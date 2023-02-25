@@ -50,7 +50,9 @@
         <div class="preview"
           v-for="fabricItem of filteredImage(item.label, item.fabricWeight, rangevalue.pileheight, item.ghFiness, item.ghRatio)"
           :key="fabricItem.id" v-if="(item != null)">
-          <Materialimage :fabricName="item.fabricnumber" :fabricweight="item.fabricWeight" :imageitem="fabricItem" />
+          <Materialimage :fabricName="item.fabricnumber" :fabricweight="item.fabricWeight" :imageitem="fabricItem"
+            :cloth="cloth" />
+          <!-- <Changecolor /> -->
           <!-- <img src="~/assets/fox.jpg" ref="materialimg" /> -->
         </div>
         <div class="info">
@@ -78,17 +80,20 @@
           <footer><Button>Composition Check</Button></footer>
         </div>
       </template>
-      <Button>View Fabric Motion</Button>
-      <Button>View Product Image</Button>
-      <Button>Download Production Details</Button>
-      <Button class="download">Download File</Button>
+      <Button v-if="dafault">View Fabric Motion</Button>
+      <Button @click="(back = true), (dafault = false), (cloth = false)" v-if="dafault">View Product Image</Button>
+      <Button v-if="dafault">Download Production Details</Button>
+      <Button @click='(back = false), (dafault = true), (cloth = true)' class="backimage" v-if="back">Back image
+        Details</Button>
+      <Button class="download" v-if="dafault">Download File</Button>
     </article>
-</Popup>
+  </Popup>
 </template>
 
 <script lang="ts" setup>
 import { isTemplateElement, PROPERTY_TYPES } from "@babel/types";
 import { Item, filteredImage, fabricTypesTable, example, filteredList, rangetest } from "~~/composables/models/Item"
+import Changecolor from "./changecolor.vue";
 
 export interface Emits {
   (e: "update:isOpen", button: false): void
@@ -106,7 +111,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<Emits>()
 
-
+const back = ref(false)
+const dafault = ref(true)
+const cloth = ref(true)
 </script>
 
 <style lang="scss" scoped>
@@ -201,6 +208,10 @@ article.Detail {
   }
 
   .download {
+    grid-column: 2 / 4;
+  }
+
+  .backimage {
     grid-column: 2 / 4;
   }
 }

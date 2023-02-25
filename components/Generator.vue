@@ -172,7 +172,7 @@
       </nav>
       <component :is="component" :fabricType="fabricType" />
     </section>
-</main>
+  </main>
 </template>
 
 <script lang="ts" setup>
