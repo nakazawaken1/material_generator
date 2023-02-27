@@ -745,7 +745,7 @@ export const  FabricImageInfo : FabricImageInfoItem[] = [
     Color: "TCX Black",
     ClothType: "T2202-01C",
     ClothImagePath: "./T2202-01C.jpg",
-    Imagepath: "../T2202-01.jpg",
+    Imagepath: "./T2202-01.jpg",
     Order: 1
   },{
     FabricType: "T2202-03", 
@@ -753,7 +753,7 @@ export const  FabricImageInfo : FabricImageInfoItem[] = [
     Color: "TCX Black",
     ClothType: "T2202-01C",
     ClothImagePath: "./T2202-01C.jpg",
-    Imagepath: "../T2202-03.jpg",
+    Imagepath: "./T2202-03.jpg",
     Order: 2
   },{
     FabricType: "T2202-04", 
@@ -761,7 +761,7 @@ export const  FabricImageInfo : FabricImageInfoItem[] = [
     Color: "TCX Black",
     ClothType: "T2202-01C",
     ClothImagePath: "./T2202-01C.jpg",
-    Imagepath: "../T2202-04.jpg",
+    Imagepath: "./T2202-04.jpg",
     Order: 3
   },{
     FabricType: "T2202-05", 
