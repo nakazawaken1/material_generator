@@ -26,9 +26,9 @@
           </template>
           <template v-if="!cloth">
             <h2>Product image Choose product design</h2>
-            <dl>
+            <dl v-for="(productimagelist, n) in filterImage(item.fabricnumber)" :key="n">
               <dt></dt>
-              <dd><Button />
+              <dd> <img :src="productimagelist.ClothImagePath" ref=" materialimg" :width="50" />
               </dd>
             </dl>
           </template>
@@ -61,19 +61,22 @@
         v-for="rangevalue of rangetest(item.label, item.fabricHeight, item.fabricWeight, item.ghFiness, item.ghRatio)"
         :key="rangevalue.id">
         <div class="preview"
-          v-for="fabricItem of filteredImage(item.label, item.fabricWeight, rangevalue.pileheight, item.ghFiness, item.ghRatio)"
-          :key="fabricItem.id" v-if="(item != null)">
-          <Materialimage :fabricName="item.fabricnumber" :fabricweight="item.fabricWeight" :imageitem="fabricItem"
-            :cloth="cloth" />
+          v-for="(fabricItem, n) in filterInfo(item.label, item.fabricWeight, rangevalue.pileheight, item.ghFiness, item.ghRatio)"
+          :key="n" v-if="(item != null)">
+          <template v-if="true" v-for="(imageItem, n) in filterImage(fabricItem.FabricType)" :key="n">
+            <Materialimage :fabricName="item.fabricnumber" :fabricweight="item.fabricWeight" :imageitem="imageItem"
+              :cloth="cloth" />
+          </template>
           <!-- <Changecolor /> -->
           <!-- <img src="~/assets/fox.jpg" ref="materialimg" /> -->
         </div>
         <div class="info">
           <h2>Fabric Information</h2>
           <dl
-            v-for="fabricItem of filteredImage(item.label, item.fabricWeight, rangevalue.pileheight, item.ghFiness, item.ghRatio)">
+            v-for="(fabricItem, n) in filterInfo(item.label, item.fabricWeight, rangevalue.pileheight, item.ghFiness, item.ghRatio)"
+            :key="n">
             <dt>Fabric Number</dt>
-            <dd>{{ fabricItem.fabricNumber }}</dd>
+            <dd>{{ fabricItem.FabricType }}</dd>
             <dt>Composition</dt>
             <dd>
               <dl>
@@ -88,7 +91,7 @@
             <dt>Fabric Weight</dt>
             <dd>{{ fabricItem.fabricWeight }}g/m(width: {{ fabricItem.width }})</dd>
             <dt>Color</dt>
-            <dd>TGX#8888</dd>
+            <dd v-for="(imageItem, n) in imageList(fabricItem.FabricType)" :key="n">{{ imageItem.Color }}</dd>
           </dl>
           <footer><Button>Composition Check</Button></footer>
         </div>
@@ -105,7 +108,7 @@
 
 <script lang="ts" setup>
 import { isTemplateElement, PROPERTY_TYPES } from "@babel/types";
-import { Item, filteredImage, fabricTypesTable, example, filteredList, rangetest } from "~~/composables/models/Item"
+import { Item, filteredImage, fabricTypesTable, example, filteredList, rangetest, filterInfo, filterImage, FabricImageInfo, imageList } from "~~/composables/models/Item"
 import Changecolor from "./changecolor.vue";
 
 export interface Emits {
@@ -145,6 +148,7 @@ article.Detail {
     top: -2rem;
   }
 
+
   .parameter {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -160,7 +164,10 @@ article.Detail {
           display: flex;
           align-items: center;
           gap: 1rem;
+
+          .clothbutton {}
         }
+
       }
 
       >ul {

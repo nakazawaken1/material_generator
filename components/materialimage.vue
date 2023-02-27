@@ -36,8 +36,8 @@ const height = 2500
 var i = 1
 var r = 1
 var g = 1
-let furid: string = props.imageitem.fabricNumber
-let furName = '_' + props.imageitem.fabricNumber + '_1.'
+let furid: string = props.imageitem.FabricType
+let furName = '_' + props.imageitem.FabricType + '_1.'
 const extension: string = '.jpg'
 // マウス座標
 let mouseX, mouseY
@@ -57,16 +57,14 @@ onUnmounted(() => {
 })
 
 watchEffect(() => {
-    console.log(props.cloth)
-    console.log(props.imageitem.fabricWeight)
     if (props.cloth) {
-        furid = props.imageitem.fabricNumber
-        furName = '_' + props.imageitem.fabricNumber + '_1.'
+        furid = props.imageitem.FabricType
+        furName = '_' + props.imageitem.FabricType + '_1.'
     }
     // 着衣モデルに変更
     else {
-        furid = props.imageitem.clothNumber
-        furName = '_' + props.imageitem.clothNumber + '_1.'
+        furid = props.imageitem.ClothType
+        furName = '_' + props.imageitem.ClothType + '_1.'
         r = 4
     }
 
@@ -126,12 +124,7 @@ const drawImage = () => {
     const ctx = canvas.value?.getContext("2d")
     if (ctx) {
         ctx.drawImage(img, zoomLeft, zoomTop, width / imageScale, height / imageScale, 0, 0, canvasSize * scale, canvasSize * scale);
-        ctx.font = '30px "arial black"'
-        ctx.fillStyle = 'white'
-        ctx.fillText('x' + imageScale.toFixed(1), 0, 100)
-        ctx.strokeStyle = 'black'
-        ctx.lineWidth = 2
-        ctx.strokeText('x' + imageScale.toFixed(1), 0, 100)
+
 
     }
 }
