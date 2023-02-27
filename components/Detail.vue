@@ -4,31 +4,42 @@
       <CloseButton class="close" @click="emits('update:isOpen', false)" />
       <div class="parameter">
         <header>
-          <h2>Fabric Modify</h2>
-          <dl>
-            <dt>Fabric Weight</dt>
-            <dd><input type="range" v-model="item.fabricWeight" :min="item.fabricWeightMin" :max="item.fabricWeightMax"
-                :step="item.fabricWeightStep" /><span>{{
-                  item.fabricWeight
-                }}</span>
-            </dd>
-
-            <dt>
-              Fabric Height</dt>
-            <dd>
-              <input type="range" v-model="item.fabricHeight" :min="item.fabricHeightMin" :max="item.fabricHeightMax"
-                :step="item.fabricHeightStep" /><span
-                v-for="rangevalue of rangetest(item.label, item.fabricHeight, item.fabricWeight, item.ghFiness, item.ghRatio)"
-                :key="rangevalue.id">{{ item.fabricHeight = rangevalue.pileheight }}</span>
-            </dd>
-            <template v-if="false">
-              <dt>GH Ratio</dt>
-              <dd><input type="range" v-model="item.ghRatio" :min="0" :max="100" /><span>{{ item.ghRatio }}</span></dd>
-              <dt>GH Finess</dt>
-              <dd><input type="range" v-model="item.ghFiness" :min="0" :max="100" /><span>{{ item.ghFiness }}</span>
+          <template v-if="cloth">
+            <h2>Fabric Modify</h2>
+            <dl>
+              <dt>Fabric Weight</dt>
+              <dd><input type="range" v-model="item.fabricWeight" :min="item.fabricWeightMin" :max="item.fabricWeightMax"
+                  :step="item.fabricWeightStep" /><span>{{
+                    item.fabricWeight
+                  }}</span>
               </dd>
-            </template>
-          </dl>
+
+              <dt>
+                Fabric Height</dt>
+              <dd>
+                <input type="range" v-model="item.fabricHeight" :min="item.fabricHeightMin" :max="item.fabricHeightMax"
+                  :step="item.fabricHeightStep" /><span
+                  v-for="rangevalue of rangetest(item.label, item.fabricHeight, item.fabricWeight, item.ghFiness, item.ghRatio)"
+                  :key="rangevalue.id">{{ item.fabricHeight = rangevalue.pileheight }}</span>
+              </dd>
+            </dl>
+          </template>
+          <template v-if="!cloth">
+            <h2>Product image Choose product design</h2>
+            <dl>
+              <dt></dt>
+              <dd><Button />
+              </dd>
+            </dl>
+          </template>
+          <template v-if="false">
+            <dt>GH Ratio</dt>
+            <dd><input type="range" v-model="item.ghRatio" :min="0" :max="100" /><span>{{ item.ghRatio }}</span></dd>
+            <dt>GH Finess</dt>
+            <dd><input type="range" v-model="item.ghFiness" :min="0" :max="100" /><span>{{ item.ghFiness }}</span>
+            </dd>
+          </template>
+
           <template v-if="false">
             <ul>
               <li><label><input type="radio" name="type" v-model="item.type" value="Standard" />Standard</label></li>
@@ -37,12 +48,14 @@
             </ul>
           </template>
         </header>
-        <footer>
-          <label>Color Modify</label>
-          <input type="color" />
-          <label>Pantone</label>
-          <span>#ffffff</span>
-        </footer>
+        <template v-if="cloth">
+          <footer>
+            <label>Color Modify</label>
+            <input type="color" />
+            <label>Pantone</label>
+            <span>#ffffff</span>
+          </footer>
+        </template>
       </div>
       <template v-if="true"
         v-for="rangevalue of rangetest(item.label, item.fabricHeight, item.fabricWeight, item.ghFiness, item.ghRatio)"

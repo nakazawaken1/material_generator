@@ -64,10 +64,11 @@ watchEffect(() => {
         furName = '_' + props.imageitem.fabricNumber + '_1.'
     }
     // 着衣モデルに変更
-    // else {
-    //     furid = "T2203-05"
-    //     furName = '_' + "T2203-05" + '_1.'
-    // }
+    else {
+        furid = props.imageitem.clothNumber
+        furName = '_' + props.imageitem.clothNumber + '_1.'
+        r = 4
+    }
 
     const imagePath = new URL('../' + furid + '/x-' + Math.trunc(r) + furName + Math.trunc(i) + extension, import.meta.url).href //localhost 
     img.src = imagePath
