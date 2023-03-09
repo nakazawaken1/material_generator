@@ -47,6 +47,7 @@ body * {
 .layout {
 
   >header {
+    /*
     position: sticky;
     top: 0;
     display: flex;
@@ -56,14 +57,14 @@ body * {
     background-color: #222222;
     box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.16);
     color: #ffffff;
+    */
   }
 
   >div {
     min-height: 90vh;
+    height: 100vh;
   }
 
-  >footer {
-    height: 50vh;
-  }
+  >footer {}
 }
 </style>
