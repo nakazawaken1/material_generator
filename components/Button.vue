@@ -13,7 +13,7 @@
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
 
-  &.hover {
+  &:hover {
     background-color: #ffccff;
   }
 }

@@ -24,7 +24,7 @@ const props = defineProps([
 
 const detail = ref<Item | null>(null)
 
-const furkinds = ["Fox", "Mink", "Rabbit"]
+const furkinds = ["Fox", "Mink"]
 const fabricTypes: string = ""//FabricNo
 const numberid = ref<number>(0) //listnumber
 const imageUrl = ["./T2202-01.jpg", "./T2203-05.jpg", "./T2202-12.jpg"] //imageUrl

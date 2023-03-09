@@ -1,13 +1,31 @@
 <template>
   <main>
+    <nav class="search-navigation">
+      <div class="search-container">
+        <div class="container">
+          <div class="select-btn" :class="{ open: open }" @click="toggleBtn">
+            <span class="btn-text">Filter</span>
+            <span class="arrow-dwn">
+            </span>
+          </div>
+          <ul class="list-items">
+            <li class="item" v-for="value of fabricTypes.filter(i => !i.disabled)" :key="value.label">
+              <input type="checkbox" :id="value.label" :value="value.label" v-model="checkedValues">
+              <label :for="value.label">{{ value.label }}</label>
+            </li>
+          </ul>
+        </div>
+        <div class="search-bar">
+          <i class="uil uilsearch"></i>
+          <input type="search" v-model="searchWord" placeholder="Search material">
+        </div>
+        <div class="create">
+          <Button @click="(searched = true), (test = checkedValues), (searchValue = searchWord)">search</Button>
+        </div>
+      </div>
+      <div class=""></div>
+    </nav>
     <dl>
-      <dt class="required">Fabric Type</dt>
-      <dd class="required">
-        <label v-for="value of fabricTypes.filter(i => !i.disabled)" :key="value.label">
-          <input type="radio" :value="value" v-model="fabricType" :disabled="value.disabled" />
-          {{ value.label }}
-        </label>
-      </dd>
       <template v-if="false">
         <dt class="required">Knitting Type</dt>
         <dd class="required">
@@ -87,9 +105,9 @@
         </dd>
       </template>
     </dl>
-    <table>
-      <tr>
-        <template v-if="false">
+    <template v-if="false">
+      <table>
+        <tr>
           <th colspan="2">Options</th>
           <th>Material</th>
           <th>Spec</th>
@@ -98,71 +116,67 @@
           <th>Finess<br />(dt)</th>
           <th>Cut Length<br />(mm)</th>
           <th>Sliver<br />Ratio(%)</th>
-        </template>
-        <th>Color<br />Pantone#<br />TPX TPG</th>
-      </tr>
+          <th>Color<br />Pantone#<br />TPX TPG</th>
+        </tr>
+        <tr v-for="n of 3" :key="n">
+          <template v-if="false">
+            <th v-if="(n == 1)" rowspan="3">Sliver① Composition</th>
+            <th>Fiber{{ n }}<template v-if="(n == 1)">(GH)</template></th>
+            <td>
+              <label v-for="label of fabricType.fiber1!.materials" :key="label">
+                <input type="radio" :value="label" v-model="fiber1.material" />
+                {{ label }}
+              </label>
+            </td>
+            <td>
+              <label v-for="label of fabricType.fiber1!.specs" :key="label">
+                <input type="radio" :value="label" v-model="fiber1.spec" />
+                {{ label }}
+              </label>
+            </td>
+            <td>
+              <label v-for="label of fabricType.fiber1!.crossSections" :key="label">
+                <input type="radio" :value="label" v-model="fiber1.crossSection" />
+                {{ label }}
+              </label>
+            </td>
+            <td>
+              <label v-for="label of fabricType.fiber1!.lustors" :key="label">
+                <input type="radio" :value="label" v-model="fiber1.lustor" />
+                {{ label }}
+              </label>
+            </td>
+            <td>
+              <label v-for="label of fabricType.fiber1!.finesses" :key="label">
+                <input type="radio" :value="label" v-model.number="fiber1.finess" />
+                {{ label }}
+              </label>
+            </td>
+            <td>
+              <ul>
+                <li v-for="label of fabricType.fiber1!.cutLengths" :key="label">
+                  <label>
+                    <input type="radio" :value="label" v-model.number="fiber1.cutLength" />
+                    {{ label }}
+                  </label>
+                </li>
+              </ul>
+            </td>
+            <td>
+              <input type="range" v-model="fiber1.sliverRatio" :min="fabricType.sliverRatioMin"
+                :max="fabricType.sliverRatioMax" :step="sliverRatioStep" />
+              <label>{{ fiber1.sliverRatio }}%</label>
+            </td>
+          </template>
 
-      <tr v-for="n of 3" :key="n">
-        <template v-if="false">
-          <th v-if="(n == 1)" rowspan="3">Sliver① Composition</th>
-          <th>Fiber{{ n }}<template v-if="(n == 1)">(GH)</template></th>
-          <td>
-            <label v-for="label of fabricType.fiber1!.materials" :key="label">
-              <input type="radio" :value="label" v-model="fiber1.material" />
-              {{ label }}
-            </label>
+          <td v-if="(n == 1)" rowspan="3">
+            <section class="color"><input type="color" v-model="fiber1.color" />
+              <label>{{ fiber1.color }}</label>
+            </section>
           </td>
-          <td>
-            <label v-for="label of fabricType.fiber1!.specs" :key="label">
-              <input type="radio" :value="label" v-model="fiber1.spec" />
-              {{ label }}
-            </label>
-          </td>
-          <td>
-            <label v-for="label of fabricType.fiber1!.crossSections" :key="label">
-              <input type="radio" :value="label" v-model="fiber1.crossSection" />
-              {{ label }}
-            </label>
-          </td>
-          <td>
-            <label v-for="label of fabricType.fiber1!.lustors" :key="label">
-              <input type="radio" :value="label" v-model="fiber1.lustor" />
-              {{ label }}
-            </label>
-          </td>
-          <td>
-            <label v-for="label of fabricType.fiber1!.finesses" :key="label">
-              <input type="radio" :value="label" v-model.number="fiber1.finess" />
-              {{ label }}
-            </label>
-          </td>
-          <td>
-            <ul>
-              <li v-for="label of fabricType.fiber1!.cutLengths" :key="label">
-                <label>
-                  <input type="radio" :value="label" v-model.number="fiber1.cutLength" />
-                  {{ label }}
-                </label>
-              </li>
-            </ul>
-          </td>
-          <td>
-            <input type="range" v-model="fiber1.sliverRatio" :min="fabricType.sliverRatioMin"
-              :max="fabricType.sliverRatioMax" :step="sliverRatioStep" />
-            <label>{{ fiber1.sliverRatio }}%</label>
-          </td>
-        </template>
-
-        <td v-if="(n == 1)" rowspan="3">
-          <section class="color"><input type="color" v-model="fiber1.color" />
-            <label>{{ fiber1.color }}</label>
-          </section>
-        </td>
-      </tr>
-    </table>
-    <nav>
-      <Button @click="(searched = true)">search</Button>
-    </nav>
+        </tr>
+      </table>
+    </template>
     <section v-if="searched">
       <nav>
         <label for="composition"><input id="composition" type="radio" name="component" :value="SearchedComposition"
@@ -170,16 +184,21 @@
         <label for="image"><input id="image" type="radio" name="component" :value="SearchedImage" v-model="component" />
           Image</label>
       </nav>
-      <component :is="component" :fabricType="fabricType" />
+      <component :is="component" :fabricType="fabricType" :fabeicLabel="checkedValues" :length="checkedValues.length"
+        :searchWord="searchValue" />
     </section>
   </main>
 </template>
 
 <script lang="ts" setup>
+import { disableBodyScroll } from "body-scroll-lock";
+import { Item, example, fabricTypesTable, filteredList, filterList, FabricInfo, imageList, filter2List } from "~~/composables/models/Item"
 const SearchedComposition = resolveComponent("SearchedComposition") //shallowRefが付いていると動的コンポーネントが動作不良
 const SearchedImage = resolveComponent("SearchedImage") //shallowRefが付いていると動的コンポーネントが動作不良
+const test = ref([])
 const component = ref(SearchedComposition)
-const searched = ref(false)
+const searched = ref(true)
+const searchValue = ref('')
 const sharings = [
   'Non Cut',
   '15',
@@ -307,8 +326,8 @@ const fablicWeihtStep = 50
 const sliverRatioStep = 5
 const calcFablicWeight = (n: number) => Math.round(n / fablicWeihtStep) * fablicWeihtStep
 const calcSliverRatio = (n: number) => Math.round(n / sliverRatioStep) * sliverRatioStep
-
 const fabricType = ref(fabricTypes[0])
+const fabricType2 = ref(fabricTypes[1])
 const knittingType = ref(knittingTypes[0])
 const silverNumber = ref(silverNumbers[0])
 const sharing = ref(sharings[0])
@@ -353,10 +372,156 @@ watch(fablicWeight2, (value) => {
   fablicWeight1.value = calcFablicWeight(value * 100 / kijihaba.value)
   nextTick(() => changing = false)
 })
-</script>
+
+let open = ref(false)
+let checked = ref(false)
+
+const toggleBtn = () => {
+  console.log(open)
+  open.value = !open.value;
+}
+
+const toggleChecked = () => {
+  console.log(checked)
+  checked.value = !checked.value;
+}
+
+const checkedValues = ref([])
+
+let searchWord = ref('')
+</script> 
 
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols+2&display=swap");
+
+/* Google Fonts - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css');
+
+.search-container {
+  margin: 0 auto;
+  background-color: #b8b8b861;
+}
+
+.search-navigation {
+  padding: 0.7rem 0;
+  top: 0;
+
+
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .search-bar {
+      input[type="search"] {
+        width: 50vw;
+        height: 30px;
+        background: transparent;
+        flex: 1;
+        border: 0.2px solid;
+        padding: 10px;
+      }
+    }
+  }
+
+  .search-bar {}
+
+}
+
+nav .container {
+  position: relative;
+  max-width: 200px;
+  width: 100%;
+  padding: 0;
+}
+
+.select-btn {
+  display: flex;
+  height: 30px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  cursor: pointer;
+  border: 0.2px solid;
+
+}
+
+.select-btn .btn-text {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+
+
+.select-btn.open .arrow-dwn {
+  transform: rotate(-180deg);
+}
+
+.list-items {
+  position: absolute;
+  margin-top: 15px;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  display: none;
+}
+
+.select-btn.open~.list-items {
+  display: block;
+}
+
+.list-items .item {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  height: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 0 15px;
+  border-radius: 8px;
+}
+
+.list-items .item:hover {
+  background-color: #e7edfe;
+}
+
+.item .item-text {
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
+}
+
+.item .checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 16px;
+  width: 16px;
+  border-radius: 4px;
+  margin-right: 12px;
+  border: 1.5px solid #c0c0c0;
+  transition: all 0.3s ease-in-out;
+}
+
+.item.checked .checkbox {
+  background-color: #4070f4;
+  border-color: #4070f4;
+}
+
+.checkbox .check-icon {
+  color: #fff;
+  font-size: 11px;
+  transform: scale(0);
+  transition: all 0.2s ease-in-out;
+}
+
+.item.checked .check-icon {
+  transform: scale(1);
+}
+
 
 main {
   --radius: 10px;

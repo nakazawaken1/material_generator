@@ -870,8 +870,8 @@ export const  FabricImageInfo : FabricImageInfoItem[] = [
   }
 ]
 
-export const filterList = computed(() => (furlabel: string) => {
-  return FabricInfo.filter((fabricTypes) => fabricTypes.label.includes(furlabel)) 
+export const filterList = computed(() => (...furlabel: string[]) => {
+  return FabricInfo.filter((fabricTypes) => fabricTypes.label.includes(furlabel[0])) 
 })
 
 export const imageList = computed(() => (fabricNumber: string) => {
@@ -891,3 +891,24 @@ export const filterImage = computed(() => (FabricType:string) => {
 export const filterImages = computed(() => (FabricType:string) => {
   const image =  FabricImageInfo.filter((fabricTypes) => fabricTypes.FabricType.includes(FabricType) )
 })
+
+export const filter2List = computed(() => (searchWord:string,furlabel: string[]) => {
+  
+    if(!furlabel.length){
+      if(!searchWord.length){
+        return FabricInfo.filter((fabricTypes) => fabricTypes) 
+      }else{
+        return FabricInfo.filter((fabricTypes) => fabricTypes.label.toLowerCase().includes(searchWord.toLowerCase()) || fabricTypes.FabricType.toLowerCase().includes(searchWord.toLowerCase()) ) 
+        }
+      
+    }else if(furlabel.length === 1){{
+        return FabricInfo.filter((fabricTypes) => fabricTypes.FabricType.toLowerCase().includes(searchWord.toLowerCase()) &&  fabricTypes.label.includes(furlabel[0])) 
+      }
+    }else if(furlabel.length === 2){{
+      return FabricInfo.filter((fabricTypes) => fabricTypes.label.toLowerCase().includes(searchWord.toLowerCase()) || fabricTypes.FabricType.toLowerCase().includes(searchWord.toLowerCase()) ||  fabricTypes.label.includes(furlabel[0]) && fabricTypes.label.includes(furlabel[1])) 
+    }
+  }
+    
+  }
+  
+)

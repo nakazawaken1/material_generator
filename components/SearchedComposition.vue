@@ -10,7 +10,7 @@
         <th>Image</th>
       </tr>
     </thead>
-    <tbody v-for="(item, n) in filterList(fabricType.label)" :key="n" @click="(detail = example), (detail.fabricnumber = item.FabricType),
+    <tbody v-for="(item, n) in filter2List(searchWord, fabeicLabel)" :key="n" @click="(detail = example), (detail.fabricnumber = item.FabricType),
       (detail.fabricWeight = item.fabricWeight), (detail.fabricWeightMin = item.minfabricWeight),
       (detail.fabricWeightMax = item.maxfabricWeight), (detail.fabricWeightStep = item.stepfabricWeight),
       (detail.fabricPileHeight = item.pileheight), (detail.width = item.width),
@@ -35,16 +35,18 @@
 </template>
 
 <script lang="ts" setup>
-import { Item, example, fabricTypesTable, filteredList, filterList, FabricInfo, imageList } from "~~/composables/models/Item"
+import { Item, example, fabricTypesTable, filteredList, filterList, FabricInfo, imageList, filter2List } from "~~/composables/models/Item"
 const props = defineProps([
-  "fabricType"
+  "fabricType", "fabeicLabel", "length", "searchWord"
 ])
 const fabricNumber = ref<string>("")//FabricNo
 const fabricWeight = ref<number>(0)
+
+const furkinds = ["Fox", "Mink"]
 //以上compositiondata
 
 const detail = ref<Item | null>(null)
-
+console.log(props.fabricType)
 </script>
 
 <style lang="scss" scoped>
