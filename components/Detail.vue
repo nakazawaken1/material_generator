@@ -1,135 +1,166 @@
 <template>
   <Popup :isOpen="isOpen">
-    <article class="Detail" v-if="(item != null)">
+    <article class="Detail" v-if="item != null">
       <CloseButton class="close" @click="emits('update:isOpen', false)" />
       <div class="parameter">
         <header>
-          <template v-if="cloth">
+          <template v-if="normal">
             <h2>Fabric Modify</h2>
             <dl>
               <dt>Fabric Weight</dt>
-              <dd><input type="range" v-model="item.fabricWeight" :min="item.fabricWeightMin" :max="item.fabricWeightMax"
-                  :step="item.fabricWeightStep" /><span>{{
-                    item.fabricWeight
-                  }}</span>
+              <dd>
+                <input
+                  type="range"
+                  v-model="item.fabricWeight"
+                  :min="item.fabricWeightMin"
+                  :max="item.fabricWeightMax"
+                  :step="item.fabricWeightStep"
+                /><span>{{ item.fabricWeight }}</span>
               </dd>
 
-              <dt>
-                Fabric Height</dt>
+              <dt>Fabric Height</dt>
               <dd>
-                <input type="range" v-model="item.fabricHeight" :min="item.fabricHeightMin" :max="item.fabricHeightMax"
-                  :step="item.fabricHeightStep" /><span
-                  v-for="rangevalue of rangetest(item.label, item.fabricHeight, item.fabricWeight, item.ghFiness, item.ghRatio)"
-                  :key="rangevalue.id">{{ item.fabricHeight = rangevalue.pileheight }}</span>
+                <input
+                  type="range"
+                  v-model="item.fabricHeight"
+                  :min="item.fabricHeightMin"
+                  :max="item.fabricHeightMax"
+                  :step="item.fabricHeightStep"
+                /><span>{{ item.fabricHeight }}</span>
               </dd>
             </dl>
           </template>
-          <template v-if="!cloth">
+          <template v-else>
             <h2>Product image Choose product design</h2>
-            <dl v-for="(productimagelist, n) in filterImage(item.fabricnumber)" :key="n">
+            <dl>
               <dt></dt>
-              <dd> <img :src="productimagelist.ClothImagePath" ref=" materialimg" :width="50" />
+              <dd>
+                <img :src="item.ClothImagePath" :width="50" />
               </dd>
             </dl>
           </template>
           <template v-if="false">
             <dt>GH Ratio</dt>
-            <dd><input type="range" v-model="item.ghRatio" :min="0" :max="100" /><span>{{ item.ghRatio }}</span></dd>
+            <dd>
+              <input
+                type="range"
+                v-model="item.ghRatio"
+                :min="0"
+                :max="100"
+              /><span>{{ item.ghRatio }}</span>
+            </dd>
             <dt>GH Finess</dt>
-            <dd><input type="range" v-model="item.ghFiness" :min="0" :max="100" /><span>{{ item.ghFiness }}</span>
+            <dd>
+              <input
+                type="range"
+                v-model="item.ghFiness"
+                :min="0"
+                :max="100"
+              /><span>{{ item.ghFiness }}</span>
             </dd>
           </template>
 
           <template v-if="false">
             <ul>
-              <li><label><input type="radio" name="type" v-model="item.type" value="Standard" />Standard</label></li>
-              <li><label><input type="radio" name="type" v-model="item.type" value="Sustainable" />Sustainable</label>
+              <li>
+                <label
+                  ><input
+                    type="radio"
+                    name="type"
+                    v-model="item.type"
+                    value="Standard"
+                  />Standard</label
+                >
+              </li>
+              <li>
+                <label
+                  ><input
+                    type="radio"
+                    name="type"
+                    v-model="item.type"
+                    value="Sustainable"
+                  />Sustainable</label
+                >
               </li>
             </ul>
           </template>
         </header>
-        <template v-if="cloth">
+        <template v-if="normal">
           <footer>
             <label>Color Modify</label>
-            <input type="color" />
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              v-model.number="hue"
+            />
             <label>Pantone</label>
-            <span>#ffffff</span>
+            <span>{{ hue }}</span>
           </footer>
         </template>
       </div>
-      <template v-if="true"
-        v-for="rangevalue of rangetest(item.label, item.fabricHeight, item.fabricWeight, item.ghFiness, item.ghRatio)"
-        :key="rangevalue.id">
-        <div class="preview"
-          v-for="(fabricItem, n) in filterInfo(item.label, item.fabricWeight, rangevalue.pileheight, item.ghFiness, item.ghRatio)"
-          :key="n" v-if="(item != null)">
-          <template v-if="true" v-for="(imageItem, n) in filterImage(fabricItem.FabricType)" :key="n">
-            <Materialimage :fabricName="item.fabricnumber" :fabricweight="item.fabricWeight" :imageitem="imageItem"
-              :cloth="cloth" />
-          </template>
-          <!-- <Changecolor /> -->
-          <!-- <img src="~/assets/fox.jpg" ref="materialimg" /> -->
-        </div>
-        <div class="info">
-          <h2>Fabric Information</h2>
-          <dl
-            v-for="(fabricItem, n) in filterInfo(item.label, item.fabricWeight, rangevalue.pileheight, item.ghFiness, item.ghRatio)"
-            :key="n">
-            <dt>Fabric Number</dt>
-            <dd>{{ fabricItem.FabricType }}</dd>
-            <dt>Composition</dt>
-            <dd>
-              <dl>
-                <dt>Modacrylic</dt>
-                <dd>70%</dd>
-                <dt>Recycled polyester</dt>
-                <dd>30%</dd>
-              </dl>
-            </dd>
-            <dt>Pile Height</dt>
-            <dd>{{ fabricItem.pileheight }}</dd>
-            <dt>Fabric Weight</dt>
-            <dd>{{ fabricItem.fabricWeight }}g/m(width: {{ fabricItem.width }})</dd>
-            <dt>Color</dt>
-            <dd v-for="(imageItem, n) in imageList(fabricItem.FabricType)" :key="n">{{ imageItem.Color }}</dd>
-          </dl>
-          <footer><Button>Composition Check</Button></footer>
-        </div>
-      </template>
-      <Button v-if="dafault">View Fabric Motion</Button>
-      <Button @click="(back = true), (dafault = false), (cloth = false)" v-if="dafault">View Product Image</Button>
-      <Button v-if="dafault">Download Production Details</Button>
-      <Button @click='(back = false), (dafault = true), (cloth = true)' class="backimage" v-if="back">Back image
-        Details</Button>
-      <Button class="download" v-if="dafault">Download File</Button>
+      <div class="preview">
+        <WebGLViewer
+          :fabricType="normal ? item.FabricType : item.ClothType"
+          :value="hue"
+        />
+      </div>
+      <div class="info">
+        <h2>Fabric Information</h2>
+        <dl>
+          <dt>Fabric Number</dt>
+          <dd>{{ item.FabricType }}</dd>
+          <dt>Composition</dt>
+          <dd>
+            <dl>
+              <dt>Modacrylic</dt>
+              <dd>70%</dd>
+              <dt>Recycled polyester</dt>
+              <dd>30%</dd>
+            </dl>
+          </dd>
+          <dt>Pile Height</dt>
+          <dd>{{ item.pileheight }}</dd>
+          <dt>Fabric Weight</dt>
+          <dd>{{ item.fabricWeight }}g/m(width: {{ item.width }})</dd>
+          <dt>Color</dt>
+          <dd>
+            {{ item.Color }}
+          </dd>
+        </dl>
+        <footer><Button>Composition Check</Button></footer>
+      </div>
+      <Button v-if="normal">View Fabric Motion</Button>
+      <Button @click="normal = false" v-if="normal">View Product Image</Button>
+      <Button v-if="normal">Download Production Details</Button>
+      <Button @click="normal = true" class="backimage" v-else
+        >Back image Details</Button
+      >
+      <Button class="download" v-if="normal">Download File</Button>
     </article>
   </Popup>
 </template>
 
 <script lang="ts" setup>
-import { isTemplateElement, PROPERTY_TYPES } from "@babel/types";
-import { Item, filteredImage, fabricTypesTable, example, filteredList, rangetest, filterInfo, filterImage, FabricImageInfo, imageList } from "~~/composables/models/Item"
-import Changecolor from "./changecolor.vue";
+import { Item } from "~~/composables/models/Item";
 
-export interface Emits {
-  (e: "update:isOpen", button: false): void
-}
-interface Props {
-  isOpen: boolean,
-  item: Item | null,
-}
+const props = withDefaults(
+  defineProps<{
+    isOpen: boolean;
+    item: Item | null;
+  }>(),
+  {
+    isOpen: false,
+  }
+);
+const detail = ref<Item | null>(null);
+const hue = ref(0);
+const emits = defineEmits<{
+  (e: "update:isOpen", button: false): void;
+}>();
 
-
-const detail = ref<Item | null>(null)
-const props = withDefaults(defineProps<Props>(), {
-  isOpen: false
-})
-
-const emits = defineEmits<Emits>()
-
-const back = ref(false)
-const dafault = ref(true)
-const cloth = ref(true)
+const normal = ref(true);
 </script>
 
 <style lang="scss" scoped>
@@ -148,16 +179,15 @@ article.Detail {
     top: -2rem;
   }
 
-
   .parameter {
     display: grid;
     grid-template-columns: 1fr auto;
     border: 1px solid #818181;
 
-    >header {
+    > header {
       padding: 1rem;
 
-      >dl {
+      > dl {
         margin: 1rem 0;
 
         dd {
@@ -165,18 +195,18 @@ article.Detail {
           align-items: center;
           gap: 1rem;
 
-          .clothbutton {}
+          .clothbutton {
+          }
         }
-
       }
 
-      >ul {
+      > ul {
         display: flex;
         gap: 1rem;
       }
     }
 
-    >footer {
+    > footer {
       padding: 1rem;
       border-left: 1px solid #818181;
       display: flex;
@@ -191,18 +221,19 @@ article.Detail {
     grid-row: 1 / 3;
     grid-column: 2 / 4;
     position: relative;
+    background-color: #7f7f7f;
 
-    >img {
+    > img {
       width: 60rem;
     }
 
-    >ul {
+    > ul {
       position: absolute;
       top: 1rem;
       right: 1rem;
 
-      >li {
-        >img {
+      > li {
+        > img {
           width: 4rem;
           cursor: pointer;
         }
@@ -215,14 +246,14 @@ article.Detail {
     border: 1px solid #818181;
     grid-row: 2 / 4;
 
-    >dl {
+    > dl {
       margin: 1rem 0;
       display: grid;
       grid-template-columns: max-content 1fr;
       gap: 0.5rem;
     }
 
-    >footer {
+    > footer {
       text-align: center;
     }
   }

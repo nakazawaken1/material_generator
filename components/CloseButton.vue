@@ -9,7 +9,6 @@ a.CloseButton {
   justify-content: center;
   font-size: 4rem;
   color: #ffffff;
-  padding-bottom: 0.5rem;
   width: 4rem;
   height: 4rem;
   border-radius: 50%;

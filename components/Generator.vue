@@ -5,22 +5,34 @@
         <div class="container">
           <div class="select-btn" :class="{ open: open }" @click="toggleBtn">
             <span class="btn-text">Filter</span>
-            <span class="arrow-dwn">
-            </span>
+            <span class="arrow-dwn"> </span>
           </div>
           <ul class="list-items">
-            <li class="item" v-for="value of fabricTypes.filter(i => !i.disabled)" :key="value.label">
-              <input type="checkbox" :id="value.label" :value="value.label" v-model="checkedValues">
+            <li
+              class="item"
+              v-for="value of fabricTypes.filter((i) => !i.disabled)"
+              :key="value.label"
+            >
+              <input
+                type="checkbox"
+                :id="value.label"
+                :value="value.label"
+                v-model="labels"
+              />
               <label :for="value.label">{{ value.label }}</label>
             </li>
           </ul>
         </div>
         <div class="search-bar">
           <i class="uil uilsearch"></i>
-          <input type="search" v-model="searchWord" placeholder="Search material">
+          <input
+            type="search"
+            v-model="searchWord"
+            placeholder="Search material"
+          />
         </div>
         <div class="create">
-          <Button @click="(searched = true), (test = checkedValues), (searchValue = searchWord)">search</Button>
+          <Button @click="searched = true">search</Button>
         </div>
       </div>
       <div class=""></div>
@@ -29,15 +41,28 @@
       <template v-if="false">
         <dt class="required">Knitting Type</dt>
         <dd class="required">
-          <label v-for="value of knittingTypes.filter(i => !i.disabled)" :key="value.label">
-            <input type="radio" :value="value" v-model="knittingType" :disabled="value.disabled" />
+          <label
+            v-for="value of knittingTypes.filter((i) => !i.disabled)"
+            :key="value.label"
+          >
+            <input
+              type="radio"
+              :value="value"
+              v-model="knittingType"
+              :disabled="value.disabled"
+            />
             {{ value.label }}
           </label>
         </dd>
         <dt class="required">Sliver numbers</dt>
         <dd class="required">
           <label v-for="label of silverNumbers" :key="label">
-            <input type="radio" :value="label" v-model="silverNumber" :disabled="label != '1'" />
+            <input
+              type="radio"
+              :value="label"
+              v-model="silverNumber"
+              :disabled="label != '1'"
+            />
             {{ label }}
           </label>
         </dd>
@@ -45,7 +70,12 @@
         <dt class="disabled">シャーリング加工（㎜）</dt>
         <dd class="disabled">
           <label v-for="label of fabricType.sharings" :key="label">
-            <input type="radio" :value="label" v-model="sharing" :disabled="true" />
+            <input
+              type="radio"
+              :value="label"
+              v-model="sharing"
+              :disabled="true"
+            />
             {{ label }}
           </label>
         </dd>
@@ -54,27 +84,49 @@
         <dt class="disabled">チッププリント</dt>
         <dd class="disabled">
           <label v-for="label of chipPrints" :key="label">
-            <input type="radio" :value="label" v-model="chipPrint" :disabled="true" />
+            <input
+              type="radio"
+              :value="label"
+              v-model="chipPrint"
+              :disabled="true"
+            />
             {{ label }}
           </label>
         </dd>
         <dt class="disabled">生地幅（cm）</dt>
         <dd class="disabled">
           <label v-for="label of kijihabas" :key="label">
-            <input type="radio" :value="label" v-model.number="kijihaba" :disabled="true" />
+            <input
+              type="radio"
+              :value="label"
+              v-model.number="kijihaba"
+              :disabled="true"
+            />
             {{ label }}
           </label>
         </dd>
         <dt class="disabled">Fabric Weight(g/M) 単位：㎡</dt>
         <dd class="disabled">
-          <input type="range" v-model="fablicWeight1" :min="fabricType.min" :max="fabricType.max" :step="fablicWeihtStep"
-            :disabled="true" />
+          <input
+            type="range"
+            v-model="fablicWeight1"
+            :min="fabricType.min"
+            :max="fabricType.max"
+            :step="fablicWeihtStep"
+            :disabled="true"
+          />
           <label>{{ fablicWeight1 }}</label>
         </dd>
         <dt class="disabled">Fabric Weight(g/M) 生地幅に対して</dt>
         <dd class="disabled">
-          <input type="range" v-model="fablicWeight2" :min="calcFablicWeight(fabricType.min! * kijihaba / 100)"
-            :max="calcFablicWeight(fabricType.max! * kijihaba / 100)" :step="fablicWeihtStep" :disabled="true" />
+          <input
+            type="range"
+            v-model="fablicWeight2"
+            :min="calcFablicWeight(fabricType.min! * kijihaba / 100)"
+            :max="calcFablicWeight(fabricType.max! * kijihaba / 100)"
+            :step="fablicWeihtStep"
+            :disabled="true"
+          />
           <label>{{ fablicWeight2 }}</label>
         </dd>
       </template>
@@ -85,20 +137,29 @@
             <dt>タンブリング</dt>
             <dd>
               <label v-for="label of tanblings" :key="label">
-                <input type="radio" :value="label" v-model="tanbling" :disabled="true" />
+                <input
+                  type="radio"
+                  :value="label"
+                  v-model="tanbling"
+                  :disabled="true"
+                />
                 {{ label }}
               </label>
             </dd>
             <dt>デザインシャーリング</dt>
             <dd>
               <select v-model="designSharing" :disabled="true">
-                <option v-for="label of designSharings" :key="label">{{ label }}</option>
+                <option v-for="label of designSharings" :key="label">
+                  {{ label }}
+                </option>
               </select>
             </dd>
             <dt>エンボス</dt>
             <dd>
               <select v-model="emboss" :disabled="true">
-                <option v-for="label of embosses" :key="label">{{ label }}</option>
+                <option v-for="label of embosses" :key="label">
+                  {{ label }}
+                </option>
               </select>
             </dd>
           </dl>
@@ -120,8 +181,8 @@
         </tr>
         <tr v-for="n of 3" :key="n">
           <template v-if="false">
-            <th v-if="(n == 1)" rowspan="3">Sliver① Composition</th>
-            <th>Fiber{{ n }}<template v-if="(n == 1)">(GH)</template></th>
+            <th v-if="n == 1" rowspan="3">Sliver① Composition</th>
+            <th>Fiber{{ n }}<template v-if="n == 1">(GH)</template></th>
             <td>
               <label v-for="label of fabricType.fiber1!.materials" :key="label">
                 <input type="radio" :value="label" v-model="fiber1.material" />
@@ -135,8 +196,15 @@
               </label>
             </td>
             <td>
-              <label v-for="label of fabricType.fiber1!.crossSections" :key="label">
-                <input type="radio" :value="label" v-model="fiber1.crossSection" />
+              <label
+                v-for="label of fabricType.fiber1!.crossSections"
+                :key="label"
+              >
+                <input
+                  type="radio"
+                  :value="label"
+                  v-model="fiber1.crossSection"
+                />
                 {{ label }}
               </label>
             </td>
@@ -148,7 +216,11 @@
             </td>
             <td>
               <label v-for="label of fabricType.fiber1!.finesses" :key="label">
-                <input type="radio" :value="label" v-model.number="fiber1.finess" />
+                <input
+                  type="radio"
+                  :value="label"
+                  v-model.number="fiber1.finess"
+                />
                 {{ label }}
               </label>
             </td>
@@ -156,21 +228,31 @@
               <ul>
                 <li v-for="label of fabricType.fiber1!.cutLengths" :key="label">
                   <label>
-                    <input type="radio" :value="label" v-model.number="fiber1.cutLength" />
+                    <input
+                      type="radio"
+                      :value="label"
+                      v-model.number="fiber1.cutLength"
+                    />
                     {{ label }}
                   </label>
                 </li>
               </ul>
             </td>
             <td>
-              <input type="range" v-model="fiber1.sliverRatio" :min="fabricType.sliverRatioMin"
-                :max="fabricType.sliverRatioMax" :step="sliverRatioStep" />
+              <input
+                type="range"
+                v-model="fiber1.sliverRatio"
+                :min="fabricType.sliverRatioMin"
+                :max="fabricType.sliverRatioMax"
+                :step="sliverRatioStep"
+              />
               <label>{{ fiber1.sliverRatio }}%</label>
             </td>
           </template>
 
-          <td v-if="(n == 1)" rowspan="3">
-            <section class="color"><input type="color" v-model="fiber1.color" />
+          <td v-if="n == 1" rowspan="3">
+            <section class="color">
+              <input type="color" v-model="fiber1.color" />
               <label>{{ fiber1.color }}</label>
             </section>
           </td>
@@ -179,165 +261,148 @@
     </template>
     <section v-if="searched">
       <nav>
-        <label for="composition"><input id="composition" type="radio" name="component" :value="SearchedComposition"
-            v-model="component" /> Composition</label>
-        <label for="image"><input id="image" type="radio" name="component" :value="SearchedImage" v-model="component" />
-          Image</label>
+        <label for="composition"
+          ><input
+            id="composition"
+            type="radio"
+            name="component"
+            value="SearchedComposition"
+            v-model="component"
+          />
+          Composition</label
+        >
+        <label for="image"
+          ><input
+            id="image"
+            type="radio"
+            name="component"
+            value="SearchedImage"
+            v-model="component"
+          />
+          Image</label
+        >
       </nav>
-      <component :is="component" :fabricType="fabricType" :fabeicLabel="checkedValues" :length="checkedValues.length"
-        :searchWord="searchValue" />
+      <SearchedImage
+        v-if="component == 'SearchedImage'"
+        :labels="labels"
+        :searchWord="searchWord"
+      />
+      <SearchedComposition v-else :labels="labels" :searchWord="searchWord" />
     </section>
   </main>
 </template>
 
 <script lang="ts" setup>
 import { disableBodyScroll } from "body-scroll-lock";
-import { Item, example, fabricTypesTable, filteredList, filterList, FabricInfo, imageList, filter2List } from "~~/composables/models/Item"
-const SearchedComposition = resolveComponent("SearchedComposition") //shallowRefが付いていると動的コンポーネントが動作不良
-const SearchedImage = resolveComponent("SearchedImage") //shallowRefが付いていると動的コンポーネントが動作不良
-const test = ref([])
-const component = ref(SearchedComposition)
-const searched = ref(true)
-const searchValue = ref('')
-const sharings = [
-  'Non Cut',
-  '15',
-  '22',
-  '27',
-  '34',
-  '43',
-]
-const materials = [
-  'Modacrylic',
-  'Recycled PET',
-]
-const specs = [
-  'ELP',
-  'RCL',
-  'KP',
-  'AH',
-]
-const crossSections = [
-  'OVAL',
-  'FLAT',
-]
-const lustors = [
-  'Bright',
-  'Semi-Dull',
-]
-const finesses = [
-  17,
-  18,
-  27,
-  33,
-  35,
-  44,
-]
-const cutLengths = [
-  51,
-  64,
-  76,
-  89,
-  102,
-]
-const colors = [
-  '#ffffff',
-]
+const component = ref("SearchedComposition");
+const searched = ref(true);
+const sharings = ["Non Cut", "15", "22", "27", "34", "43"];
+const materials = ["Modacrylic", "Recycled PET"];
+const specs = ["ELP", "RCL", "KP", "AH"];
+const crossSections = ["OVAL", "FLAT"];
+const lustors = ["Bright", "Semi-Dull"];
+const finesses = [17, 18, 27, 33, 35, 44];
+const cutLengths = [51, 64, 76, 89, 102];
+const colors = ["#ffffff"];
 const fabricTypes = [
   {
-    label: 'Fox', min: 850, max: 1500, sharings: [0].map(i => sharings[i]), sliverRatioMin: 10, sliverRatioMax: 50, fiber1: {
-      materials: [0].map(i => materials[i]),
-      specs: [0, 1].map(i => specs[i]),
-      crossSections: [0, 1].map(i => crossSections[i]),
-      lustors: [0, 1].map(i => lustors[i]),
-      finesses: [0, 1, 2, 3, 4, 5].map(i => finesses[i]),
-      cutLengths: [0, 1, 2, 3, 4].map(i => cutLengths[i]),
-      fiber2: { specs: [2, 3].map(i => specs[i]) },
-      fiber3: { specs: [2, 3].map(i => specs[i]) }
-    }
+    label: "Fox",
+    min: 850,
+    max: 1500,
+    sharings: [0].map((i) => sharings[i]),
+    sliverRatioMin: 10,
+    sliverRatioMax: 50,
+    fiber1: {
+      materials: [0].map((i) => materials[i]),
+      specs: [0, 1].map((i) => specs[i]),
+      crossSections: [0, 1].map((i) => crossSections[i]),
+      lustors: [0, 1].map((i) => lustors[i]),
+      finesses: [0, 1, 2, 3, 4, 5].map((i) => finesses[i]),
+      cutLengths: [0, 1, 2, 3, 4].map((i) => cutLengths[i]),
+      fiber2: { specs: [2, 3].map((i) => specs[i]) },
+      fiber3: { specs: [2, 3].map((i) => specs[i]) },
+    },
   },
   {
-    label: 'Sable', disabled: true,
-    min: 450, max: 1100, sharings: [4, 5].map(i => sharings[i]), sliverRatioMin: 10, sliverRatioMax: 50, fiber1: {
-      materials: [0].map(i => materials[i]),
-      specs: [0, 1].map(i => specs[i]),
-
-    }
+    label: "Sable",
+    disabled: true,
+    min: 450,
+    max: 1100,
+    sharings: [4, 5].map((i) => sharings[i]),
+    sliverRatioMin: 10,
+    sliverRatioMax: 50,
+    fiber1: {
+      materials: [0].map((i) => materials[i]),
+      specs: [0, 1].map((i) => specs[i]),
+    },
   },
   {
-    label: 'Mink', min: 300, max: 1000, sharings: [1, 2, 3].map(i => sharings[i]), sliverRatioMin: 10, sliverRatioMax: 50, fiber1: {
-      materials: [0].map(i => materials[i]),
-      specs: [0, 1].map(i => specs[i])
-    }
+    label: "Mink",
+    min: 300,
+    max: 1000,
+    sharings: [1, 2, 3].map((i) => sharings[i]),
+    sliverRatioMin: 10,
+    sliverRatioMax: 50,
+    fiber1: {
+      materials: [0].map((i) => materials[i]),
+      specs: [0, 1].map((i) => specs[i]),
+    },
   },
   {
-    label: 'Rabbit', disabled: true, min: 300, max: 1000, sharings: [1, 2, 3].map(i => sharings[i]), sliverRatioMin: 30, sliverRatioMax: 80, fiber1: {
-      materials: [0, 1].map(i => materials[i]),
-      specs: [1, 2].map(i => specs[i])
-    }
+    label: "Rabbit",
+    disabled: true,
+    min: 300,
+    max: 1000,
+    sharings: [1, 2, 3].map((i) => sharings[i]),
+    sliverRatioMin: 30,
+    sliverRatioMax: 80,
+    fiber1: {
+      materials: [0, 1].map((i) => materials[i]),
+      specs: [1, 2].map((i) => specs[i]),
+    },
   },
-  { label: 'Racoon', disabled: true },
-  { label: 'Mongolian', disabled: true },
-  { label: 'Chinchilla', disabled: true },
-  { label: 'Jaquard', disabled: true },
-]
+  { label: "Racoon", disabled: true },
+  { label: "Mongolian", disabled: true },
+  { label: "Chinchilla", disabled: true },
+  { label: "Jaquard", disabled: true },
+];
 
 const knittingTypes = [
-  { label: 'High Pile (Plain)' },
-  { label: 'High Pile (Jaquard)', disabled: true },
-  { label: 'Boa', disabled: true },
-  { label: 'Russel', disabled: true },
-]
-const silverNumbers = [
-  '1',
-  '2',
-  '3',
-  '4',
-]
-const chipPrints = [
-  '無',
-  '有',
-]
-const kijihabas = [
-  153,
-  180,
-]
-const tanblings = [
-  'なし',
-  '弱',
-  '中',
-  '強',
-]
+  { label: "High Pile (Plain)" },
+  { label: "High Pile (Jaquard)", disabled: true },
+  { label: "Boa", disabled: true },
+  { label: "Russel", disabled: true },
+];
+const silverNumbers = ["1", "2", "3", "4"];
+const chipPrints = ["無", "有"];
+const kijihabas = [153, 180];
+const tanblings = ["なし", "弱", "中", "強"];
 const designSharings = [
-  'なし',
-  'パターン①',
-  'パターン②',
-  'パターン③',
-  'パターン④',
-]
-const embosses = [
-  'なし',
-  'パターン①',
-  'パターン②',
-  'パターン③',
-  'パターン④',
-]
-const fablicWeihtStep = 50
-const sliverRatioStep = 5
-const calcFablicWeight = (n: number) => Math.round(n / fablicWeihtStep) * fablicWeihtStep
-const calcSliverRatio = (n: number) => Math.round(n / sliverRatioStep) * sliverRatioStep
-const fabricType = ref(fabricTypes[0])
-const fabricType2 = ref(fabricTypes[1])
-const knittingType = ref(knittingTypes[0])
-const silverNumber = ref(silverNumbers[0])
-const sharing = ref(sharings[0])
-const chipPrint = ref(chipPrints[0])
-const kijihaba = ref(kijihabas[0])
-const fablicWeight1 = ref(0)
-const fablicWeight2 = ref(0)
-const tanbling = ref(tanblings[0])
-const designSharing = ref(designSharings[0])
-const emboss = ref(embosses[0])
+  "なし",
+  "パターン①",
+  "パターン②",
+  "パターン③",
+  "パターン④",
+];
+const embosses = ["なし", "パターン①", "パターン②", "パターン③", "パターン④"];
+const fablicWeihtStep = 50;
+const sliverRatioStep = 5;
+const calcFablicWeight = (n: number) =>
+  Math.round(n / fablicWeihtStep) * fablicWeihtStep;
+const calcSliverRatio = (n: number) =>
+  Math.round(n / sliverRatioStep) * sliverRatioStep;
+const fabricType = ref(fabricTypes[0]);
+const fabricType2 = ref(fabricTypes[1]);
+const knittingType = ref(knittingTypes[0]);
+const silverNumber = ref(silverNumbers[0]);
+const sharing = ref(sharings[0]);
+const chipPrint = ref(chipPrints[0]);
+const kijihaba = ref(kijihabas[0]);
+const fablicWeight1 = ref(0);
+const fablicWeight2 = ref(0);
+const tanbling = ref(tanblings[0]);
+const designSharing = ref(designSharings[0]);
+const emboss = ref(embosses[0]);
 const fiber1 = reactive({
   material: materials[0],
   spec: specs[0],
@@ -347,57 +412,66 @@ const fiber1 = reactive({
   cutLength: cutLengths[0],
   sliverRatio: 10,
   color: colors[0],
-})
+});
 
 const changeFabricType = () => {
-  fablicWeight1.value = calcFablicWeight((fabricType.value.min! + fabricType.value.max!) / 2)
-  fablicWeight2.value = calcFablicWeight(fablicWeight1.value * kijihaba.value / 100)
-}
-onMounted(() => changeFabricType())
+  fablicWeight1.value = calcFablicWeight(
+    (fabricType.value.min! + fabricType.value.max!) / 2
+  );
+  fablicWeight2.value = calcFablicWeight(
+    (fablicWeight1.value * kijihaba.value) / 100
+  );
+};
+onMounted(() => changeFabricType());
 watch(fabricType, (value) => {
-  sharing.value = value.sharings![0]
-  fiber1.spec = value.fiber1!.specs[0]
-  fiber1.sliverRatio = calcSliverRatio((value.sliverRatioMin! + value.sliverRatioMax!) / 2)
-})
-let changing = false
+  sharing.value = value.sharings![0];
+  fiber1.spec = value.fiber1!.specs[0];
+  fiber1.sliverRatio = calcSliverRatio(
+    (value.sliverRatioMin! + value.sliverRatioMax!) / 2
+  );
+});
+let changing = false;
 watch(fablicWeight1, (value) => {
-  if (changing) { return }
-  changing = true
-  fablicWeight2.value = calcFablicWeight(value * kijihaba.value / 100)
-  nextTick(() => changing = false)
-})
+  if (changing) {
+    return;
+  }
+  changing = true;
+  fablicWeight2.value = calcFablicWeight((value * kijihaba.value) / 100);
+  nextTick(() => (changing = false));
+});
 watch(fablicWeight2, (value) => {
-  if (changing) { return }
-  changing = true
-  fablicWeight1.value = calcFablicWeight(value * 100 / kijihaba.value)
-  nextTick(() => changing = false)
-})
+  if (changing) {
+    return;
+  }
+  changing = true;
+  fablicWeight1.value = calcFablicWeight((value * 100) / kijihaba.value);
+  nextTick(() => (changing = false));
+});
 
-let open = ref(false)
-let checked = ref(false)
+const open = ref(false);
+const checked = ref(false);
 
 const toggleBtn = () => {
-  console.log(open)
+  console.log(open);
   open.value = !open.value;
-}
+};
 
 const toggleChecked = () => {
-  console.log(checked)
+  console.log(checked);
   checked.value = !checked.value;
-}
+};
 
-const checkedValues = ref([])
-
-let searchWord = ref('')
+const labels = ref([]);
+const searchWord = ref("");
 </script> 
 
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols+2&display=swap");
 
 /* Google Fonts - Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
 
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css');
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
 
 .search-container {
   margin: 0 auto;
@@ -407,7 +481,6 @@ let searchWord = ref('')
 .search-navigation {
   padding: 0.7rem 0;
   top: 0;
-
 
   .search-container {
     display: flex;
@@ -426,8 +499,8 @@ let searchWord = ref('')
     }
   }
 
-  .search-bar {}
-
+  .search-bar {
+  }
 }
 
 nav .container {
@@ -445,15 +518,12 @@ nav .container {
   padding: 0 16px;
   cursor: pointer;
   border: 0.2px solid;
-
 }
 
 .select-btn .btn-text {
   font-size: 12px;
   font-weight: 400;
 }
-
-
 
 .select-btn.open .arrow-dwn {
   transform: rotate(-180deg);
@@ -469,7 +539,7 @@ nav .container {
   display: none;
 }
 
-.select-btn.open~.list-items {
+.select-btn.open ~ .list-items {
   display: block;
 }
 
@@ -522,7 +592,6 @@ nav .container {
   transform: scale(1);
 }
 
-
 main {
   --radius: 10px;
   display: flex;
@@ -531,8 +600,7 @@ main {
   width: 98rem;
   margin: 0 auto;
 
-
-  >dl {
+  > dl {
     display: grid;
     grid-template-columns: auto 1fr;
     width: 100%;
@@ -578,7 +646,7 @@ main {
     flex-grow: 1;
   }
 
-  input[type="range"]+label {
+  input[type="range"] + label {
     width: 3em;
     text-align: right;
   }
@@ -587,7 +655,7 @@ main {
     opacity: 0.5;
   }
 
-  >table {
+  > table {
     width: 100%;
     margin: 0.5rem;
     box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
@@ -615,8 +683,8 @@ main {
     }
   }
 
-  >section {
-    >nav {
+  > section {
+    > nav {
       width: 100%;
       display: flex;
     }
