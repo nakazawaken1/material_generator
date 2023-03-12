@@ -22,15 +22,25 @@ const loaded = ref(0);
 const loads = X * Y;
 const canvas = ref<HTMLCanvasElement | null>(null);
 let draw: () => void = () => {};
-watch(canvas, (value) => {
-  if (value) initialize(value);
+watch(canvas, async (value) => {
+  if (value) draw = await initialize(value);
 });
-watch(props, async (now, old) => {
-  if (now.fabricType != old.fabricType && canvas.value) {
-    draw = await initialize(canvas.value);
+watch(
+  () => props.fabricType,
+  async (now, old) => {
+    console.log("initialize");
+    if (canvas.value) {
+      draw = await initialize(canvas.value);
+    }
   }
-  if (now.value != old.value) draw();
-});
+);
+watch(
+  () => props.value,
+  async (now, old) => {
+    console.log("draw");
+    if (now != old) draw();
+  }
+);
 async function initialize(canvas: HTMLCanvasElement) {
   const view = {
     h: 0,
@@ -199,6 +209,7 @@ void main(void) {
     willReadFrequently: true,
   });
   if (!context) throw "2Dコンテクストが取得できません";
+  loaded.value = 0;
   for (let x = 0; x < X; x++) {
     for (let y = 0; y < Y; y++) {
       const image = await load(
@@ -234,9 +245,11 @@ void main(void) {
     const rgb = hsv2rgb(changedHsv.h, changedHsv.s, changedHsv.v);
     emits(
       "update:info",
-      `H(${props.value.toFixed(2)}) RGB(${rgb.r}, ${rgb.g}, ${
-        rgb.b
-      }) x:${view.x.toFixed(1)} y:${view.y.toFixed(1)} z:${view.z.toFixed(1)}`
+      `${props.fabricType} H(${props.value.toFixed(2)}) RGB(${rgb.r}, ${
+        rgb.g
+      }, ${rgb.b}) x:${view.x.toFixed(1)} y:${view.y.toFixed(
+        1
+      )} z:${view.z.toFixed(1)}`
     );
 
     gl.canvas.width = canvas.clientWidth;
@@ -249,6 +262,7 @@ void main(void) {
     );
     gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);
+    if (loaded.value < loads) return;
     gl.useProgram(program);
 
     gl.enableVertexAttribArray(aVertexPosition);
@@ -378,6 +392,7 @@ function hsv2rgb(h: number, s: number, v: number) {
   width: 512px;
   height: 512px;
   position: relative;
+
   > label {
     position: absolute;
     left: 0;
@@ -389,6 +404,7 @@ function hsv2rgb(h: number, s: number, v: number) {
     justify-content: center;
     font-size: 20px;
   }
+
   > canvas {
     width: 100%;
     height: 100%;

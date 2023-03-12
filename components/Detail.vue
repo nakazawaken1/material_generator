@@ -85,25 +85,24 @@
             </ul>
           </template>
         </header>
-        <template v-if="normal">
-          <footer>
-            <label>Color Modify</label>
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              v-model.number="hue"
-            />
-            <label>Pantone</label>
-            <span>{{ hue }}</span>
-          </footer>
-        </template>
+        <footer>
+          <label>Color Modify</label>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            v-model.number="hue"
+          />
+          <label>Pantone</label>
+          <span>{{ hue }}</span>
+        </footer>
       </div>
       <div class="preview">
         <WebGLViewer
           :fabricType="normal ? item.FabricType : item.ClothType"
           :value="hue"
+          @update:info="info"
         />
       </div>
       <div class="info">
@@ -161,6 +160,7 @@ const emits = defineEmits<{
 }>();
 
 const normal = ref(true);
+const info = (e: string) => console.log(e);
 </script>
 
 <style lang="scss" scoped>
