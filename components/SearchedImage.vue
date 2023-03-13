@@ -1,38 +1,24 @@
 <template>
   <ul class="SearchedImage">
-    <li v-for="(item, n) in filterList(fabricType.label)" :key="n" @click="(detail = example), (detail.fabricnumber = item.FabricType), (detail.fabricWeight = item.fabricWeight),
-      (detail.fabricWeightMin = item.minfabricWeight), (detail.fabricWeightMax = item.maxfabricWeight),
-      (detail.fabricWeightStep = item.stepfabricWeight), (detail.fabricPileHeight = item.pileheight),
-      (detail.width = item.width), (detail.label = item.label), (detail.ghFiness = item.ghFiness),
-      (detail.ghRatio = item.ghRatio), (detail.fabricHeight = item.pileheight),
-      (detail.fabricHeightMin = item.minpileheight),
-      (detail.fabricHeightMax = item.maxpileheight), (detail.fabricHeightStep = item.steppileheight)">
-      <template v-if="true" v-for="(imageitem, n) in imageList(item.FabricType)" :key="n">
-        <img :src="(imageitem.Imagepath)" />
-      </template>
+    <li v-for="(item, n) in filterItems(props)" :key="n" @click="detail = item">
+      <img :src="item.Imagepath" />
       <label>{{ item.label }}</label>
     </li>
   </ul>
-  <Detail :isOpen="detail != null" :item="detail" @update:isOpen="detail = null" />
+  <Detail
+    :item="detail"
+    :isOpen="detail != null"
+    @update:isOpen="detail = null"
+  />
 </template>
 
 <script lang="ts" setup>
-import { Item, example, filteredList, filterList, imageList } from "~~/composables/models/Item"
-const props = defineProps([
-  "fabricType"
-])
-
-const detail = ref<Item | null>(null)
-
-const furkinds = ["Fox", "Mink", "Rabbit"]
-const fabricTypes: string = ""//FabricNo
-const numberid = ref<number>(0) //listnumber
-const imageUrl = ["./T2202-01.jpg", "./T2203-05.jpg", "./T2202-12.jpg"] //imageUrl
-const furname = ["Fox : Modacrylic", "MINK: Modacrylic", "Rabbit: Modacrylic"]
-const items = Array.from(Array(3)).map((_, i) => (
-  { nth: i + 1, no: i, image: imageUrl[i], name: furname[i], label: furkinds[i] }
-))
-
+import { Item, filterItems } from "~~/composables/models/Item";
+const props = defineProps<{
+  labels?: string[];
+  searchWord?: string;
+}>();
+const detail = ref<Item | null>(null);
 </script>
 
 <style lang="scss" scoped>
@@ -41,7 +27,7 @@ ul.SearchedImage {
   flex-wrap: wrap;
   gap: 1rem;
 
-  >li {
+  > li {
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -64,11 +50,11 @@ ul.SearchedImage {
       }
     }
 
-    >img {
+    > img {
       width: 18.5rem;
     }
 
-    >label {
+    > label {
       border-top: 1px solid #818181;
     }
   }

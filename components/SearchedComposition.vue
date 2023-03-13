@@ -10,41 +10,29 @@
         <th>Image</th>
       </tr>
     </thead>
-    <tbody v-for="(item, n) in filterList(fabricType.label)" :key="n" @click="(detail = example), (detail.fabricnumber = item.FabricType),
-      (detail.fabricWeight = item.fabricWeight), (detail.fabricWeightMin = item.minfabricWeight),
-      (detail.fabricWeightMax = item.maxfabricWeight), (detail.fabricWeightStep = item.stepfabricWeight),
-      (detail.fabricPileHeight = item.pileheight), (detail.width = item.width),
-      (detail.label = item.label), (detail.ghFiness = item.ghFiness),
-      (detail.ghRatio = item.ghRatio), (detail.fabricHeight = item.pileheight),
-      (detail.fabricHeightMin = item.minpileheight),
-      (detail.fabricHeightMax = item.maxpileheight), (detail.fabricHeightStep = item.steppileheight)">
+    <tbody v-for="(item, n) in filterItems(props)" :key="n" @click="detail = item">
       <tr>
         <td>{{ n + 1 }}</td>
         <td>{{ item.FabricType }}</td>
         <td>{{ item.pileheight }}</td>
         <td>{{ item.fabricWeight }}</td>
         <td>{{ item.width }}</td>
-        <td v-for="(imageitem, n) in imageList(item.FabricType)" :key="n">
-          <img :src="(imageitem.Imagepath)" />
+        <td>
+          <img :src="item.Imagepath" />
         </td>
       </tr>
-
     </tbody>
   </table>
-  <Detail :isOpen="detail != null" @update:isOpen="detail = null" :item="detail" />
+  <Detail :item="detail" :isOpen="detail != null" @update:isOpen="detail = null" />
 </template>
 
 <script lang="ts" setup>
-import { Item, example, fabricTypesTable, filteredList, filterList, FabricInfo, imageList } from "~~/composables/models/Item"
-const props = defineProps([
-  "fabricType"
-])
-const fabricNumber = ref<string>("")//FabricNo
-const fabricWeight = ref<number>(0)
-//以上compositiondata
-
-const detail = ref<Item | null>(null)
-
+import { Item, filterItems } from "~~/composables/models/Item";
+const props = defineProps<{
+  labels?: string[];
+  searchWord?: string;
+}>();
+const detail = ref<Item | null>(null);
 </script>
 
 <style lang="scss" scoped>
