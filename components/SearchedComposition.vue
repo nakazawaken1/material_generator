@@ -49,27 +49,58 @@ const detail = ref<Item | null>(null)
 
 <style lang="scss" scoped>
 table.SearchedComposition {
+  width: 100%;
+
+  thead {
+    tr {
+      border: none;
+    }
+  }
 
   tbody {
     &:hover {
       background-color: #ffff88;
       cursor: pointer;
     }
+
+    tr {
+      border-bottom: solid 1px #B0B0B0;
+
+      &:first-child {
+        border-top: solid 1px #B0B0B0;
+      }
+
+      &:last-child {
+        border-top: solid 1px #B0B0B0;
+      }
+
+
+    }
+
   }
+
 
   th,
   td {
-    padding: 0.5rem;
-    border: 1px solid #818181;
 
     >img {
-      width: 8rem;
+      width: 10rem;
     }
   }
 
-  th,
-  td.head {
-    background-color: #dddddd;
+  th {
+    padding: 10px;
+    font-size: 1.2rem;
+    font-style: italic;
+
   }
+
+  td {
+    padding: 10px;
+    text-align: center;
+  }
+
+  th,
+  td.head {}
 }
 </style>

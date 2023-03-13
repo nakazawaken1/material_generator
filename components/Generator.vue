@@ -1,5 +1,44 @@
 <template>
   <main>
+    <nav class="search-navigation">
+
+      <div class="search-container">
+        <div class="container">
+          <div class="select-btn" :class="{ open: open }" @click="toggleBtn">
+            <span class="btn-text">Filter</span>
+            <span class="arrow-dwn">
+            </span>
+          </div>
+          <ul class="list-items">
+            <li class="item" v-for="value of fabricTypes.filter(i => !i.disabled)" :key="value.label">
+              <input type="checkbox" :id="value.label" :value="value.label" v-model="checkedValues">
+              <label :for="value.label">{{ value.label }}</label>
+            </li>
+          </ul>
+        </div>
+        <div class="search-bar">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="search" v-model="searchWord" placeholder="Search material">
+        </div>
+        <div class="create">
+          <Button @click="(searched = true), (test = checkedValues), (searchValue = searchWord)">search</Button>
+        </div>
+      </div>
+      <div class=""></div>
+
+      <nav>
+        <!-- label for="composition"><input id="composition" type="radio" name="component" :value="SearchedComposition"
+            v-model="component" /> Composition</label>
+        <label for="image"><input id="image" type="radio" name="component" :value="SearchedImage" v-model="component" />
+          Image</label -->
+        <input id="composition" type="radio" name="component" :value="SearchedComposition" v-model="component" />
+        <label class="composition" for="composition"><i class="fa-regular fa-list"></i></label>
+
+        <input id="image" type="radio" name="component" :value="SearchedImage" v-model="component" />
+        <label class="image" for="image"><i class="fa-regular fa-border-all"></i></label>
+      </nav>
+
+    </nav>
     <dl>
       <dt class="required">Fabric Type</dt>
       <dd class="required">
@@ -160,17 +199,9 @@
         </td>
       </tr>
     </table>
-    <nav>
-      <Button @click="(searched = true)">search</Button>
-    </nav>
-    <section v-if="searched">
-      <nav>
-        <label for="composition"><input id="composition" type="radio" name="component" :value="SearchedComposition"
-            v-model="component" /> Composition</label>
-        <label for="image"><input id="image" type="radio" name="component" :value="SearchedImage" v-model="component" />
-          Image</label>
-      </nav>
-      <component :is="component" :fabricType="fabricType" />
+    <section class="summary" v-if="searched">
+      <component :is="component" :fabricType="fabricType" :fabeicLabel="checkedValues" :length="checkedValues.length"
+        :searchWord="searchValue" />
     </section>
   </main>
 </template>
@@ -358,6 +389,211 @@ watch(fablicWeight2, (value) => {
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols+2&display=swap");
 
+/* Google Fonts - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css');
+
+.search-container {
+  margin: 0 auto;
+}
+
+.search-navigation {
+  padding: 0.7rem 0;
+  top: 0;
+  width: 100%;
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
+  align-items: center;
+  margin: 60px 0 70px 0;
+
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding-left: 10px;
+      width: 40vw;
+      height: 32px;
+      background: #eeeeee;
+      border-top: none;
+      border-right: none;
+      border-left: 1.3px solid #dedddd;
+      border-bottom: none;
+      border-radius: 0px 5px 5px 0px;
+
+      input[type="search"] {
+        width: 100%;
+        height: 100%;
+        flex: 1;
+        padding-left: 10px;
+        padding-right: 10px;
+        background-color: transparent;
+        border: none;
+        font-size: 1.2rem;
+        font-style: italic;
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      >i {
+        color: #797878;
+      }
+    }
+
+    .create {
+      margin-left: 10px;
+
+      .Button {
+        box-shadow: none;
+        border: 1.3px solid #4d5156;
+        background-color: #fff;
+        font-family: system-ui;
+
+      }
+    }
+  }
+
+  >nav {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+
+    input {
+      display: none;
+    }
+
+    label {
+      i {
+        color: #777777;
+        font-size: 2.2rem;
+        font-weight: 600;
+
+      }
+    }
+
+    input:checked+label {
+      i {}
+    }
+
+    .composition {}
+
+    .image {}
+  }
+}
+
+nav .container {
+  position: relative;
+  width: 100px;
+  padding: 0;
+}
+
+.select-btn {
+  display: flex;
+  height: 32px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  cursor: pointer;
+  background: #eeeeee;
+  border: none;
+  border-radius: 5px 0 0 5px;
+
+  &::before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 0.64952em 0.375em;
+    border-top-color: currentColor;
+    border-bottom: 0;
+
+  }
+}
+
+.select-btn .btn-text {
+  font-family: system-ui;
+}
+
+.select-btn.open .arrow-dwn {
+  transform: rotate(-180deg);
+}
+
+.list-items {
+  position: absolute;
+  margin-top: 15px;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  display: none;
+}
+
+.select-btn.open~.list-items {
+  display: block;
+}
+
+.list-items .item {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  height: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 0 15px;
+  border-radius: 8px;
+}
+
+.list-items .item:hover {
+  background-color: #e7edfe;
+}
+
+.item .item-text {
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
+}
+
+.item .checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 16px;
+  width: 16px;
+  border-radius: 4px;
+  margin-right: 12px;
+  border: 1.5px solid #c0c0c0;
+  transition: all 0.3s ease-in-out;
+}
+
+.item.checked .checkbox {
+  background-color: #4070f4;
+  border-color: #4070f4;
+}
+
+.checkbox .check-icon {
+  color: #fff;
+  font-size: 11px;
+  transform: scale(0);
+  transition: all 0.2s ease-in-out;
+}
+
+.item.checked .check-icon {
+  transform: scale(1);
+}
+
+
 main {
   --radius: 10px;
   display: flex;
@@ -450,11 +686,9 @@ main {
     }
   }
 
-  >section {
-    >nav {
-      width: 100%;
-      display: flex;
-    }
+  >.summary {
+    width: 100%;
+
   }
 }
 </style>

@@ -13,10 +13,10 @@ const { isLoggedIn } = useAuth()
 
 <style lang="scss" scoped>
 main {
-  height: 100vh;
   display: flex;
   align-content: center;
   justify-content: space-between;
+
 }
 
 @media only screen and (max-width:1024px) {

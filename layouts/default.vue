@@ -40,6 +40,7 @@ html {
 
 body * {
   font-size: 1.4rem;
+  color: #4d5156;
 }
 </style>
 
