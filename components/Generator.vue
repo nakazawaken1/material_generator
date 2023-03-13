@@ -199,7 +199,8 @@
         </td>
       </tr>
     </table>
-    <section class="summary" v-if="searched">
+</template>
+<section class="summary" v-if="searched">
       <component :is="component" :fabricType="fabricType" :fabeicLabel="checkedValues" :length="checkedValues.length"
         :searchWord="searchValue" />
     </section>
