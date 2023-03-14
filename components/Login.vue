@@ -50,7 +50,7 @@ watch(step, (now, old) => {
 
   >i {
     font-size: 5.5rem;
-    color: #0d68e1;
+    color: #1069e0;
     margin-bottom: 50px;
     transform: rotate(-50deg);
 
@@ -58,9 +58,9 @@ watch(step, (now, old) => {
 
   >h1 {
     font-size: 3rem;
-    font-weight: 500;
     margin-bottom: 4rem;
     color: #5d5d5d;
+    font-weight: 300;
   }
 
   >form {
@@ -111,7 +111,7 @@ watch(step, (now, old) => {
       border-radius: 9px;
       border: none;
       color: #fff;
-      background-color: #0d68e1;
+      background-color: #1069e0;
       height: 44px;
       font-size: 1.8rem;
       padding: 0 10px;

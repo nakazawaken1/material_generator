@@ -377,11 +377,6 @@ const searchWord = ref("");
 </script> 
 
 <style lang="scss" scoped>
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols+2&display=swap");
-/* Google Fonts - Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css');
-
 .search-container {
   margin: 0 auto;
 }
@@ -394,7 +389,7 @@ const searchWord = ref("");
   align-content: center;
   justify-content: space-between;
   align-items: center;
-  margin: 60px 0 70px 0;
+  margin: 30px 0 40px 0;
 
   .search-container {
     display: flex;
@@ -492,7 +487,6 @@ const searchWord = ref("");
         box-shadow: none;
         border: 1.3px solid #4d5156;
         background-color: #fff;
-        font-family: system-ui;
         padding: 0.7rem 1rem;
 
       }
@@ -591,7 +585,7 @@ const searchWord = ref("");
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100rem;
+  width: 100%;
   padding: 0 20px;
   margin: 0 auto;
 
