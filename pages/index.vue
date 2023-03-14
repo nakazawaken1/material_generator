@@ -3,7 +3,9 @@
     <Generator />
   </main>
   <main v-else>
-    <Login />
+    <div class="login">
+      <Login />
+    </div>
   </main>
 </template>
 
@@ -12,10 +14,12 @@ const { isLoggedIn } = useAuth();
 </script>
 
 <style lang="scss" scoped>
-main {
+main {}
+
+.login {
   display: flex;
-  align-content: center;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
 
 }
 
@@ -23,11 +27,15 @@ main {
   main {
     flex-direction: column-reverse;
   }
+
+  .login {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
 }
 
 @media only screen and (max-width: 599px) {
-  main {
-    padding: 0 20px;
-  }
+  main {}
 }
 </style>

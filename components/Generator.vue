@@ -1,12 +1,11 @@
 <template>
-  <main>
+  <div class="generator">
     <nav class="search-navigation">
 
       <div class="search-container">
         <div class="container">
           <div class="select-btn" :class="{ open: open }" @click="toggleBtn">
             <span class="btn-text">Filter</span>
-            <span class="arrow-dwn"> </span>
           </div>
           <ul class="list-items">
             <li class="item" v-for="value of fabricTypes.filter((i) => !i.disabled)" :key="value.label">
@@ -25,7 +24,7 @@
       </div>
       <div class=""></div>
 
-      <nav>
+      <div class="show-button">
         <input id="composition" type="radio" name="component" value="SearchedComposition" v-model="component" />
         <label class="composition" for="composition">
           <i class="fa-regular fa-list"></i>
@@ -35,7 +34,7 @@
         <label class="image" for="image">
           <i class="fa-regular fa-border-all"></i>
         </label>
-      </nav>
+      </div>
 
     </nav>
 
@@ -196,17 +195,12 @@
         </tr>
       </table>
     </template>
-    <section v-if="searched">
-
-
-
-
+    <section class="summary" v-if="searched">
       <SearchedImage v-if="component == 'SearchedImage'" :labels="labels" :searchWord="searchWord" />
       <SearchedComposition v-else :labels="labels" :searchWord="searchWord" />
     </section>
 
-
-  </main>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -407,14 +401,62 @@ const searchWord = ref("");
     align-items: center;
     justify-content: center;
 
+    .container {
+
+      /*
+      position: relative;
+      width: 100px;
+      padding: 0;
+*/
+      .select-btn {
+        width: 118px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 16px;
+        cursor: pointer;
+        background: #f8f8f8;
+        border: none;
+        border-radius: 5px 0 0 5px;
+
+        &::before {
+          content: "";
+          display: inline-block;
+          margin-right: 5px;
+          border-style: solid;
+          border-color: transparent;
+          border-width: 0.64952em 0.375em;
+          border-top-color: currentColor;
+          border-bottom: 0;
+
+        }
+      }
+
+      .select-btn .btn-text {
+        font-family: system-ui;
+      }
+
+      .select-btn.open .arrow-dwn {
+        transform: rotate(-180deg);
+      }
+
+      .select-btn.open~.list-items {
+        display: block;
+        z-index: 999;
+
+      }
+
+    }
+
     .search-bar {
       display: flex;
       align-items: center;
       justify-content: flex-start;
       padding-left: 10px;
-      width: 40vw;
-      height: 32px;
-      background: #eeeeee;
+      width: 35vw;
+      height: 35px;
+      background: #f8f8f8;
       border-top: none;
       border-right: none;
       border-left: 1.3px solid #dedddd;
@@ -438,7 +480,8 @@ const searchWord = ref("");
       }
 
       >i {
-        color: #797878;
+        color: #a9a9a9;
+        font-size: 1.5rem;
       }
     }
 
@@ -450,12 +493,13 @@ const searchWord = ref("");
         border: 1.3px solid #4d5156;
         background-color: #fff;
         font-family: system-ui;
+        padding: 0.7rem 1rem;
 
       }
     }
   }
 
-  >nav {
+  >.show-button {
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -466,7 +510,7 @@ const searchWord = ref("");
 
     label {
       i {
-        color: #777777;
+        color: #999999;
         font-size: 2.2rem;
         font-weight: 600;
 
@@ -483,47 +527,6 @@ const searchWord = ref("");
   }
 }
 
-nav .container {
-  position: relative;
-  width: 100px;
-  padding: 0;
-}
-
-.select-btn {
-  display: flex;
-  height: 32px;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
-  cursor: pointer;
-  background: #eeeeee;
-  border: none;
-  border-radius: 5px 0 0 5px;
-
-  &::before {
-    content: "";
-    display: inline-block;
-    vertical-align: middle;
-    line-height: 1;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-color: transparent;
-    border-width: 0.64952em 0.375em;
-    border-top-color: currentColor;
-    border-bottom: 0;
-
-  }
-}
-
-.select-btn .btn-text {
-  font-family: system-ui;
-}
-
-.select-btn.open .arrow-dwn {
-  transform: rotate(-180deg);
-}
-
 .list-items {
   position: absolute;
   margin-top: 15px;
@@ -532,10 +535,6 @@ nav .container {
   background-color: #fff;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   display: none;
-}
-
-.select-btn.open~.list-items {
-  display: block;
 }
 
 .list-items .item {
@@ -587,136 +586,13 @@ nav .container {
   transform: scale(1);
 }
 
-
-/* Google Fonts - Poppins */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
-
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
-
-.search-container {
-  margin: 0 auto;
-  background-color: #b8b8b861;
-}
-
-.search-navigation {
-  padding: 0.7rem 0;
-  top: 0;
-
-  .search-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    .search-bar {
-      input[type="search"] {
-        width: 50vw;
-        height: 30px;
-        background: transparent;
-        flex: 1;
-        border: 0.2px solid;
-        padding: 10px;
-      }
-    }
-  }
-
-  .search-bar {}
-}
-
-nav .container {
-  position: relative;
-  max-width: 200px;
-  width: 100%;
-  padding: 0;
-}
-
-.select-btn {
-  display: flex;
-  height: 30px;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
-  cursor: pointer;
-  border: 0.2px solid;
-}
-
-.select-btn .btn-text {
-  font-size: 12px;
-  font-weight: 400;
-}
-
-.select-btn.open .arrow-dwn {
-  transform: rotate(-180deg);
-}
-
-.list-items {
-  position: absolute;
-  margin-top: 15px;
-  border-radius: 8px;
-  padding: 16px;
-  background-color: #fff;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-  display: none;
-}
-
-.select-btn.open~.list-items {
-  display: block;
-}
-
-.list-items .item {
-  display: flex;
-  align-items: center;
-  list-style: none;
-  height: 50px;
-  cursor: pointer;
-  transition: 0.3s;
-  padding: 0 15px;
-  border-radius: 8px;
-}
-
-.list-items .item:hover {
-  background-color: #e7edfe;
-}
-
-.item .item-text {
-  font-size: 16px;
-  font-weight: 400;
-  color: #333;
-}
-
-.item .checkbox {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 16px;
-  width: 16px;
-  border-radius: 4px;
-  margin-right: 12px;
-  border: 1.5px solid #c0c0c0;
-  transition: all 0.3s ease-in-out;
-}
-
-.item.checked .checkbox {
-  background-color: #4070f4;
-  border-color: #4070f4;
-}
-
-.checkbox .check-icon {
-  color: #fff;
-  font-size: 11px;
-  transform: scale(0);
-  transition: all 0.2s ease-in-out;
-}
-
-.item.checked .check-icon {
-  transform: scale(1);
-}
-
-main {
+.generator {
   --radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 98rem;
+  width: 100rem;
+  padding: 0 20px;
   margin: 0 auto;
 
   >dl {
@@ -802,11 +678,132 @@ main {
     }
   }
 
-  >section {
-    >nav {
-      width: 100%;
-      display: flex;
+  .summary {
+    width: 100%;
+  }
+
+}
+
+
+
+/* Google Fonts - Poppins */
+/*
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
+
+.search-container {
+  margin: 0 auto;
+  background-color: #b8b8b861;
+}
+
+.search-navigation {
+  padding: 0.7rem 0;
+  top: 0;
+
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .container {
+      .search-bar {
+        input[type="search"] {
+          width: 50vw;
+          height: 30px;
+          background: transparent;
+          flex: 1;
+          border: 0.2px solid;
+          padding: 10px;
+        }
+      }
     }
   }
 }
+
+
+.select-btn {
+  display: flex;
+  height: 30px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  cursor: pointer;
+  border: 0.2px solid;
+}
+
+.select-btn .btn-text {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.select-btn.open .arrow-dwn {
+  transform: rotate(-180deg);
+}
+
+
+.list-items {
+  position: absolute;
+  margin-top: 15px;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  display: none;
+}
+
+.select-btn.open~.list-items {
+  display: block;
+}
+
+.list-items .item {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  height: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 0 15px;
+  border-radius: 8px;
+}
+
+.list-items .item:hover {
+  background-color: #e7edfe;
+}
+
+.item .item-text {
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
+}
+
+.item .checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 16px;
+  width: 16px;
+  border-radius: 4px;
+  margin-right: 12px;
+  border: 1.5px solid #c0c0c0;
+  transition: all 0.3s ease-in-out;
+}
+
+.item.checked .checkbox {
+  background-color: #4070f4;
+  border-color: #4070f4;
+}
+
+.checkbox .check-icon {
+  color: #fff;
+  font-size: 11px;
+  transform: scale(0);
+  transition: all 0.2s ease-in-out;
+}
+
+.item.checked .check-icon {
+  transform: scale(1);
+}
+
+*/
 </style>

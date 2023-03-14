@@ -1,5 +1,6 @@
 <template>
-  <div class="Login">
+  <div class="Login-container">
+    <i class="fa-solid fa-scroll"></i>
     <h1>welcome to swatchbook!</h1>
     <form>
       <template v-if="step === 0">
@@ -38,7 +39,7 @@ watch(step, (now, old) => {
 </script>
 
 <style lang="scss" scoped>
-.Login {
+.Login-container {
   width: 50%;
   position: relative;
   height: 100vh;
@@ -46,6 +47,14 @@ watch(step, (now, old) => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  >i {
+    font-size: 5.5rem;
+    color: #0d68e1;
+    margin-bottom: 50px;
+    transform: rotate(-50deg);
+
+  }
 
   >h1 {
     font-size: 3rem;
@@ -127,10 +136,15 @@ watch(step, (now, old) => {
 }
 
 @media only screen and (max-width:1024px) {
-  .Login {
+  .Login-container {
     width: 100%;
     height: 44vh;
     justify-content: flex-start;
+
+    >i {
+      font-size: 4.5rem;
+      margin-bottom: 20px;
+    }
 
     h1 {
       font-size: 2.2rem;
@@ -166,7 +180,7 @@ watch(step, (now, old) => {
 }
 
 @media only screen and (max-width:599px) {
-  .Login {
+  .Login-container {
     height: 47vh;
 
     h1 {
@@ -220,9 +234,9 @@ watch(step, (now, old) => {
   &-bg {
     background-image: url(~/assets/login-bg.png);
     display: block;
-    width: 100%;
-    height: 350px;
-    background-size: cover;
+    width: 100vw;
+    height: 50vh;
+    background-size: auto 100%;
     background-repeat: no-repeat;
   }
 }
@@ -233,6 +247,7 @@ watch(step, (now, old) => {
     width: 100%;
     height: 50vh;
     align-items: flex-end;
+    margin-bottom: 40px;
 
     &-bg {
       height: 100%;

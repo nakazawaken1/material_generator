@@ -1,15 +1,16 @@
 <template>
-  <ul class="SearchedImage">
-    <li v-for="(item, n) in filterItems(props)" :key="n" @click="detail = item">
+  <div class="SearchedImage">
+    <div class="SearchedImage-list" v-for="(item, n) in filterItems(props)" :key="n" @click="detail = item">
       <img :src="item.Imagepath" />
-      <label>{{ item.label }}</label>
-    </li>
-  </ul>
-  <Detail
-    :item="detail"
-    :isOpen="detail != null"
-    @update:isOpen="detail = null"
-  />
+      <ul>
+        <li><a href="#"><i class="fa-solid fa-heart"></i></a></li>
+        <li><a href="#"><i class="fa-light fa-tags"></i></a></li>
+        <li><a href="#"><i class="fa-light fa-download"></i></a></li>
+      </ul>
+      <label>{{ item.label }}<span>subtitle</span></label>
+    </div>
+  </div>
+  <Detail :item="detail" :isOpen="detail != null" @update:isOpen="detail = null" />
 </template>
 
 <script lang="ts" setup>
@@ -22,20 +23,20 @@ const detail = ref<Item | null>(null);
 </script>
 
 <style lang="scss" scoped>
-ul.SearchedImage {
+div.SearchedImage {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  justify-content: space-between;
 
-  > li {
+  &-list {
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    border: 1px solid #818181;
     justify-content: center;
     cursor: pointer;
     position: relative;
+    margin-bottom: 50px;
 
     &:hover {
       &::after {
@@ -50,13 +51,48 @@ ul.SearchedImage {
       }
     }
 
-    > img {
-      width: 18.5rem;
+    >img {
+      width: 16rem;
+      margin-bottom: 20px;
+
+
     }
 
-    > label {
-      border-top: 1px solid #818181;
+    >ul {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 10px;
+
+      >li {
+        margin: 0 15px;
+
+        >a {
+          >i {
+            font-size: 1.6rem;
+            font-weight: 600;
+            font-family: Font Awesome\ 6 Free;
+            color: #b8b8b8;
+
+          }
+        }
+      }
     }
+
+    >label {
+      font-size: 1.6rem;
+
+      span {
+        display: block;
+        font-size: 1.2rem;
+        color: #b8b8b8;
+
+      }
+    }
+
+
   }
+
+
 }
 </style>
