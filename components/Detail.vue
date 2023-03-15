@@ -1,144 +1,181 @@
 <template>
-  <Popup :isOpen="isOpen">
-    <article class="Detail" v-if="item != null">
-      <CloseButton class="close" @click="emits('update:isOpen', false)" />
-      <div class="parameter">
-        <header>
-          <template v-if="normal">
-            <h2>Fabric Modify</h2>
-            <dl>
-              <dt>Fabric Weight</dt>
-              <dd>
-                <input
-                  type="range"
-                  v-model="item.fabricWeight"
-                  :min="item.fabricWeightMin"
-                  :max="item.fabricWeightMax"
-                  :step="item.fabricWeightStep"
-                /><span>{{ item.fabricWeight }}</span>
-              </dd>
-
-              <dt>Fabric Height</dt>
-              <dd>
-                <input
-                  type="range"
-                  v-model="item.fabricHeight"
-                  :min="item.fabricHeightMin"
-                  :max="item.fabricHeightMax"
-                  :step="item.fabricHeightStep"
-                /><span>{{ item.fabricHeight }}</span>
-              </dd>
-            </dl>
-          </template>
-          <template v-else>
-            <h2>Product image Choose product design</h2>
-            <dl>
-              <dt></dt>
-              <dd>
-                <img :src="item.ClothImagePath" :width="50" />
-              </dd>
-            </dl>
-          </template>
-          <template v-if="false">
-            <dt>GH Ratio</dt>
+  <article v-if="item != null">
+    <div class="detail-header">
+      <div style="    display: flex;
+                          justify-content: center;">{{ item?.FabricType }}</div>
+      <div class="button-list" style="padding-bottom: 7.5424rem;">
+        <div class="close" @click="emits('update:isOpen', false)">&lt;back</div>
+        <nav style="    display: flex;
+                           justify-content: space-around;
+                           background-color: #e2e2e2;
+                          padding: 10px;">
+          <Button v-if="normal">View Fabric Motion</Button>
+          <Button @click="normal = false" v-if="normal">View Product Image</Button>
+          <Button v-if="normal">Download Production Details</Button>
+          <Button @click="normal = true" class="backimage" v-else>Back image Details</Button>
+          <Button class="download" v-if="normal">Download File</Button>
+        </nav>
+      </div>
+    </div>
+    <div class="detail-contents" style="display: flex;">
+      <div class=" preview">
+        <WebGLViewer :fabricType="normal ? item?.FabricType : item.ClothType" :value="hue" @update:info="info" />
+      </div>
+      <div class="parameter" style="padding-left: 7rem;">
+        <template v-if="normal">
+          <h2>Fabric Modify</h2>
+          <dl>
+            <dt>Fabric Weight</dt>
             <dd>
-              <input
-                type="range"
-                v-model="item.ghRatio"
-                :min="0"
-                :max="100"
-              /><span>{{ item.ghRatio }}</span>
+              <input type="range" v-model="item.fabricWeight" :min="item.minfabricWeight" :max="item.maxfabricWeight"
+                :step="item.stepfabricWeight" /><span>{{ item.fabricWeight }}</span>
             </dd>
-            <dt>GH Finess</dt>
-            <dd>
-              <input
-                type="range"
-                v-model="item.ghFiness"
-                :min="0"
-                :max="100"
-              /><span>{{ item.ghFiness }}</span>
-            </dd>
-          </template>
 
-          <template v-if="false">
-            <ul>
-              <li>
-                <label
-                  ><input
-                    type="radio"
-                    name="type"
-                    v-model="item.type"
-                    value="Standard"
-                  />Standard</label
-                >
-              </li>
-              <li>
-                <label
-                  ><input
-                    type="radio"
-                    name="type"
-                    v-model="item.type"
-                    value="Sustainable"
-                  />Sustainable</label
-                >
-              </li>
-            </ul>
-          </template>
-        </header>
-        <footer>
+            <dt>Fabric Height</dt>
+            <dd>
+              <input type="range" v-model="item.pileheight" :min="item.minpileheight" :max="item.maxpileheight"
+                :step="item.steppileheight" /><span>{{ item.pileheight }}</span>
+            </dd>
+          </dl>
+        </template>
+        <template v-else>
+          <h2>Product image Choose product design</h2>
+          <dl>
+            <dt></dt>
+            <dd>
+              <img :src="item.ClothImagePath" :width="50" />
+            </dd>
+          </dl>
+        </template>
+        <div class="color-modify" style="display: flex;
+                                        flex-direction: column;">
           <label>Color Modify</label>
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            v-model.number="hue"
-          />
+          <input type="range" min="0" max="1" step="0.01" v-model.number="hue" />
           <label>Pantone</label>
           <span>{{ hue }}</span>
-        </footer>
+        </div>
+        <div class="info">
+          <h2>Fabric Information</h2>
+          <dl>
+            <dt>Fabric Number</dt>
+            <dd>{{ item.FabricType }}</dd>
+            <dt>Composition</dt>
+            <dd>
+              <dl>
+                <dt>Modacrylic</dt>
+                <dd>70%</dd>
+                <dt>Recycled polyester</dt>
+                <dd>30%</dd>
+              </dl>
+            </dd>
+            <dt>Pile Height</dt>
+            <dd>{{ item.pileheight }}</dd>
+            <dt>Fabric Weight</dt>
+            <dd>{{ item.fabricWeight }}g/m(width: {{ item.width }})</dd>
+            <dt>Color</dt>
+            <dd>
+              {{ item.Color }}
+            </dd>
+          </dl>
+          <footer><Button>Composition Check</Button></footer>
+        </div>
       </div>
-      <div class="preview">
-        <WebGLViewer
-          :fabricType="normal ? item.FabricType : item.ClothType"
-          :value="hue"
-          @update:info="info"
-        />
-      </div>
-      <div class="info">
-        <h2>Fabric Information</h2>
-        <dl>
-          <dt>Fabric Number</dt>
-          <dd>{{ item.FabricType }}</dd>
-          <dt>Composition</dt>
+
+    </div>
+  </article>
+
+  <article class="Detail" v-if="false">
+    <CloseButton class="close" @click="emits('update:isOpen', false)" />
+    <div class="parameter">
+      <header>
+        <template v-if="normal">
+          <h2>Fabric Modify</h2>
+          <dl>
+            <dt>Fabric Weight</dt>
+            <dd>
+              <input type="range" v-model="item.fabricWeight" :min="item.fabricWeightMin" :max="item.fabricWeightMax"
+                :step="item.fabricWeightStep" /><span>{{ item.fabricWeight }}</span>
+            </dd>
+
+            <dt>Fabric Height</dt>
+            <dd>
+              <input type="range" v-model="item.fabricHeight" :min="item.fabricHeightMin" :max="item.fabricHeightMax"
+                :step="item.fabricHeightStep" /><span>{{ item.fabricHeight }}</span>
+            </dd>
+          </dl>
+        </template>
+        <template v-else>
+          <h2>Product image Choose product design</h2>
+          <dl>
+            <dt></dt>
+            <dd>
+              <img :src="item.ClothImagePath" :width="50" />
+            </dd>
+          </dl>
+        </template>
+        <template v-if="false">
+          <dt>GH Ratio</dt>
           <dd>
-            <dl>
-              <dt>Modacrylic</dt>
-              <dd>70%</dd>
-              <dt>Recycled polyester</dt>
-              <dd>30%</dd>
-            </dl>
+            <input type="range" v-model="item.ghRatio" :min="0" :max="100" /><span>{{ item.ghRatio }}</span>
           </dd>
-          <dt>Pile Height</dt>
-          <dd>{{ item.pileheight }}</dd>
-          <dt>Fabric Weight</dt>
-          <dd>{{ item.fabricWeight }}g/m(width: {{ item.width }})</dd>
-          <dt>Color</dt>
+          <dt>GH Finess</dt>
           <dd>
-            {{ item.Color }}
+            <input type="range" v-model="item.ghFiness" :min="0" :max="100" /><span>{{ item.ghFiness }}</span>
           </dd>
-        </dl>
-        <footer><Button>Composition Check</Button></footer>
-      </div>
-      <Button v-if="normal">View Fabric Motion</Button>
-      <Button @click="normal = false" v-if="normal">View Product Image</Button>
-      <Button v-if="normal">Download Production Details</Button>
-      <Button @click="normal = true" class="backimage" v-else
-        >Back image Details</Button
-      >
-      <Button class="download" v-if="normal">Download File</Button>
-    </article>
-  </Popup>
+        </template>
+
+        <template v-if="false">
+          <ul>
+            <li>
+              <label><input type="radio" name="type" v-model="item.type" value="Standard" />Standard</label>
+            </li>
+            <li>
+              <label><input type="radio" name="type" v-model="item.type" value="Sustainable" />Sustainable</label>
+            </li>
+          </ul>
+        </template>
+      </header>
+      <footer>
+        <label>Color Modify</label>
+        <input type="range" min="0" max="1" step="0.01" v-model.number="hue" />
+        <label>Pantone</label>
+        <span>{{ hue }}</span>
+      </footer>
+    </div>
+    <div class="preview">
+      <WebGLViewer :fabricType="normal ? item.FabricType : item.ClothType" :value="hue" @update:info="info" />
+    </div>
+    <div class="info">
+      <h2>Fabric Information</h2>
+      <dl>
+        <dt>Fabric Number</dt>
+        <dd>{{ item.FabricType }}</dd>
+        <dt>Composition</dt>
+        <dd>
+          <dl>
+            <dt>Modacrylic</dt>
+            <dd>70%</dd>
+            <dt>Recycled polyester</dt>
+            <dd>30%</dd>
+          </dl>
+        </dd>
+        <dt>Pile Height</dt>
+        <dd>{{ item.pileheight }}</dd>
+        <dt>Fabric Weight</dt>
+        <dd>{{ item.fabricWeight }}g/m(width: {{ item.width }})</dd>
+        <dt>Color</dt>
+        <dd>
+          {{ item.Color }}
+        </dd>
+      </dl>
+      <footer><Button>Composition Check</Button></footer>
+    </div>
+    <Button v-if="normal">View Fabric Motion</Button>
+    <Button @click="normal = false" v-if="normal">View Product Image</Button>
+    <Button v-if="normal">Download Production Details</Button>
+    <Button @click="normal = true" class="backimage" v-else>Back image Details</Button>
+    <Button class="download" v-if="normal">Download File</Button>
+  </article>
 </template>
 
 <script lang="ts" setup>
@@ -184,10 +221,10 @@ article.Detail {
     grid-template-columns: 1fr auto;
     border: 1px solid #818181;
 
-    > header {
+    >header {
       padding: 1rem;
 
-      > dl {
+      >dl {
         margin: 1rem 0;
 
         dd {
@@ -195,18 +232,17 @@ article.Detail {
           align-items: center;
           gap: 1rem;
 
-          .clothbutton {
-          }
+          .clothbutton {}
         }
       }
 
-      > ul {
+      >ul {
         display: flex;
         gap: 1rem;
       }
     }
 
-    > footer {
+    >footer {
       padding: 1rem;
       border-left: 1px solid #818181;
       display: flex;
@@ -223,17 +259,17 @@ article.Detail {
     position: relative;
     background-color: #7f7f7f;
 
-    > img {
+    >img {
       width: 60rem;
     }
 
-    > ul {
+    >ul {
       position: absolute;
       top: 1rem;
       right: 1rem;
 
-      > li {
-        > img {
+      >li {
+        >img {
           width: 4rem;
           cursor: pointer;
         }
@@ -246,14 +282,14 @@ article.Detail {
     border: 1px solid #818181;
     grid-row: 2 / 4;
 
-    > dl {
+    >dl {
       margin: 1rem 0;
       display: grid;
       grid-template-columns: max-content 1fr;
       gap: 0.5rem;
     }
 
-    > footer {
+    >footer {
       text-align: center;
     }
   }

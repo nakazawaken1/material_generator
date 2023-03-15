@@ -1,6 +1,6 @@
 <template>
   <div class="generator">
-    <nav class="search-navigation">
+    <nav class="search-navigation" v-if="normal">
 
       <div class="search-container">
         <div class="container">
@@ -197,7 +197,8 @@
     </template>
     <section class="summary" v-if="searched">
       <SearchedImage v-if="component == 'SearchedImage'" :labels="labels" :searchWord="searchWord" />
-      <SearchedComposition v-else :labels="labels" :searchWord="searchWord" />
+      <SearchedComposition v-else :labels="labels" :searchWord="searchWord" @update:isOpen="normal = true" ,
+        @update:isClose="normal = false" />
     </section>
 
   </div>
@@ -207,6 +208,7 @@
 import { disableBodyScroll } from "body-scroll-lock";
 const component = ref("SearchedComposition");
 const searched = ref(true);
+const normal = ref(true)
 const sharings = ["Non Cut", "15", "22", "27", "34", "43"];
 const materials = ["Modacrylic", "Recycled PET"];
 const specs = ["ELP", "RCL", "KP", "AH"];

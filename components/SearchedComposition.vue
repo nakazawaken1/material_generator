@@ -1,5 +1,5 @@
 <template>
-  <table class="SearchedComposition">
+  <table class="SearchedComposition" v-if="detail == null">
     <thead>
       <tr>
         <th></th>
@@ -10,7 +10,7 @@
         <th>Image</th>
       </tr>
     </thead>
-    <tbody v-for="(item, n) in filterItems(props)" :key="n" @click="detail = item">
+    <tbody v-for="(item, n) in filterItems(props)" :key="n" @click="detail = item, emits('update:isClose', false)">
       <tr>
         <td>{{ n + 1 }}</td>
         <td>{{ item.FabricType }}</td>
@@ -23,7 +23,7 @@
       </tr>
     </tbody>
   </table>
-  <Detail :item="detail" :isOpen="detail != null" @update:isOpen="detail = null" />
+  <Detail :item="detail" :isOpen="detail != null" @update:isOpen="detail = null, emits('update:isOpen', false)" />
 </template>
 
 <script lang="ts" setup>
@@ -33,6 +33,11 @@ const props = defineProps<{
   searchWord?: string;
 }>();
 const detail = ref<Item | null>(null);
+
+const emits = defineEmits<{
+  (e: "update:isOpen", button: false): void;
+  (e: "update:isClose", button: false): void;
+}>();
 </script>
 
 <style lang="scss" scoped>
