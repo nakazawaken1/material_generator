@@ -1,4 +1,6 @@
 <template>
+  <div class="loading" :class="{ visiable: visiable }"></div>
+  <div :class="{ active: animation }" class="gifAnimation"></div>
   <div class="generator">
     <nav class="search-navigation" v-if="normal">
       <div class="search-container">
@@ -18,7 +20,7 @@
           <input type="search" v-model="searchWord" placeholder="Search material" />
         </div>
         <div class="create">
-          <Button @click="searched = true">search</Button>
+          <Button @click="searched = true, decisionWords = searchWord, gifAnimation()">search</Button>
         </div>
       </div>
 
@@ -31,8 +33,8 @@
         </label>
 
         <input id="image" type="radio" name="component" value="SearchedImage" v-model="component"
-          @click="searchedCompositionList = false, searchedImageList = true" />
-        <label class="image" for="image">
+          @click="searchedImageList = true, searchedCompositionList = false" />
+        <label class=" image" for="image">
           <i class="fa-regular fa-border-all" :class="{ checked: searchedImageList }"></i>
         </label>
       </div>
@@ -197,8 +199,9 @@
       </table>
     </template>
     <section class="summary" v-if="searched">
-      <SearchedImage v-if="component == 'SearchedImage'" :labels="labels" :searchWord="searchWord" />
-      <SearchedComposition v-else :labels="labels" :searchWord="searchWord" @update:isOpen="normal = true" ,
+      <SearchedImage v-if="component == 'SearchedImage'" :labels="labels" :searchWord="decisionWords"
+        @update:isOpen="normal = true" @update:isClose="normal = false" />
+      <SearchedComposition v-else :labels="labels" :searchWord="decisionWords" @update:isOpen="normal = true"
         @update:isClose="normal = false" />
     </section>
 
@@ -209,6 +212,7 @@
 import { disableBodyScroll } from "body-scroll-lock";
 const component = ref("SearchedComposition");
 const searched = ref(true);
+const decisionWords = ref("")
 const normal = ref(true)
 const searchedCompositionList = ref(true)
 const searchedImageList = ref(false)
@@ -339,6 +343,7 @@ const changeFabricType = () => {
   );
 };
 onMounted(() => changeFabricType());
+onMounted(() => truevisiable());
 watch(fabricType, (value) => {
   sharing.value = value.sharings![0];
   fiber1.spec = value.fiber1!.specs[0];
@@ -368,20 +373,63 @@ const open = ref(false);
 const checked = ref(false);
 
 const toggleBtn = () => {
-  console.log(open);
   open.value = !open.value;
 };
 
-const toggleChecked = () => {
-  console.log(checked);
-  checked.value = !checked.value;
-};
+const animation = ref(false)
+const visiable = ref(false)
+const gifAnimation = () => {
+  animation.value = true
+  setTimeout(() => {
+    animation.value = false
+  }, 7000);
+}
 
+const truevisiable = () => {
+  setTimeout(() => {
+    visiable.value = true
+  }, 3000);
+}
 const labels = ref([]);
 const searchWord = ref("");
 </script> 
 
 <style lang="scss" scoped>
+/* ローディング画面 */
+.loading {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  z-index: 555;
+  opacity: 1;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-image: url("~/assets/icon/logo.png");
+  animation: loading 3s none;
+
+
+
+  @keyframes loading {
+    0% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0;
+      display: none;
+    }
+  }
+}
+
+
+.visiable {
+  display: none;
+}
+
 .search-container {
   margin: 0 auto;
 }
@@ -539,7 +587,7 @@ const searchWord = ref("");
   margin-top: 15px;
   border-radius: 8px;
   padding: 16px;
-  background-color: #fff;
+  background-color: #f6f1ed;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   display: none;
 }
@@ -691,7 +739,26 @@ const searchWord = ref("");
 
 }
 
+.gifAnimation {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  background: black url('~/assets/gif/a2kef-yjo8s.gif') center center / cover no-repeat fixed;
+  z-index: 555;
+  opacity: 1;
+  top: 0;
+  left: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
 
+
+
+}
+
+.active {
+  display: block;
+}
 
 /* Google Fonts - Poppins */
 /*

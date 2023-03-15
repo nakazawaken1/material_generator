@@ -41,6 +41,7 @@ aside {
                 background-color: transparent;
 
                 img {
+                    width: 70px;
                     background-color: transparent;
                 }
             }

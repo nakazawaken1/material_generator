@@ -51,6 +51,13 @@ body * {
 .layout {
 
   >header {
+    display: flex;
+    justify-content: flex-end;
+
+    >address {
+      cursor: pointer;
+    }
+
     /*
     position: sticky;
     top: 0;

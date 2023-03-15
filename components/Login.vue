@@ -48,6 +48,8 @@ watch(step, (now, old) => {
   align-items: center;
   justify-content: center;
 
+
+
   >i {
     font-size: 5.5rem;
     color: #1069e0;
@@ -231,12 +233,45 @@ watch(step, (now, old) => {
   align-items: center;
 
   &-bg {
-    background-image: url(~/assets/login-bg.png);
+    animation: bgchange 30s ease infinite;
     display: block;
     width: 100vw;
-    height: 50vh;
+    height: 100vh;
     background-size: auto 100%;
     background-repeat: no-repeat;
+  }
+
+  @keyframes bgchange {
+    0% {
+      background-image: url(~/assets/login-bg1.jpg);
+    }
+
+    /*変化させたい*/
+    45% {
+      background-image: url(~/assets/login-bg2.jpg);
+    }
+
+    /*変化させたい*/
+    50% {
+      background-image: url(~/assets/login-bg3.jpg);
+    }
+
+    /*変化させたい*/
+    75% {
+      background-image: url(~/assets/login-bg4.jpg);
+    }
+
+    /*変化させたい*/
+    90% {
+      background-image: url(~/assets/login-bg5.jpg);
+    }
+
+    /*変化させたい*/
+    100% {
+      background-image: url(~/assets/login-bg6.jpg);
+    }
+
+    /*変化させたい色*/
   }
 }
 

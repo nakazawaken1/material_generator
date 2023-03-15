@@ -29,20 +29,18 @@
             <summary>
               Fabric Modify
             </summary>
-            <details>
-              <summary>
-                Fabric Weight
-              </summary>
-              <input type="range" v-model="item.fabricWeight" :min="item.minfabricWeight" :max="item.maxfabricWeight"
-                :step="item.stepfabricWeight" /><span>{{ item.fabricWeight }}g/m</span>
-            </details>
-            <details>
-              <summary>
-                Fabric Height
-              </summary>
-              <input type="range" v-model="item.pileheight" :min="item.minpileheight" :max="item.maxpileheight"
-                :step="item.steppileheight" /><span>{{ item.pileheight }}mm</span>
-            </details>
+            <dl>
+              <dt> Fabric Weight</dt>
+              <dd><input type="range" v-model="item.fabricWeight" :min="item.minfabricWeight" :max="item.maxfabricWeight"
+                  :step="item.stepfabricWeight" /><span>{{ item.fabricWeight }}g/m</span></dd>
+
+            </dl>
+            <dl>
+              <dt>Fabric Height</dt>
+              <dd><input type="range" v-model="item.pileheight" :min="item.minpileheight" :max="item.maxpileheight"
+                  :step="item.steppileheight" /><span>{{ item.pileheight }}mm</span>
+              </dd>
+            </dl>
           </details>
 
 
@@ -61,9 +59,8 @@
             Color Modify
           </summary>
           <dl>
-            <dt></dt>
+            <dt>Pantone</dt>
             <dd>
-              <label>Pantone</label>
               <input type="range" min="0" max="1" step="0.01" v-model.number="hue" />
               <span>{{ hue }}</span>
             </dd>
@@ -72,33 +69,33 @@
 
         <details>
           <summary>Fabric Information</summary>
-          <details>
-            <summary>
-              Fabric Number
-            </summary>
-            {{ item.FabricType }}
-          </details>
 
-
-          <div>
-            <h2>Modacrylic</h2> <span>70%</span>
-          </div>
-          <div>
-            <h2>Recycled polyester</h2><span>30%</span>
-          </div>
-
-          <div>
-            <h2>Pile Height</h2><span>{{ item.pileheight }}mm
-            </span>
-          </div>
-          <div>
-            <h2>Fabric Weight</h2><span>{{ item.fabricWeight }}g/m(width: {{ item.width }})</span>
-          </div>
-
-          <dt>Color</dt>
-          <dd>
-            {{ item.Color }}
-          </dd>
+          <dl>
+            <dt>Fabric Number</dt>
+            <dd>{{ item.FabricType }}</dd>
+          </dl>
+          <dl>
+            <dt>Modacrylic</dt>
+            <dd>{{ item.ghRatio }}%</dd>
+          </dl>
+          <dl>
+            <dt>Recycled polyester</dt>
+            <dd>{{ 100 - item.ghRatio }}%</dd>
+          </dl>
+          <dl>
+            <dt>Pile Height</dt>
+            <dd>{{ item.pileheight }}mm</dd>
+          </dl>
+          <dl>
+            <dt>Fabric Weight</dt>
+            <dd>{{ item.fabricWeight }}g/m(width: {{ item.width }})</dd>
+          </dl>
+          <dl>
+            <dt>Color</dt>
+            <dd>
+              {{ item.Color }}
+            </dd>
+          </dl>
         </details>
         <div class="info">
           <footer></footer>
@@ -269,18 +266,25 @@ const info = (e: string) => console.log(e);
 
     details {
       padding-bottom: 3rem;
+      cursor: pointer;
 
       >dl {
+        display: flex;
         padding-top: 2rem;
         margin-left: 2rem;
 
-        >dt {}
+        >dt {
+          padding-left: 2rem;
+        }
 
         >dd {
-          display: flex;
-          flex-direction: column;
+          padding-left: 1.768rem;
           padding-bottom: 1.234121rem;
 
+          >span {
+            padding-left: 1.543rem;
+            ;
+          }
         }
       }
 
