@@ -26,8 +26,8 @@ const detail = ref<Item | null>(null);
 div.SearchedImage {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: space-between;
+  gap: 2rem;
+
 
   &-list {
     text-align: center;

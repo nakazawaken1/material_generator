@@ -1,7 +1,7 @@
 <template>
   <div class="Login-container">
-    <i class="fa-solid fa-scroll"></i>
-    <h1>welcome to swatchbook!</h1>
+    <i><img src="~/assets/icon/logo.png" alt=""></i>
+    <h1>welcome to TissavelNote!</h1>
     <form>
       <template v-if="step === 0">
         <label for="email">Email address</label>
@@ -52,7 +52,6 @@ watch(step, (now, old) => {
     font-size: 5.5rem;
     color: #1069e0;
     margin-bottom: 50px;
-    transform: rotate(-50deg);
 
   }
 
@@ -111,7 +110,7 @@ watch(step, (now, old) => {
       border-radius: 9px;
       border: none;
       color: #fff;
-      background-color: #1069e0;
+      background-color: rgb(68, 68, 68);
       height: 44px;
       font-size: 1.8rem;
       padding: 0 10px;
@@ -126,7 +125,7 @@ watch(step, (now, old) => {
     #b-button {
       border: none;
       box-shadow: none;
-      background-color: #fff;
+      background-color: #f6f1ed;
       text-align: left;
       width: 100px;
       margin-top: 10px;

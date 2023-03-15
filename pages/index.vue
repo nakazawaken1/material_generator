@@ -30,8 +30,7 @@ const { isLoggedIn } = useAuth();
   >main {
     width: 100%;
     height: 100%;
-    padding-left: 290px;
-    padding-right: 20px;
+    padding-left: 280px;
 
   }
 

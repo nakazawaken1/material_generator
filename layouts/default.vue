@@ -25,7 +25,7 @@ const confirm = ref(false)
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
-
+  background-color: #f6f1ed;
 }
 
 ol,

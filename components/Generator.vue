@@ -1,7 +1,6 @@
 <template>
   <div class="generator">
     <nav class="search-navigation" v-if="normal">
-
       <div class="search-container">
         <div class="container">
           <div class="select-btn" :class="{ open: open }" @click="toggleBtn">
@@ -22,17 +21,19 @@
           <Button @click="searched = true">search</Button>
         </div>
       </div>
-      <div class=""></div>
+
 
       <div class="show-button">
-        <input id="composition" type="radio" name="component" value="SearchedComposition" v-model="component" />
+        <input id="composition" type="radio" name="component" value="SearchedComposition" v-model="component"
+          @click="searchedCompositionList = true, searchedImageList = false" />
         <label class="composition" for="composition">
-          <i class="fa-regular fa-list"></i>
+          <i class="fa-regular fa-list" :class="{ checked: searchedCompositionList }"></i>
         </label>
 
-        <input id="image" type="radio" name="component" value="SearchedImage" v-model="component" />
+        <input id="image" type="radio" name="component" value="SearchedImage" v-model="component"
+          @click="searchedCompositionList = false, searchedImageList = true" />
         <label class="image" for="image">
-          <i class="fa-regular fa-border-all"></i>
+          <i class="fa-regular fa-border-all" :class="{ checked: searchedImageList }"></i>
         </label>
       </div>
 
@@ -209,6 +210,8 @@ import { disableBodyScroll } from "body-scroll-lock";
 const component = ref("SearchedComposition");
 const searched = ref(true);
 const normal = ref(true)
+const searchedCompositionList = ref(true)
+const searchedImageList = ref(false)
 const sharings = ["Non Cut", "15", "22", "27", "34", "43"];
 const materials = ["Modacrylic", "Recycled PET"];
 const specs = ["ELP", "RCL", "KP", "AH"];
@@ -393,6 +396,7 @@ const searchWord = ref("");
   align-items: center;
   margin: 30px 0 40px 0;
 
+
   .search-container {
     display: flex;
     align-items: center;
@@ -499,6 +503,7 @@ const searchWord = ref("");
     display: flex;
     justify-content: center;
     align-items: flex-end;
+    padding-right: 3rem;
 
     input {
       display: none;
@@ -509,7 +514,11 @@ const searchWord = ref("");
         color: #999999;
         font-size: 2.2rem;
         font-weight: 600;
+        cursor: pointer;
+      }
 
+      .checked {
+        color: #4070f4;
       }
     }
 
@@ -519,7 +528,9 @@ const searchWord = ref("");
 
     .composition {}
 
-    .image {}
+
+
+
   }
 }
 
@@ -588,8 +599,8 @@ const searchWord = ref("");
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 0 20px;
   margin: 0 auto;
+
 
   >dl {
     display: grid;

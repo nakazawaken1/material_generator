@@ -1,42 +1,51 @@
 <template>
   <article v-if="item != null">
     <div class="detail-header">
-      <div style="    display: flex;
-                          justify-content: center;">{{ item?.FabricType }}</div>
-      <div class="button-list" style="padding-bottom: 7.5424rem;">
-        <div class="close" @click="emits('update:isOpen', false)">&lt;back</div>
-        <nav style="    display: flex;
-                           justify-content: space-around;
-                           background-color: #e2e2e2;
-                          padding: 10px;">
-          <Button v-if="normal">View Fabric Motion</Button>
-          <Button @click="normal = false" v-if="normal">View Product Image</Button>
-          <Button v-if="normal">Download Production Details</Button>
-          <Button @click="normal = true" class="backimage" v-else>Back image Details</Button>
-          <Button class="download" v-if="normal">Download File</Button>
+      <div class="detail-title">
+        <h1>{{ item?.FabricType }}</h1>
+      </div>
+      <div class="button-list">
+        <div class="close" @click="emits('update:isOpen', false)">
+          &lt;back</div>
+        <nav>
+          <div v-if="normal">View Fabric Motion</div>
+          <div @click="normal = false" v-if="normal">View Product Image</div>
+          <div v-if="normal">Download Production Details</div>
+          <div @click="normal = true" class="backimage" v-else>Back image Details
+          </div>
+          <div>Composition Check</div>
+          <div class="download" v-if="normal">Download File
+          </div>
         </nav>
       </div>
     </div>
-    <div class="detail-contents" style="display: flex;">
+    <div class="detail-contents">
       <div class=" preview">
         <WebGLViewer :fabricType="normal ? item?.FabricType : item.ClothType" :value="hue" @update:info="info" />
       </div>
-      <div class="parameter" style="padding-left: 7rem;">
+      <div class="parameter">
         <template v-if="normal">
-          <h2>Fabric Modify</h2>
-          <dl>
-            <dt>Fabric Weight</dt>
-            <dd>
+          <details>
+            <summary>
+              Fabric Modify
+            </summary>
+            <details>
+              <summary>
+                Fabric Weight
+              </summary>
               <input type="range" v-model="item.fabricWeight" :min="item.minfabricWeight" :max="item.maxfabricWeight"
-                :step="item.stepfabricWeight" /><span>{{ item.fabricWeight }}</span>
-            </dd>
-
-            <dt>Fabric Height</dt>
-            <dd>
+                :step="item.stepfabricWeight" /><span>{{ item.fabricWeight }}g/m</span>
+            </details>
+            <details>
+              <summary>
+                Fabric Height
+              </summary>
               <input type="range" v-model="item.pileheight" :min="item.minpileheight" :max="item.maxpileheight"
-                :step="item.steppileheight" /><span>{{ item.pileheight }}</span>
-            </dd>
-          </dl>
+                :step="item.steppileheight" /><span>{{ item.pileheight }}mm</span>
+            </details>
+          </details>
+
+
         </template>
         <template v-else>
           <h2>Product image Choose product design</h2>
@@ -47,37 +56,52 @@
             </dd>
           </dl>
         </template>
-        <div class="color-modify" style="display: flex;
-                                        flex-direction: column;">
-          <label>Color Modify</label>
-          <input type="range" min="0" max="1" step="0.01" v-model.number="hue" />
-          <label>Pantone</label>
-          <span>{{ hue }}</span>
-        </div>
-        <div class="info">
-          <h2>Fabric Information</h2>
+        <details>
+          <summary>
+            Color Modify
+          </summary>
           <dl>
-            <dt>Fabric Number</dt>
-            <dd>{{ item.FabricType }}</dd>
-            <dt>Composition</dt>
+            <dt></dt>
             <dd>
-              <dl>
-                <dt>Modacrylic</dt>
-                <dd>70%</dd>
-                <dt>Recycled polyester</dt>
-                <dd>30%</dd>
-              </dl>
-            </dd>
-            <dt>Pile Height</dt>
-            <dd>{{ item.pileheight }}</dd>
-            <dt>Fabric Weight</dt>
-            <dd>{{ item.fabricWeight }}g/m(width: {{ item.width }})</dd>
-            <dt>Color</dt>
-            <dd>
-              {{ item.Color }}
+              <label>Pantone</label>
+              <input type="range" min="0" max="1" step="0.01" v-model.number="hue" />
+              <span>{{ hue }}</span>
             </dd>
           </dl>
-          <footer><Button>Composition Check</Button></footer>
+        </details>
+
+        <details>
+          <summary>Fabric Information</summary>
+          <details>
+            <summary>
+              Fabric Number
+            </summary>
+            {{ item.FabricType }}
+          </details>
+
+
+          <div>
+            <h2>Modacrylic</h2> <span>70%</span>
+          </div>
+          <div>
+            <h2>Recycled polyester</h2><span>30%</span>
+          </div>
+
+          <div>
+            <h2>Pile Height</h2><span>{{ item.pileheight }}mm
+            </span>
+          </div>
+          <div>
+            <h2>Fabric Weight</h2><span>{{ item.fabricWeight }}g/m(width: {{ item.width }})</span>
+          </div>
+
+          <dt>Color</dt>
+          <dd>
+            {{ item.Color }}
+          </dd>
+        </details>
+        <div class="info">
+          <footer></footer>
         </div>
       </div>
 
@@ -201,6 +225,77 @@ const info = (e: string) => console.log(e);
 </script>
 
 <style lang="scss" scoped>
+.detail-title {
+  display: flex;
+  justify-content: center;
+
+  >h1 {
+    font: small-caps bold 24px/1 sans-serif;
+  }
+}
+
+.button-list {
+  padding-bottom: 7.5424rem;
+
+  .close {
+    cursor: pointer;
+    padding: 0 0 1.32rem 1.32rem;
+  }
+
+  >nav {
+    display: flex;
+    justify-content: space-around;
+    background-color: #e2e2e2;
+    padding: 10px;
+    align-items: center;
+
+    >div {
+      background-color: transparent;
+      color: #818181;
+      cursor: pointer;
+    }
+  }
+}
+
+.detail-contents {
+  display: flex;
+  padding-left: 1rem;
+
+  .parameter {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-left: 7rem;
+
+    details {
+      padding-bottom: 3rem;
+
+      >dl {
+        padding-top: 2rem;
+        margin-left: 2rem;
+
+        >dt {}
+
+        >dd {
+          display: flex;
+          flex-direction: column;
+          padding-bottom: 1.234121rem;
+
+        }
+      }
+
+      .color-modify {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+
+  }
+}
+
+
+
 article.Detail {
   display: grid;
   grid-template-columns: auto 1fr 1fr;
@@ -214,6 +309,8 @@ article.Detail {
     position: absolute;
     right: -2rem;
     top: -2rem;
+
+
   }
 
   .parameter {
