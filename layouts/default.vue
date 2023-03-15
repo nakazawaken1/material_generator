@@ -51,17 +51,9 @@ body * {
 .layout {
 
   >header {
-    /*
-    position: sticky;
-    top: 0;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem 1rem;
-    background-color: #222222;
-    box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.16);
-    color: #ffffff;
-    */
+    justify-content: flex-end;
+
   }
 
   >div {

@@ -399,12 +399,6 @@ const searchWord = ref("");
     justify-content: center;
 
     .container {
-
-      /*
-      position: relative;
-      width: 100px;
-      padding: 0;
-*/
       .select-btn {
         width: 118px;
         height: 35px;
@@ -443,7 +437,6 @@ const searchWord = ref("");
         z-index: 999;
 
       }
-
     }
 
     .search-bar {
@@ -677,129 +670,5 @@ const searchWord = ref("");
   .summary {
     width: 100%;
   }
-
 }
-
-
-
-/* Google Fonts - Poppins */
-/*
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
-
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
-
-.search-container {
-  margin: 0 auto;
-  background-color: #b8b8b861;
-}
-
-.search-navigation {
-  padding: 0.7rem 0;
-  top: 0;
-
-  .search-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    .container {
-      .search-bar {
-        input[type="search"] {
-          width: 50vw;
-          height: 30px;
-          background: transparent;
-          flex: 1;
-          border: 0.2px solid;
-          padding: 10px;
-        }
-      }
-    }
-  }
-}
-
-
-.select-btn {
-  display: flex;
-  height: 30px;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
-  cursor: pointer;
-  border: 0.2px solid;
-}
-
-.select-btn .btn-text {
-  font-size: 12px;
-  font-weight: 400;
-}
-
-.select-btn.open .arrow-dwn {
-  transform: rotate(-180deg);
-}
-
-
-.list-items {
-  position: absolute;
-  margin-top: 15px;
-  border-radius: 8px;
-  padding: 16px;
-  background-color: #fff;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-  display: none;
-}
-
-.select-btn.open~.list-items {
-  display: block;
-}
-
-.list-items .item {
-  display: flex;
-  align-items: center;
-  list-style: none;
-  height: 50px;
-  cursor: pointer;
-  transition: 0.3s;
-  padding: 0 15px;
-  border-radius: 8px;
-}
-
-.list-items .item:hover {
-  background-color: #e7edfe;
-}
-
-.item .item-text {
-  font-size: 16px;
-  font-weight: 400;
-  color: #333;
-}
-
-.item .checkbox {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 16px;
-  width: 16px;
-  border-radius: 4px;
-  margin-right: 12px;
-  border: 1.5px solid #c0c0c0;
-  transition: all 0.3s ease-in-out;
-}
-
-.item.checked .checkbox {
-  background-color: #4070f4;
-  border-color: #4070f4;
-}
-
-.checkbox .check-icon {
-  color: #fff;
-  font-size: 11px;
-  transform: scale(0);
-  transition: all 0.2s ease-in-out;
-}
-
-.item.checked .check-icon {
-  transform: scale(1);
-}
-
-*/
 </style>

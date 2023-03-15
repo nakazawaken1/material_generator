@@ -37,7 +37,6 @@ const { isLoggedIn } = useAuth();
 
 }
 
-
 .login {
   display: flex;
   justify-content: center;
