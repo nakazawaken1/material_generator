@@ -1,7 +1,7 @@
 <template>
   <div class="Login-container">
     <i><img src="~/assets/icon/logo.png" alt=""></i>
-    <h1>welcome to TissavelNote!</h1>
+    <h1>welcome to TISSAVEL!</h1>
     <form>
       <template v-if="step === 0">
         <label for="email">Email address</label>

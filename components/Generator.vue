@@ -1,6 +1,5 @@
 <template>
   <div class="loading" :class="{ visiable: visiable }"></div>
-  <div :class="{ active: animation }" class="gifAnimation"></div>
   <div class="generator">
     <nav class="search-navigation" v-if="normal">
       <div class="search-container">
@@ -18,9 +17,6 @@
         <div class="search-bar">
           <i class="fa-solid fa-magnifying-glass"></i>
           <input type="search" v-model="searchWord" placeholder="Search material" />
-        </div>
-        <div class="create">
-          <Button @click="searched = true, decisionWords = searchWord, gifAnimation()">search</Button>
         </div>
       </div>
 
@@ -199,9 +195,9 @@
       </table>
     </template>
     <section class="summary" v-if="searched">
-      <SearchedImage v-if="component == 'SearchedImage'" :labels="labels" :searchWord="decisionWords"
+      <SearchedImage v-if="component == 'SearchedImage'" :labels="labels" :searchWord="searchWord"
         @update:isOpen="normal = true" @update:isClose="normal = false" />
-      <SearchedComposition v-else :labels="labels" :searchWord="decisionWords" @update:isOpen="normal = true"
+      <SearchedComposition v-else :labels="labels" :searchWord="searchWord" @update:isOpen="normal = true"
         @update:isClose="normal = false" />
     </section>
 
