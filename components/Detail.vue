@@ -25,24 +25,34 @@
       </div>
       <div class="parameter">
         <template v-if="normal">
-          <details>
-            <summary>
-              Fabric Modify
-            </summary>
-            <dl>
-              <dt> Fabric Weight</dt>
-              <dd><input type="range" v-model="item.fabricWeight" :min="item.minfabricWeight" :max="item.maxfabricWeight"
-                  :step="item.stepfabricWeight" /><span>{{ item.fabricWeight }}g/m</span></dd>
+          <div v-for="value in filterItems(item.label)" :key="value.labels">
+            <details>
+              <summary>
+                Fabric Modify
+              </summary>
+              <dl>
+                <dt> Fabric Weight</dt>
+                <dd>
+                  <template v-for="(fabricWeight, fabricWeightIndex) in value.fabricWeights" :key="fabricWeightIndex">
+                    <input type="radio" :value="fabricWeight" v-model="selectedFabricWeight"
+                      @change="emits('update:updateParameter', selectedPileHeight, selectedFabricWeight)" /><span>{{
+                        fabricWeight }}g/m</span>
+                  </template>
+                </dd>
 
-            </dl>
-            <dl>
-              <dt>Fabric Height</dt>
-              <dd><input type="range" v-model="item.pileheight" :min="item.minpileheight" :max="item.maxpileheight"
-                  :step="item.steppileheight" /><span>{{ item.pileheight }}mm</span>
-              </dd>
-            </dl>
-          </details>
-
+              </dl>
+              <dl>
+                <dt>Fabric Height</dt>
+                <dd>
+                  <template v-for="(cutLength, cutLengthIndex) in value.cutLengths" :key="cutLengthIndex">
+                    <input type="radio" :value="cutLength" v-model="selectedPileHeight"
+                      @change="emits('update:updateParameter', selectedPileHeight, selectedFabricWeight)" /><span>{{
+                        cutLength }}mm</span>
+                  </template>
+                </dd>
+              </dl>
+            </details>
+          </div>
 
         </template>
         <template v-else>
@@ -200,7 +210,8 @@
 </template>
 
 <script lang="ts" setup>
-import { Item } from "~~/composables/models/Item";
+import { emit } from "process";
+import { Item, } from "~~/composables/models/Item";
 
 const props = withDefaults(
   defineProps<{
@@ -211,14 +222,37 @@ const props = withDefaults(
     isOpen: false,
   }
 );
-const detail = ref<Item | null>(null);
 const hue = ref(0);
+const selectedPileHeight = ref(props.item?.pileheight);
+const selectedFabricWeight = ref(props.item?.fabricWeight);
+watch(() => props.item, (newValue) => {
+  selectedPileHeight.value = newValue?.pileheight
+  selectedFabricWeight.value = newValue?.fabricWeight
+})
+
 const emits = defineEmits<{
   (e: "update:isOpen", button: false): void;
+  (e: "update:updateParameter", selectedPileHeight: number | undefined, selectedFabricWeight: number | undefined): void;
 }>();
+
 
 const normal = ref(true);
 const info = (e: string) => console.log(e);
+const fabricWeights = [1300, 1800, 2300, 500, 1000];
+const cutLengths = [51, 76, 89, 102, 15, 22];
+const FabricDetails = [{
+  labels: "Fox",
+  cutLengths: [0, 1, 2, 3].map((i) => cutLengths[i]),
+  fabricWeights: [0, 1, 2].map((i) => fabricWeights[i]),
+}, {
+  labels: "Mink",
+  cutLengths: [4, 5].map((i) => cutLengths[i]),
+  fabricWeights: [3, 4].map((i) => fabricWeights[i]),
+}]
+
+
+const filterItems = (label: string) => FabricDetails.filter(i => i.labels.includes(label))
+
 </script>
 
 <style lang="scss" scoped>

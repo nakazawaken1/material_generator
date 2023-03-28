@@ -23,6 +23,31 @@ export interface Item {
   Imagepath: string,
   Order: number,
 }
+export const Empty_Items: Item = {
+  label: 'noneitem',
+  FabricType: "Noneitem",
+  KnittingType: "none",
+  Silvernumbers: "none",
+  SharlingCur: "none",
+  Chipprint: "none",
+  width: 0,
+  fabricWeight: 0,
+  minfabricWeight: 0,
+  maxfabricWeight: 0,
+  stepfabricWeight: 0,
+  pileheight: 0,
+  minpileheight: 0,
+  maxpileheight: 0,
+  steppileheight: 0,
+  ghFiness: 0,
+  ghRatio: 0,
+  Imagelabel: "NoneItem",
+  Color: "NoneItem",
+  ClothType: "NoneItem",
+  ClothImagePath: "NoneItem",
+  Imagepath: "NoneItem",
+  Order: 0,
+}
 export const Items: Item[] = [
   {
     label: 'Fox',
@@ -47,7 +72,7 @@ export const Items: Item[] = [
     ClothType: "T2202-01C",
     ClothImagePath: "./T2202-01C.jpg",
     Imagepath: "./T2202-01.jpg",
-    Order: 1
+    Order: 1,
   },
   {
     label: 'Fox',
@@ -72,8 +97,7 @@ export const Items: Item[] = [
     ClothType: "T2202-01C",
     ClothImagePath: "./T2202-01C.jpg",
     Imagepath: "./T2202-03.jpg",
-    Order: 2
-
+    Order: 2,
   },
   {
     label: 'Fox',
@@ -98,7 +122,7 @@ export const Items: Item[] = [
     ClothType: "T2202-01C",
     ClothImagePath: "./T2202-01C.jpg",
     Imagepath: "./T2202-04.jpg",
-    Order: 3
+    Order: 3,
   },
   {
     label: 'Fox',
@@ -123,7 +147,7 @@ export const Items: Item[] = [
     ClothType: "T2202-01C",
     ClothImagePath: "./T2202-01C.jpg",
     Imagepath: "./T2202-05.jpg",
-    Order: 4
+    Order: 4,
   },
   {
     label: 'Fox',
@@ -148,7 +172,7 @@ export const Items: Item[] = [
     ClothType: "T2202-01C",
     ClothImagePath: "./T2202-01C.jpg",
     Imagepath: "./T2202-06.jpg",
-    Order: 5
+    Order: 5,
   },
   {
     label: 'Fox',
@@ -173,7 +197,7 @@ export const Items: Item[] = [
     ClothType: "T2202-01C",
     ClothImagePath: "./T2202-01C.jpg",
     Imagepath: "./T2202-07.jpg",
-    Order: 6
+    Order: 6,
   },
   {
     label: 'Fox',
@@ -198,7 +222,7 @@ export const Items: Item[] = [
     ClothType: "T2202-01C",
     ClothImagePath: "./T2202-01C.jpg",
     Imagepath: "./T2202-08.jpg",
-    Order: 7
+    Order: 7,
   },
   {
     label: 'Fox',
@@ -223,7 +247,7 @@ export const Items: Item[] = [
     ClothType: "T2202-01C",
     ClothImagePath: "./T2202-01C.jpg",
     Imagepath: "./T2202-09.jpg",
-    Order: 8
+    Order: 8,
   },
   {
     label: 'Fox',
@@ -248,7 +272,7 @@ export const Items: Item[] = [
     ClothType: "T2202-01C",
     ClothImagePath: "./T2202-01C.jpg",
     Imagepath: "./T2202-10.jpg",
-    Order: 9
+    Order: 9,
   },
   {
     label: 'Fox',
@@ -273,7 +297,7 @@ export const Items: Item[] = [
     ClothType: "T2202-01C",
     ClothImagePath: "./T2202-01C.jpg",
     Imagepath: "./T2202-16.jpg",
-    Order: 10
+    Order: 10,
   },
   {
     label: 'Fox',
@@ -298,7 +322,7 @@ export const Items: Item[] = [
     ClothType: "T2202-01C",
     ClothImagePath: "./T2202-01C.jpg",
     Imagepath: "./T2202-17.jpg",
-    Order: 11
+    Order: 11,
   },
   {
     label: 'Mink',
@@ -323,7 +347,7 @@ export const Items: Item[] = [
     ClothType: "T2203-05C",
     ClothImagePath: "./T2203-05C.jpg",
     Imagepath: "./T2203-05.jpg",
-    Order: 12
+    Order: 12,
   },
   {
     label: 'Mink',
@@ -348,7 +372,7 @@ export const Items: Item[] = [
     ClothType: "T2203-05C",
     ClothImagePath: "./T2203-05C.jpg",
     Imagepath: "./T2203-06.jpg",
-    Order: 13
+    Order: 13,
   },
   {
     label: 'Mink',
@@ -373,7 +397,7 @@ export const Items: Item[] = [
     ClothType: "T2203-05C",
     ClothImagePath: "./T2203-05C.jpg",
     Imagepath: "./T2203-07.jpg",
-    Order: 14
+    Order: 14,
   },
   {
     label: 'Mink',
@@ -398,7 +422,7 @@ export const Items: Item[] = [
     ClothType: "T2203-05C",
     ClothImagePath: "./T2203-05C.jpg",
     Imagepath: "./T2203-08.jpg",
-    Order: 15
+    Order: 15,
   },
   {
     label: 'Mink',
@@ -423,12 +447,16 @@ export const Items: Item[] = [
     ClothType: "T2203-05C",
     ClothImagePath: "./T2203-05C.jpg",
     Imagepath: "./T2203-09.jpg",
-    Order: 16
+    Order: 16,
   },
 ]
+
 export interface Filter {
   labels?: string[];
   searchWord?: string;
 }
 export const filterItems = (filter: Filter) => Items.filter(i => (!filter?.labels || filter.labels.length == 0 || filter.labels.includes(i.label))
   && (!filter?.searchWord || (i.label + "\t" + i.FabricType).toLowerCase().includes(filter.searchWord.toLowerCase())))
+
+
+export const updateItems = (ePileHeight: number, eFabricWeight: number) => Items.find(i => i.pileheight == ePileHeight && i.fabricWeight == eFabricWeight) || null

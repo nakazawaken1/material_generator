@@ -25,21 +25,30 @@
       </tbody>
     </table>
   </div>
-  <Detail :item="detail" :isOpen="detail != null" @update:isOpen="detail = null, emits('update:isOpen', false)" />
+  <Detail :item="detail" :isOpen="detail != null" @update:isOpen="detail = null, emits('update:isOpen', false)"
+    @update:updateParameter="updateParameter" />
 </template>
 
 <script lang="ts" setup>
-import { Item, filterItems } from "~~/composables/models/Item";
+import { Item, filterItems, Items, updateItems, Empty_Items } from "~~/composables/models/Item";
 const props = defineProps<{
   labels?: string[];
   searchWord?: string;
 }>();
 const detail = ref<Item | null>(null);
-
 const emits = defineEmits<{
   (e: "update:isOpen", button: false): void;
   (e: "update:isClose", button: false): void;
 }>();
+
+const updateParameter = (pileheightdata: any, fabricWeightdata: any) => {
+  detail.value = updateItems(pileheightdata, fabricWeightdata)
+  if (!detail.value) {
+    detail.value = Empty_Items
+  }
+}
+const detailItems = ref<Item | null>(null);
+
 </script>
 
 <style lang="scss" scoped>

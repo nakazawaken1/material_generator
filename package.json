@@ -3,7 +3,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev --port 3210",
-    "generate": "NUXT_APP_BASE_URL=/secure/material-TissavelDesign/ nuxt generate",
+    "generate": "NUXT_APP_BASE_URL=/secure/material-TissavelDesign2/ nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
