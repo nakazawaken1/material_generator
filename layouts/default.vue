@@ -43,7 +43,6 @@ html {
 
 body * {
   font-size: 1.4rem;
-  color: #4d5156;
 }
 </style>
 
@@ -53,6 +52,8 @@ body * {
   >header {
     display: flex;
     justify-content: flex-end;
+    gap: 1em;
+    align-items: center;
 
     >address {
       cursor: pointer;
