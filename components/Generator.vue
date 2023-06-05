@@ -266,7 +266,6 @@ const fabricTypes = [
   },
   {
     label: "Rabbit",
-    disabled: true,
     min: 300,
     max: 1000,
     sharings: [1, 2, 3].map((i) => sharings[i]),
@@ -277,7 +276,7 @@ const fabricTypes = [
       specs: [1, 2].map((i) => specs[i]),
     },
   },
-  { label: "Racoon", disabled: true },
+  { label: "Racoon" },
   { label: "Mongolian", disabled: true },
   { label: "Chinchilla", disabled: true },
   { label: "Jaquard", disabled: true },
