@@ -21,7 +21,11 @@
     </div>
     <div class="detail-contents">
       <div class="preview">
+        <div>TIPCOLOR
+          <div class="tipcolor" :style="{ backgroundColor: '#' + rgb }"></div>
+        </div>
         <WebGLViewer2 :fabricType="normal ? item.FabricType : item.ClothType" :value="rgb2Value" @update:info="info" />
+
       </div>
       <div class="parameter">
         <template v-if="normal">
@@ -136,7 +140,7 @@ const hue = ref(0);
 const selectedPileHeight = ref(props.item?.pileheight);
 const selectedFabricWeight = ref(props.item?.fabricWeight);
 const useHue = false;
-const rgb = ref('#e10600');
+const rgb = ref('e10600');
 const pantoneName = ref(' PMS 2347 C');
 const rgb2Value = computed(() => {
   const c = parseInt(rgb.value, 16);
@@ -209,6 +213,8 @@ const filterItems = (label: string) => FabricDetails.filter(i => i.labels.includ
   display: flex;
   padding-left: 3rem;
 
+
+
   .parameter {
     display: flex;
     flex-direction: column;
@@ -246,6 +252,11 @@ const filterItems = (label: string) => FabricDetails.filter(i => i.labels.includ
     }
 
 
+  }
+
+  .tipcolor {
+    width: 100px;
+    height: 50px;
   }
 }
 
@@ -309,6 +320,7 @@ article.Detail {
     position: relative;
     background-color: #7f7f7f;
 
+
     >img {
       width: 60rem;
     }
@@ -326,6 +338,9 @@ article.Detail {
       }
     }
   }
+
+
+
 
   .info {
     padding: 1rem;
