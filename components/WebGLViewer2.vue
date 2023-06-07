@@ -6,8 +6,8 @@
 </template>
 
 <script lang="ts" setup>
-const W = 512;
-const H = 512;
+const W = 640;
+const H = 640;
 const X = 17;
 const Y = 7;
 const props = defineProps<{
@@ -389,8 +389,8 @@ function hsv2rgb(h: number, s: number, v: number) {
 
 <style lang="scss" scoped>
 .WebGLViewer {
-  width: 512px;
-  height: 512px;
+  width: 640px;
+  height: 640px;
   position: relative;
 
   >label {
