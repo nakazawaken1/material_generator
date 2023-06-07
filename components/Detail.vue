@@ -5,7 +5,7 @@
         <h1>{{ item.FabricType }}</h1>
       </div>
       <div class="button-list">
-        <div class="close" @click="emits('update:isOpen', false)">
+        <div class="close" @click="emits('update:isOpen', false), normal = true">
           &lt;back</div>
         <nav>
           <div v-if="normal">View Fabric Motion</div>
