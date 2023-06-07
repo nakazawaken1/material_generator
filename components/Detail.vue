@@ -75,7 +75,7 @@
               <span>{{ hue }}</span>
             </dd>
             <dd v-else style="padding-left: 0">
-              <PantoneSelector @pickcolor="rgb = $event" />
+              <PantoneSelector @pickcolor="rgb = $event" @colorname=" pantoneName = $event" />
             </dd>
           </dl>
         </details>
@@ -106,7 +106,7 @@
           <dl>
             <dt>Color</dt>
             <dd>
-              {{ item.Color }}
+              {{ pantoneName }}
             </dd>
           </dl>
         </details>
@@ -136,7 +136,8 @@ const hue = ref(0);
 const selectedPileHeight = ref(props.item?.pileheight);
 const selectedFabricWeight = ref(props.item?.fabricWeight);
 const useHue = false;
-const rgb = ref('FF0000');
+const rgb = ref('#e10600');
+const pantoneName = ref(' PMS 2347 C');
 const rgb2Value = computed(() => {
   const c = parseInt(rgb.value, 16);
   return { r: (c >> 16 & 0xff) / 255, g: (c >> 8 & 0xff) / 255, b: (c & 0xff) / 255 }

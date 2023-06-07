@@ -1,7 +1,7 @@
 <template>
   <ul class="PantoneSelector">
     <li v-for="pair of PantoneRGBTable" :key="pair[0]" :style="{ '--color': '#' + pair[1] }" :title="pair[0]"
-      @click="emits('pickcolor', pair[1])">
+      @click="emits('pickcolor', pair[1]), emits('colorname', pair[0])">
       <a>{{ pair[0] }}</a>
     </li>
   </ul>
@@ -11,6 +11,7 @@
 import { PantoneRGBTable } from '~~/composables/PantoneRGBTable';
 const emits = defineEmits<{
   (e: "pickcolor", color: string): void;
+  (e: "colorname", color: string): void;
 }>();
 </script>
 
