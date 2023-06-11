@@ -1,7 +1,7 @@
 <template>
+  <div class="loading" :class="{ visiable: visiable }"></div>
   <div class="generator">
     <nav class="search-navigation" v-if="normal">
-
       <div class="search-container">
         <div class="container">
           <div class="select-btn" :class="{ open: open }" @click="toggleBtn">
@@ -18,21 +18,20 @@
           <i class="fa-solid fa-magnifying-glass"></i>
           <input type="search" v-model="searchWord" placeholder="Search material" />
         </div>
-        <div class="create">
-          <Button @click="searched = true">search</Button>
-        </div>
       </div>
-      <div class=""></div>
+
 
       <div class="show-button">
-        <input id="composition" type="radio" name="component" value="SearchedComposition" v-model="component" />
+        <input id="composition" type="radio" name="component" value="SearchedComposition" v-model="component"
+          @click="searchedCompositionList = true, searchedImageList = false" />
         <label class="composition" for="composition">
-          <i class="fa-regular fa-list"></i>
+          <i class="fa-regular fa-list" :class="{ checked: searchedCompositionList }"></i>
         </label>
 
-        <input id="image" type="radio" name="component" value="SearchedImage" v-model="component" />
-        <label class="image" for="image">
-          <i class="fa-regular fa-border-all"></i>
+        <input id="image" type="radio" name="component" value="SearchedImage" v-model="component"
+          @click="searchedImageList = true, searchedCompositionList = false" />
+        <label class=" image" for="image">
+          <i class="fa-regular fa-border-all" :class="{ checked: searchedImageList }"></i>
         </label>
       </div>
 
@@ -196,8 +195,9 @@
       </table>
     </template>
     <section class="summary" v-if="searched">
-      <SearchedImage v-if="component == 'SearchedImage'" :labels="labels" :searchWord="searchWord" />
-      <SearchedComposition v-else :labels="labels" :searchWord="searchWord" @update:isOpen="normal = true" ,
+      <SearchedImage v-if="component == 'SearchedImage'" :labels="labels" :searchWord="searchWord"
+        @update:isOpen="normal = true" @update:isClose="normal = false" />
+      <SearchedComposition v-else :labels="labels" :searchWord="searchWord" @update:isOpen="normal = true"
         @update:isClose="normal = false" />
     </section>
 
@@ -208,7 +208,10 @@
 import { disableBodyScroll } from "body-scroll-lock";
 const component = ref("SearchedComposition");
 const searched = ref(true);
+const decisionWords = ref("")
 const normal = ref(true)
+const searchedCompositionList = ref(true)
+const searchedImageList = ref(false)
 const sharings = ["Non Cut", "15", "22", "27", "34", "43"];
 const materials = ["Modacrylic", "Recycled PET"];
 const specs = ["ELP", "RCL", "KP", "AH"];
@@ -263,7 +266,6 @@ const fabricTypes = [
   },
   {
     label: "Rabbit",
-    disabled: true,
     min: 300,
     max: 1000,
     sharings: [1, 2, 3].map((i) => sharings[i]),
@@ -274,7 +276,7 @@ const fabricTypes = [
       specs: [1, 2].map((i) => specs[i]),
     },
   },
-  { label: "Racoon", disabled: true },
+  { label: "Racoon" },
   { label: "Mongolian", disabled: true },
   { label: "Chinchilla", disabled: true },
   { label: "Jaquard", disabled: true },
@@ -336,6 +338,7 @@ const changeFabricType = () => {
   );
 };
 onMounted(() => changeFabricType());
+onMounted(() => truevisiable());
 watch(fabricType, (value) => {
   sharing.value = value.sharings![0];
   fiber1.spec = value.fiber1!.specs[0];
@@ -365,20 +368,63 @@ const open = ref(false);
 const checked = ref(false);
 
 const toggleBtn = () => {
-  console.log(open);
   open.value = !open.value;
 };
 
-const toggleChecked = () => {
-  console.log(checked);
-  checked.value = !checked.value;
-};
+const animation = ref(false)
+const visiable = ref(false)
+const gifAnimation = () => {
+  animation.value = true
+  setTimeout(() => {
+    animation.value = false
+  }, 7000);
+}
 
+const truevisiable = () => {
+  setTimeout(() => {
+    visiable.value = true
+  }, 3000);
+}
 const labels = ref([]);
 const searchWord = ref("");
 </script> 
 
 <style lang="scss" scoped>
+/* ローディング画面 */
+.loading {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  z-index: 555;
+  opacity: 1;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-image: url("~/assets/icon/logo.png");
+  animation: loading 3s none;
+
+
+
+  @keyframes loading {
+    0% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0;
+      display: none;
+    }
+  }
+}
+
+
+.visiable {
+  display: none;
+}
+
 .search-container {
   margin: 0 auto;
 }
@@ -393,12 +439,19 @@ const searchWord = ref("");
   align-items: center;
   margin: 30px 0 40px 0;
 
+
   .search-container {
     display: flex;
     align-items: center;
     justify-content: center;
 
     .container {
+
+      /*
+      position: relative;
+      width: 100px;
+      padding: 0;
+*/
       .select-btn {
         width: 118px;
         height: 35px;
@@ -437,6 +490,7 @@ const searchWord = ref("");
         z-index: 999;
 
       }
+
     }
 
     .search-bar {
@@ -492,6 +546,7 @@ const searchWord = ref("");
     display: flex;
     justify-content: center;
     align-items: flex-end;
+    padding-right: 3rem;
 
     input {
       display: none;
@@ -502,7 +557,11 @@ const searchWord = ref("");
         color: #999999;
         font-size: 2.2rem;
         font-weight: 600;
+        cursor: pointer;
+      }
 
+      .checked {
+        color: #4070f4;
       }
     }
 
@@ -512,7 +571,9 @@ const searchWord = ref("");
 
     .composition {}
 
-    .image {}
+
+
+
   }
 }
 
@@ -521,7 +582,7 @@ const searchWord = ref("");
   margin-top: 15px;
   border-radius: 8px;
   padding: 16px;
-  background-color: #fff;
+  background-color: #f6f1ed;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   display: none;
 }
@@ -581,8 +642,8 @@ const searchWord = ref("");
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 0 20px;
   margin: 0 auto;
+
 
   >dl {
     display: grid;
@@ -670,5 +731,148 @@ const searchWord = ref("");
   .summary {
     width: 100%;
   }
+
 }
+
+.gifAnimation {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  background: black url('~/assets/gif/a2kef-yjo8s.gif') center center / cover no-repeat fixed;
+  z-index: 555;
+  opacity: 1;
+  top: 0;
+  left: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+
+
+
+}
+
+.active {
+  display: block;
+}
+
+/* Google Fonts - Poppins */
+/*
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
+
+.search-container {
+  margin: 0 auto;
+  background-color: #b8b8b861;
+}
+
+.search-navigation {
+  padding: 0.7rem 0;
+  top: 0;
+
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .container {
+      .search-bar {
+        input[type="search"] {
+          width: 50vw;
+          height: 30px;
+          background: transparent;
+          flex: 1;
+          border: 0.2px solid;
+          padding: 10px;
+        }
+      }
+    }
+  }
+}
+
+
+.select-btn {
+  display: flex;
+  height: 30px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  cursor: pointer;
+  border: 0.2px solid;
+}
+
+.select-btn .btn-text {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.select-btn.open .arrow-dwn {
+  transform: rotate(-180deg);
+}
+
+
+.list-items {
+  position: absolute;
+  margin-top: 15px;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  display: none;
+}
+
+.select-btn.open~.list-items {
+  display: block;
+}
+
+.list-items .item {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  height: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 0 15px;
+  border-radius: 8px;
+}
+
+.list-items .item:hover {
+  background-color: #e7edfe;
+}
+
+.item .item-text {
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
+}
+
+.item .checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 16px;
+  width: 16px;
+  border-radius: 4px;
+  margin-right: 12px;
+  border: 1.5px solid #c0c0c0;
+  transition: all 0.3s ease-in-out;
+}
+
+.item.checked .checkbox {
+  background-color: #4070f4;
+  border-color: #4070f4;
+}
+
+.checkbox .check-icon {
+  color: #fff;
+  font-size: 11px;
+  transform: scale(0);
+  transition: all 0.2s ease-in-out;
+}
+
+.item.checked .check-icon {
+  transform: scale(1);
+}
+
+*/
 </style>

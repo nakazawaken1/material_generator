@@ -25,7 +25,7 @@ const confirm = ref(false)
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
-
+  background-color: #f6f1ed;
 }
 
 ol,
@@ -43,7 +43,6 @@ html {
 
 body * {
   font-size: 1.4rem;
-  color: #4d5156;
 }
 </style>
 
@@ -53,7 +52,24 @@ body * {
   >header {
     display: flex;
     justify-content: flex-end;
+    gap: 1em;
+    align-items: center;
 
+    >address {
+      cursor: pointer;
+    }
+
+    /*
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    background-color: #222222;
+    box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.16);
+    color: #ffffff;
+    */
   }
 
   >div {

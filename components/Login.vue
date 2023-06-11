@@ -1,7 +1,7 @@
 <template>
   <div class="Login-container">
-    <i class="fa-solid fa-scroll"></i>
-    <h1>welcome to swatchbook!</h1>
+    <i><img src="~/assets/icon/logo.png" alt=""></i>
+    <h1>welcome to TISSAVEL!</h1>
     <form>
       <template v-if="step === 0">
         <label for="email">Email address</label>
@@ -48,11 +48,12 @@ watch(step, (now, old) => {
   align-items: center;
   justify-content: center;
 
+
+
   >i {
     font-size: 5.5rem;
     color: #1069e0;
     margin-bottom: 50px;
-    transform: rotate(-50deg);
 
   }
 
@@ -111,7 +112,7 @@ watch(step, (now, old) => {
       border-radius: 9px;
       border: none;
       color: #fff;
-      background-color: #1069e0;
+      background-color: rgb(68, 68, 68);
       height: 44px;
       font-size: 1.8rem;
       padding: 0 10px;
@@ -126,7 +127,7 @@ watch(step, (now, old) => {
     #b-button {
       border: none;
       box-shadow: none;
-      background-color: #fff;
+      background-color: #f6f1ed;
       text-align: left;
       width: 100px;
       margin-top: 10px;
@@ -232,12 +233,45 @@ watch(step, (now, old) => {
   align-items: center;
 
   &-bg {
-    background-image: url(~/assets/login-bg.png);
+    animation: bgchange 30s ease infinite;
     display: block;
     width: 100vw;
-    height: 50vh;
+    height: 100vh;
     background-size: auto 100%;
     background-repeat: no-repeat;
+  }
+
+  @keyframes bgchange {
+    0% {
+      background-image: url(~/assets/login-bg1.jpg);
+    }
+
+    /*変化させたい*/
+    45% {
+      background-image: url(~/assets/login-bg2.jpg);
+    }
+
+    /*変化させたい*/
+    50% {
+      background-image: url(~/assets/login-bg3.jpg);
+    }
+
+    /*変化させたい*/
+    75% {
+      background-image: url(~/assets/login-bg4.jpg);
+    }
+
+    /*変化させたい*/
+    90% {
+      background-image: url(~/assets/login-bg5.jpg);
+    }
+
+    /*変化させたい*/
+    100% {
+      background-image: url(~/assets/login-bg6.jpg);
+    }
+
+    /*変化させたい色*/
   }
 }
 
