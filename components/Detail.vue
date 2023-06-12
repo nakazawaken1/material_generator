@@ -141,7 +141,7 @@ const selectedPileHeight = ref(props.item?.pileheight);
 const selectedFabricWeight = ref(props.item?.fabricWeight);
 const useHue = false;
 const rgb = ref('e10600');
-const pantoneName = ref(' PMS 2347 C');
+const pantoneName = ref('PMS 2347 C');
 const rgb2Value = computed(() => {
   const c = parseInt(rgb.value, 16);
   return { r: (c >> 16 & 0xff) / 255, g: (c >> 8 & 0xff) / 255, b: (c & 0xff) / 255 }
