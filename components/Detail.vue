@@ -29,30 +29,39 @@
       </div>
       <div class="parameter">
         <template v-if="normal">
-          <div v-for="value in filterItems(item.label)" :key="value.labels">
+          <div v-for="(value, index) in filterItems(item.label)" :key="value.labels">
             <details>
               <summary>
                 Fabric Modify
               </summary>
               <dl>
                 <dt> Fabric Weight</dt>
-                <dd>
+                <!-- <dd>
                   <template v-for="(fabricWeight, fabricWeightIndex) in value.fabricWeights" :key="fabricWeightIndex">
                     <input type="radio" :value="fabricWeight" v-model="selectedFabricWeight"
                       @change="emits('update:updateParameter', selectedPileHeight, selectedFabricWeight)" /><span>{{
                         fabricWeight }}g/m</span>
                   </template>
+                </dd> -->
+                <dd>
+                  <RangeSlider v-model:range="IndexOfrangeWeight" :max="value.fabricWeights.length - 1"
+                    @update:range="emits('update:updateParameter', value.cutLengths[IndexOfrangeHeight], value.fabricWeights[IndexOfrangeWeight])" />
+                  {{ value.fabricWeights[IndexOfrangeWeight] }}g/m
                 </dd>
-
               </dl>
               <dl>
                 <dt>Fabric Height</dt>
-                <dd>
+                <!-- <dd>
                   <template v-for="(cutLength, cutLengthIndex) in value.cutLengths" :key="cutLengthIndex">
                     <input type="radio" :value="cutLength" v-model="selectedPileHeight"
                       @change="emits('update:updateParameter', selectedPileHeight, selectedFabricWeight)" /><span>{{
                         cutLength }}mm</span>
                   </template>
+                </dd> -->
+                <dd>
+                  <RangeSlider v-model:range="IndexOfrangeHeight" :max="value.cutLengths.length - 1"
+                    @update:range="emits('update:updateParameter', value.cutLengths[IndexOfrangeHeight], value.fabricWeights[IndexOfrangeWeight])" />
+                  {{ value.cutLengths[IndexOfrangeHeight] }}mm
                 </dd>
               </dl>
             </details>
@@ -139,6 +148,7 @@ const props = withDefaults(
 const hue = ref(0);
 const selectedPileHeight = ref(props.item?.pileheight);
 const selectedFabricWeight = ref(props.item?.fabricWeight);
+const a = props.item?.fabricWeight
 const useHue = false;
 const rgb = ref('e10600');
 const pantoneName = ref('PMS 2347 C');
@@ -149,6 +159,9 @@ const rgb2Value = computed(() => {
 watch(() => props.item, (newValue) => {
   selectedPileHeight.value = newValue?.pileheight
   selectedFabricWeight.value = newValue?.fabricWeight
+  IndexOfrangeWeight.value = convertToNumber(rangeItems(newValue?.label)?.fabricWeights.indexOf(newValue?.fabricWeight))
+  IndexOfrangeHeight.value = convertToNumber(rangeItems(newValue?.label)?.cutLengths.indexOf(newValue?.pileheight))
+
 })
 
 const emits = defineEmits<{
@@ -160,7 +173,7 @@ const emits = defineEmits<{
 const normal = ref(true);
 const info = (e: string) => console.log(e);
 const fabricWeights = [1300, 1800, 2300, 500, 1000];
-const cutLengths = [51, 76, 89, 102, 15, 22];
+const cutLengths = [36, 53, 62, 71, 15, 22];
 const FabricDetails = [{
   labels: "Fox",
   cutLengths: [0, 1, 2, 3].map((i) => cutLengths[i]),
@@ -174,6 +187,23 @@ const FabricDetails = [{
 
 const filterItems = (label: string) => FabricDetails.filter(i => i.labels.includes(label))
 
+const rangeItems = (label: string) => FabricDetails.find(i => i.labels.includes(label))
+
+const rangeWeight = rangeItems(props.item?.label)?.fabricWeights.indexOf(props.item.fabricWeight)
+const rangeHeight = rangeItems(props.item?.label)?.cutLengths.indexOf(props.item.pileheight)
+function convertToNumber(value: number | undefined): number {
+  if (typeof value === 'number') {
+    return value;
+  } else {
+    // もしくは適切なデフォルト値を返すなどの処理を行う
+    return 0; // ここではデフォルト値として0を返していますが、適宜変更してください
+  }
+}
+const convertedRangeWeight: number = convertToNumber(rangeWeight);
+const convertedRangeHeight: number = convertToNumber(rangeHeight);
+
+const IndexOfrangeWeight = ref(convertedRangeWeight)
+const IndexOfrangeHeight = ref(convertedRangeHeight)
 </script>
 
 <style lang="scss" scoped>

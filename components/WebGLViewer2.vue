@@ -126,6 +126,7 @@ void main(void) {
     vec3 hsv2 = rgb2hsv(color.rgb);
     vec3 rgb = hsv2rgb(vec3(hsv1.x, hsv2.y, hsv2.z));
     oFragColor = vec4(rgb, color.a);
+    
 }
 `
   );
