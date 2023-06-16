@@ -27,6 +27,7 @@ const { isLoggedIn } = useAuth();
 .common {
   display: flex;
 
+
   >main {
     width: 100%;
     height: 100%;

@@ -21,8 +21,8 @@
     </div>
     <div class="detail-contents">
       <div class="preview">
-        <div>TIPCOLOR
-          <div class="tipcolor" :style="{ backgroundColor: '#' + rgb }"></div>
+        <div>CHIPCOLOR
+          <div class="chipcolor" :style="{ backgroundColor: '#' + rgb }"></div>
         </div>
         <WebGLViewer2 :fabricType="normal ? item.FabricType : item.ClothType" :value="rgb2Value" @update:info="info" />
 
@@ -284,7 +284,7 @@ const IndexOfrangeHeight = ref(convertedRangeHeight)
 
   }
 
-  .tipcolor {
+  .chipcolor {
     width: 100px;
     height: 50px;
   }
