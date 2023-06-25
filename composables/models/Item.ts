@@ -579,4 +579,4 @@ export const filterItems = (filter: Filter) => Items.filter(i => (!filter?.label
   && (!filter?.searchWord || (i.label + "\t" + i.FabricType).toLowerCase().includes(filter.searchWord.toLowerCase())))
 
 
-export const updateItems = (ePileHeight: number, eFabricWeight: number) => Items.find(i => i.pileheight == ePileHeight && i.fabricWeight == eFabricWeight) || null
+export const updateItems = (label :string ,ePileHeight: number, eFabricWeight: number) => Items.find(i => i.label == label&&i.pileheight == ePileHeight && i.fabricWeight == eFabricWeight) || null

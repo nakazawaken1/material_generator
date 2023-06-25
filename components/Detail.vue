@@ -45,7 +45,7 @@
                 </dd> -->
                 <dd>
                   <RangeSlider v-model:range="IndexOfrangeWeight" :max="value.fabricWeights.length - 1"
-                    @update:range="emits('update:updateParameter', value.cutLengths[IndexOfrangeHeight], value.fabricWeights[IndexOfrangeWeight])" />
+                    @update:range="emits('update:updateParameter', value.labels, value.cutLengths[IndexOfrangeHeight], value.fabricWeights[IndexOfrangeWeight])" />
                   {{ value.fabricWeights[IndexOfrangeWeight] }}g/m
                 </dd>
               </dl>
@@ -60,7 +60,7 @@
                 </dd> -->
                 <dd>
                   <RangeSlider v-model:range="IndexOfrangeHeight" :max="value.cutLengths.length - 1"
-                    @update:range="emits('update:updateParameter', value.cutLengths[IndexOfrangeHeight], value.fabricWeights[IndexOfrangeWeight])" />
+                    @update:range="emits('update:updateParameter', value.labels, value.cutLengths[IndexOfrangeHeight], value.fabricWeights[IndexOfrangeWeight])" />
                   {{ value.cutLengths[IndexOfrangeHeight] }}mm
                 </dd>
               </dl>
@@ -166,14 +166,14 @@ watch(() => props.item, (newValue) => {
 
 const emits = defineEmits<{
   (e: "update:isOpen", button: false): void;
-  (e: "update:updateParameter", selectedPileHeight: number | undefined, selectedFabricWeight: number | undefined): void;
+  (e: "update:updateParameter", label: string | undefined, IndexOfrangeHeight: number | undefined, IndexOfrangeWeight: number | undefined): void;
 }>();
 
 
 const normal = ref(true);
 const info = (e: string) => console.log(e);
-const fabricWeights = [1300, 1800, 2300, 500, 1000];
-const cutLengths = [36, 53, 62, 71, 15, 22];
+const fabricWeights = [1300, 1800, 2300, 500, 1000, 1000, 1500];
+const cutLengths = [36, 53, 62, 71, 15, 22, 22, 27];
 const FabricDetails = [{
   labels: "Fox",
   cutLengths: [0, 1, 2, 3].map((i) => cutLengths[i]),
@@ -182,6 +182,10 @@ const FabricDetails = [{
   labels: "Mink",
   cutLengths: [4, 5].map((i) => cutLengths[i]),
   fabricWeights: [3, 4].map((i) => fabricWeights[i]),
+}, {
+  labels: "Rabbit",
+  cutLengths: [6, 7].map((i) => cutLengths[i]),
+  fabricWeights: [5, 6].map((i) => fabricWeights[i]),
 }]
 
 

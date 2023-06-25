@@ -41,8 +41,8 @@ const emits = defineEmits<{
   (e: "update:isClose", button: false): void;
 }>();
 
-const updateParameter = (pileheightdata: any, fabricWeightdata: any) => {
-  detail.value = updateItems(pileheightdata, fabricWeightdata)
+const updateParameter = (label: any, pileheightdata: any, fabricWeightdata: any) => {
+  detail.value = updateItems(label, pileheightdata, fabricWeightdata)
   if (!detail.value) {
     detail.value = Empty_Items
   }
