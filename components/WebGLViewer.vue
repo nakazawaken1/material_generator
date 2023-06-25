@@ -21,7 +21,7 @@ const emits = defineEmits<{
 const loaded = ref(0);
 const loads = X * Y;
 const canvas = ref<HTMLCanvasElement | null>(null);
-let draw: () => void = () => {};
+let draw: () => void = () => { };
 watch(canvas, async (value) => {
   if (value) draw = await initialize(value);
 });
@@ -213,8 +213,7 @@ void main(void) {
   for (let x = 0; x < X; x++) {
     for (let y = 0; y < Y; y++) {
       const image = await load(
-        `${view.folder}${view.name}/x-${Math.floor(y) % Y}_${view.name}_1.${
-          X - (Math.floor(x) % X)
+        `${view.folder}${view.name}/x-${Math.floor(y) % Y}_${view.name}_1.${X - (Math.floor(x) % X)
         }.${view.extension}`
       );
       context.drawImage(image, 0, 0, W, H);
@@ -245,8 +244,7 @@ void main(void) {
     const rgb = hsv2rgb(changedHsv.h, changedHsv.s, changedHsv.v);
     emits(
       "update:info",
-      `${props.fabricType} H(${props.value.toFixed(2)}) RGB(${rgb.r}, ${
-        rgb.g
+      `${props.fabricType} H(${props.value.toFixed(2)}) RGB(${rgb.r}, ${rgb.g
       }, ${rgb.b}) x:${view.x.toFixed(1)} y:${view.y.toFixed(
         1
       )} z:${view.z.toFixed(1)}`
@@ -393,7 +391,7 @@ function hsv2rgb(h: number, s: number, v: number) {
   height: 512px;
   position: relative;
 
-  > label {
+  >label {
     position: absolute;
     left: 0;
     top: 0;
@@ -405,7 +403,7 @@ function hsv2rgb(h: number, s: number, v: number) {
     font-size: 20px;
   }
 
-  > canvas {
+  >canvas {
     width: 100%;
     height: 100%;
     display: block;

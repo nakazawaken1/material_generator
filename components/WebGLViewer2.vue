@@ -122,11 +122,8 @@ vec3 hsv2rgb(vec3 c)
 
 void main(void) {
     vec4 color = texture(uTexture, vec3(vTextureCoord, uIndex));
-    vec3 hsv1 = rgb2hsv(uRGB);
-    vec3 hsv2 = rgb2hsv(color.rgb);
-    vec3 rgb = hsv2rgb(vec3(hsv1.x, hsv2.y, hsv2.z));
-    oFragColor = vec4(rgb, color.a);
-    
+    vec3 hsv = rgb2hsv(color.rgb);
+    oFragColor = vec4(uRGB * hsv.z, color.a);
 }
 `
   );
@@ -413,4 +410,3 @@ function hsv2rgb(h: number, s: number, v: number) {
   }
 }
 </style>
-
