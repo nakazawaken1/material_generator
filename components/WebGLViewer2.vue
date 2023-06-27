@@ -1,6 +1,6 @@
 <template>
   <div class="WebGLViewer">
-    <canvas ref="canvas">キャンバスがサポートされていません</canvas>
+    <canvas ref="canvasElement">キャンバスがサポートされていません</canvas>
     <label v-if="loaded < loads">{{ loaded }} / {{ loads }}</label>
   </div>
 </template>
@@ -20,17 +20,19 @@ const emits = defineEmits<{
 }>();
 const loaded = ref(0);
 const loads = X * Y;
-const canvas = ref<HTMLCanvasElement | null>(null);
+const canvasElement = ref<HTMLCanvasElement | null>(null);
 let draw: () => void = () => { };
-watch(canvas, async (value) => {
-  if (value) draw = await initialize(value);
+let needInitializeCount = 0;
+watch(canvasElement, async (value) => {
+  if (value) {
+    draw = await initialize(value);
+  }
 });
 watch(
   () => props.fabricType,
   async (now, old) => {
-    console.log("initialize");
-    if (canvas.value) {
-      draw = await initialize(canvas.value);
+    if (canvasElement.value) {
+      draw = await initialize(canvasElement.value);
     }
   }
 );
@@ -40,7 +42,10 @@ watch(
     if (now != old) draw();
   }
 );
-async function initialize(canvas: HTMLCanvasElement) {
+async function initialize(canvas: HTMLCanvasElement): Promise<() => void> {
+  needInitializeCount++;
+  console.log("initialize : " + needInitializeCount);
+  if (needInitializeCount > 1) return () => { };
   const view = {
     h: 0,
     name: props.fabricType,
@@ -298,6 +303,11 @@ void main(void) {
     draw();
   };
   draw();
+  needInitializeCount--;
+  if (needInitializeCount > 0 && canvasElement.value) {
+    needInitializeCount = 0;
+    return initialize(canvasElement.value);
+  }
   return draw;
 }
 function rgb2hsv(r: number, g: number, b: number) {
