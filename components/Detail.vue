@@ -186,10 +186,6 @@ const FabricDetails = [{
   labels: "Rabbit",
   cutLengths: [6, 7].map((i) => cutLengths[i]),
   fabricWeights: [5, 6].map((i) => fabricWeights[i]),
-}, {
-  labels: "Racoon",
-  cutLengths: [8].map((i) => cutLengths[i]),
-  fabricWeights: [7].map((i) => fabricWeights[i]),
 }]
 
 
