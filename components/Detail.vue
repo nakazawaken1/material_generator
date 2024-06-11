@@ -42,7 +42,7 @@
                       @change="emits('update:updateParameter', selectedPileHeight, selectedFabricWeight)" /><span>{{
                         fabricWeight }}g/m</span>
                   </template>
-                </dd> -->
+</dd> -->
                 <dd>
                   <RangeSlider v-model:range="IndexOfrangeWeight" :max="value.fabricWeights.length - 1"
                     @update:range="emits('update:updateParameter', value.labels, value.cutLengths[IndexOfrangeHeight], value.fabricWeights[IndexOfrangeWeight])" />
@@ -257,7 +257,10 @@ const IndexOfrangeHeight = ref(convertedRangeHeight)
 
     details {
       padding-bottom: 3rem;
-      cursor: pointer;
+
+      >summary {
+        cursor: pointer;
+      }
 
       >dl {
         display: flex;

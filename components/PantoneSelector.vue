@@ -1,8 +1,7 @@
 <template>
   <ul class="PantoneSelector">
-    <li v-for="pair of PantoneRGBTable" :key="pair[0]" :style="{ '--color': '#' + pair[1] }" :title="pair[0]"
-      @click="emits('pickcolor', pair[1]), emits('colorname', pair[0])">
-      <a>{{ pair[0] }}</a>
+    <li v-for="pair of PantoneRGBTable" :key="pair[0]" :style="{ '--color': '#' + pair[1] }"
+      @click="emits('pickcolor', pair[1]), emits('colorname', pair[0])"><a :title="pair[0]"></a>
     </li>
   </ul>
 </template>
@@ -26,21 +25,26 @@ const emits = defineEmits<{
     height: 10px;
     background-color: var(--color);
     position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    cursor: pointer;
 
-    a {
-      display: block;
-      opacity: 0;
+    >a {
+      background-color: transparent;
 
-      &:hover {
+      &:hover::before {
+        content: attr(title);
+        display: block;
+        position: absolute;
+        left: 0;
+
+        top: -30px;
         z-index: 1;
         opacity: 1;
-        position: absolute;
-        bottom: 10px;
-        left: 0;
         background-color: #ffffff;
-        border-radius: 4px;
+        border-radius: 8px;
         border: 1px solid #999999;
-        padding: 2px;
+        padding: 2px 8px;
         white-space: nowrap;
       }
     }
