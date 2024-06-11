@@ -1,18 +1,23 @@
 <template>
-  <div class="Login">
-    <h1>Sign in</h1>
+  <div class="Login-container">
+    <i><img src="~/assets/icon/logo.png" alt=""></i>
+    <h1>welcome to TISSAVEL!</h1>
     <form>
       <template v-if="step === 0">
         <label for="email">Email address</label>
-        <input id="email" type="email" v-model="email" required />
+        <input id="email" type="email" v-model="email" placeholder="email" required />
       </template>
       <template v-else-if="step === 1">
         <label for="password">Password</label>
-        <input id="password" type="password" v-model="password" required />
+        <input id="password" type="password" v-model="password" placeholder="password" required />
       </template>
-      <Button @click.prevent="step++">Next</Button>
-      <Button @click.prevent="step--" :style="{ visibility: step === 1 ? 'visible' : 'hidden' }">Back</Button>
+      <Button id="n-button" @click.prevent="step++">next</Button>
+      <Button id="b-button" @click.prevent="step--" :style="{ visibility: step === 1 ? 'visible' : 'hidden' }">←
+        Back</Button>
     </form>
+  </div>
+  <div class="login-right">
+    <div class="login-right-bg"></div>
   </div>
 </template>
 
@@ -34,10 +39,29 @@ watch(step, (now, old) => {
 </script>
 
 <style lang="scss" scoped>
-.Login {
+.Login-container {
+  width: 50%;
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+
+
+  >i {
+    font-size: 5.5rem;
+    color: #1069e0;
+    margin-bottom: 50px;
+
+  }
+
   >h1 {
-    font-size: 6rem;
+    font-size: 3rem;
     margin-bottom: 4rem;
+    color: #5d5d5d;
+    font-weight: 300;
   }
 
   >form {
@@ -57,18 +81,229 @@ watch(step, (now, old) => {
     >input {
       border: none;
       border-bottom: 1px solid #818181;
+
+      >::placeholder {
+        color: #b2b2b2;
+      }
     }
 
     >button {
-      margin-top: 1rem;
+      margin-top: 2rem;
+    }
+
+    #email,
+    #password {
+      width: 400px;
+      height: 50px;
+      display: block;
+      border-radius: 12px;
+      border: none;
+      text-align: left;
+      box-sizing: border-box;
+      font-size: 16px;
+      margin-bottom: 10px;
+      background: #f8f8f8;
+      padding: 0 20px;
+    }
+
+    #n-button {
+      width: 400px;
+      cursor: pointer;
+      border-radius: 9px;
+      border: none;
+      color: #fff;
+      background-color: rgb(68, 68, 68);
+      height: 44px;
+      font-size: 1.8rem;
+      padding: 0 10px;
+      transition: .3s;
+
+      :active {
+        color: #fff;
+      }
+
+    }
+
+    #b-button {
+      border: none;
+      box-shadow: none;
+      background-color: #f6f1ed;
+      text-align: left;
+      width: 100px;
+      margin-top: 10px;
+
     }
   }
+}
 
-  height: 80vh;
+@media only screen and (max-width:1024px) {
+  .Login-container {
+    width: 100%;
+    height: 44vh;
+    justify-content: flex-start;
+
+    >i {
+      font-size: 4.5rem;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 2rem;
+
+    }
+
+    >form {
+      width: 43%;
+
+      >label {
+        width: 100%;
+        font-size: 1.2rem;
+      }
+
+      #email,
+      #password {
+        width: 100%;
+        height: 40px;
+        margin-bottom: 0;
+      }
+
+      #email,
+      #password {}
+
+      #n-button {
+        width: 100%;
+      }
+
+    }
+
+  }
+}
+
+@media only screen and (max-width:599px) {
+  .Login-container {
+    height: 47vh;
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+
+    }
+
+    >form {
+      width: 60%;
+
+      >label {
+        font-size: 1rem;
+      }
+
+      >input {
+        width: 100%;
+        height: 40px;
+        font-size: 1.3rem;
+
+        >::placeholder {}
+      }
+
+      #email,
+      #password {
+        height: 38px;
+        font-size: 1.3rem;
+        margin-bottom: 0;
+      }
+
+      .Button {
+        width: 100%;
+      }
+
+      #n-button {
+        width: 100%;
+        height: 38px;
+        font-size: 1.3rem;
+
+      }
+    }
+  }
+}
+
+.login-right {
+  width: 50%;
   display: flex;
-  flex-direction: column;
+  align-content: center;
   align-items: center;
-  justify-content: center;
 
+  &-bg {
+    animation: bgchange 30s ease infinite;
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+  }
+
+  @keyframes bgchange {
+    0% {
+      background-image: url(~/assets/login-bg1.jpg);
+    }
+
+    /*変化させたい*/
+    45% {
+      background-image: url(~/assets/login-bg2.jpg);
+    }
+
+    /*変化させたい*/
+    50% {
+      background-image: url(~/assets/login-bg3.jpg);
+    }
+
+    /*変化させたい*/
+    75% {
+      background-image: url(~/assets/login-bg4.jpg);
+    }
+
+    /*変化させたい*/
+    90% {
+      background-image: url(~/assets/login-bg5.jpg);
+    }
+
+    /*変化させたい*/
+    100% {
+      background-image: url(~/assets/login-bg6.jpg);
+    }
+
+    /*変化させたい色*/
+  }
+}
+
+@media only screen and (max-width:1024px) {
+
+  .login-right {
+    width: 100%;
+    height: 50vh;
+    align-items: flex-end;
+    margin-bottom: 40px;
+
+    &-bg {
+      height: 100%;
+      background-size: 55%;
+      background-position: 50% 100%;
+    }
+
+  }
+}
+
+@media only screen and (max-width:599px) {
+
+  .login-right {
+    height: 50vh;
+
+    &-bg {
+      height: 100%;
+      background-size: 80%;
+      background-position: 50% 95%;
+
+    }
+
+  }
 }
 </style>

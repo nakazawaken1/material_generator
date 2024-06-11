@@ -23,6 +23,9 @@ const confirm = ref(false)
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  background-color: #f6f1ed;
 }
 
 ol,
@@ -39,7 +42,7 @@ html {
 }
 
 body * {
-  font-size: 1.4rem;
+  font-size: 1.7rem;
 }
 </style>
 
@@ -47,6 +50,16 @@ body * {
 .layout {
 
   >header {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1em;
+    align-items: center;
+
+    >address {
+      cursor: pointer;
+    }
+
+    /*
     position: sticky;
     top: 0;
     display: flex;
@@ -56,14 +69,14 @@ body * {
     background-color: #222222;
     box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.16);
     color: #ffffff;
+    */
   }
 
   >div {
     min-height: 90vh;
+    height: 100vh;
   }
 
-  >footer {
-    height: 50vh;
-  }
+  >footer {}
 }
 </style>

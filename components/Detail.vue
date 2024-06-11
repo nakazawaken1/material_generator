@@ -1,92 +1,304 @@
 <template>
-  <Popup :isOpen="isOpen">
-    <article class="Detail" v-if="(item != null)">
-      <CloseButton class="close" @click="emits('update:isOpen', false)" />
+  <article v-if="item != null">
+    <div class="detail-header">
+      <div class="detail-title">
+        <h1>{{ item.FabricType }}</h1>
+      </div>
+      <div class="button-list">
+        <div class="close" @click="emits('update:isOpen', false), normal = true">
+          &lt;back</div>
+        <nav>
+          <div v-if="normal">View Fabric Motion</div>
+          <div @click="normal = false" v-if="normal">View Product Image</div>
+          <div v-if="normal">Download Production Details</div>
+          <div @click="normal = true" class="backimage" v-else>Back image Details
+          </div>
+          <div>Composition Check</div>
+          <div class="download" v-if="normal">Download File
+          </div>
+        </nav>
+      </div>
+    </div>
+    <div class="detail-contents">
+      <div class="preview">
+        <div>CHIPCOLOR
+          <div class="chipcolor" :style="{ backgroundColor: '#' + rgb }"></div>
+        </div>
+        <WebGLViewer2 :fabricType="normal ? item.FabricType : item.ClothType" :value="rgb2Value" @update:info="info" />
+
+      </div>
       <div class="parameter">
-        <header>
-          <h2>Fabric Modify</h2>
+        <template v-if="normal">
+          <div v-for="(value, index) in filterItems(item.label)" :key="value.labels">
+            <details>
+              <summary>
+                Fabric Modify
+              </summary>
+              <dl>
+                <dt> Fabric Weight</dt>
+                <!-- <dd>
+                  <template v-for="(fabricWeight, fabricWeightIndex) in value.fabricWeights" :key="fabricWeightIndex">
+                    <input type="radio" :value="fabricWeight" v-model="selectedFabricWeight"
+                      @change="emits('update:updateParameter', selectedPileHeight, selectedFabricWeight)" /><span>{{
+                        fabricWeight }}g/m</span>
+                  </template>
+</dd> -->
+                <dd>
+                  <RangeSlider v-model:range="IndexOfrangeWeight" :max="value.fabricWeights.length - 1"
+                    @update:range="emits('update:updateParameter', value.labels, value.cutLengths[IndexOfrangeHeight], value.fabricWeights[IndexOfrangeWeight])" />
+                  {{ value.fabricWeights[IndexOfrangeWeight] }}g/m
+                </dd>
+              </dl>
+              <dl>
+                <dt>Fabric Height</dt>
+                <!-- <dd>
+                  <template v-for="(cutLength, cutLengthIndex) in value.cutLengths" :key="cutLengthIndex">
+                    <input type="radio" :value="cutLength" v-model="selectedPileHeight"
+                      @change="emits('update:updateParameter', selectedPileHeight, selectedFabricWeight)" /><span>{{
+                        cutLength }}mm</span>
+                  </template>
+                </dd> -->
+                <dd>
+                  <RangeSlider v-model:range="IndexOfrangeHeight" :max="value.cutLengths.length - 1"
+                    @update:range="emits('update:updateParameter', value.labels, value.cutLengths[IndexOfrangeHeight], value.fabricWeights[IndexOfrangeWeight])" />
+                  {{ value.cutLengths[IndexOfrangeHeight] }}mm
+                </dd>
+              </dl>
+            </details>
+          </div>
+
+        </template>
+        <template v-else>
+          <h2>Product image Choose product design</h2>
           <dl>
-            <dt>Fabric Weight</dt>
-            <dd><input type="range" v-model="item.fabricWeight" :min="0" :max="100" /><span>{{ item.fabricWeight
-            }}</span>
-            </dd>
-            <dt>Fabric Height</dt>
-            <dd><input type="range" v-model="item.fabricHeight" :min="0" :max="100" /><span>{{ item.fabricHeight
-            }}</span>
-            </dd>
-            <dt>GH Ratio</dt>
-            <dd><input type="range" v-model="item.ghRatio" :min="0" :max="100" /><span>{{ item.ghRatio }}</span></dd>
-            <dt>GH Finess</dt>
-            <dd><input type="range" v-model="item.ghFiness" :min="0" :max="100" /><span>{{ item.ghFiness }}</span>
+            <dt></dt>
+            <dd>
+              <img :src="item.ClothImagePath" :width="50" />
             </dd>
           </dl>
-          <ul>
-            <li><label><input type="radio" name="type" v-model="item.type" value="Standard" />Standard</label></li>
-            <li><label><input type="radio" name="type" v-model="item.type" value="Sustainable" />Sustainable</label>
-            </li>
-          </ul>
-        </header>
-        <footer>
-          <label>Color Modify</label>
-          <input type="color" />
-          <label>Pantone</label>
-          <span>#ffffff</span>
-        </footer>
+        </template>
+        <details>
+          <summary>
+            Color Modify
+          </summary>
+          <dl>
+            <dt></dt>
+            <dd v-if="useHue">
+              <input type="range" min="0" max="1" step="0.01" v-model.number="hue" />
+              <span>{{ hue }}</span>
+            </dd>
+            <dd v-else style="padding-left: 0">
+              <PantoneSelector @pickcolor="rgb = $event" @colorname=" pantoneName = $event" />
+            </dd>
+          </dl>
+        </details>
+
+        <details>
+          <summary>Fabric Information</summary>
+
+          <dl>
+            <dt>Fabric Number</dt>
+            <dd>{{ item.FabricType }}</dd>
+          </dl>
+          <dl>
+            <dt>Modacrylic</dt>
+            <dd>{{ item.ghRatio }}%</dd>
+          </dl>
+          <dl>
+            <dt>Recycled polyester</dt>
+            <dd>{{ 100 - item.ghRatio }}%</dd>
+          </dl>
+          <dl>
+            <dt>Pile Height</dt>
+            <dd>{{ item.pileheight }}mm</dd>
+          </dl>
+          <dl>
+            <dt>Fabric Weight</dt>
+            <dd>{{ item.fabricWeight }}g/m(width: {{ item.width }})</dd>
+          </dl>
+          <dl>
+            <dt>Color</dt>
+            <dd>
+              {{ pantoneName }}
+            </dd>
+          </dl>
+        </details>
+        <div class="info">
+          <footer></footer>
+        </div>
       </div>
-      <div class="preview">
-        <img src="~/assets/fox.jpg" />
-        <ul>
-          <li><img src="~/assets/fox2.jpg" /></li>
-          <li><img src="~/assets/fox3.jpg" /></li>
-        </ul>
-      </div>
-      <div class="info">
-        <h2>Fabric Information</h2>
-        <dl>
-          <dt>Fabric Number</dt>
-          <dd>00000000</dd>
-          <dt>Composition</dt>
-          <dd>
-            <dl>
-              <dt>Modacrylic</dt>
-              <dd>70%</dd>
-              <dt>Recycled polyester</dt>
-              <dd>30%</dd>
-            </dl>
-          </dd>
-          <dt>Pile Height</dt>
-          <dd>102mm</dd>
-          <dt>Fabric Weight</dt>
-          <dd>1,800g/wm(width 153cm)</dd>
-          <dt>Color</dt>
-          <dd>TGX#8888</dd>
-        </dl>
-        <footer><Button>Composition Check</Button></footer>
-      </div>
-      <Button>View Fabric Motion</Button>
-      <Button>View Product Image</Button>
-      <Button>Download Production Details</Button>
-      <Button class="download">Download File</Button>
-    </article>
-  </Popup>
+
+    </div>
+  </article>
 </template>
 
 <script lang="ts" setup>
-import { Item } from "~~/composables/models/Item"
-export interface Props {
-  isOpen: boolean,
-  item: Item | null,
-}
-export interface Emits {
-  (e: "update:isOpen", button: false): void
-}
-const props = withDefaults(defineProps<Props>(), {
-  isOpen: false
+import { emit } from "process";
+import { Item, } from "~~/composables/models/Item";
+
+const props = withDefaults(
+  defineProps<{
+    isOpen: boolean;
+    item: Item;
+  }>(),
+  {
+    isOpen: false,
+  }
+);
+const hue = ref(0);
+const selectedPileHeight = ref(props.item?.pileheight);
+const selectedFabricWeight = ref(props.item?.fabricWeight);
+const a = props.item?.fabricWeight
+const useHue = false;
+const rgb = ref('e10600');
+const pantoneName = ref('PMS 2347 C');
+const rgb2Value = computed(() => {
+  const c = parseInt(rgb.value, 16);
+  return { r: (c >> 16 & 0xff) / 255, g: (c >> 8 & 0xff) / 255, b: (c & 0xff) / 255 }
+});
+watch(() => props.item, (newValue) => {
+  selectedPileHeight.value = newValue?.pileheight
+  selectedFabricWeight.value = newValue?.fabricWeight
+  IndexOfrangeWeight.value = convertToNumber(rangeItems(newValue?.label)?.fabricWeights.indexOf(newValue?.fabricWeight))
+  IndexOfrangeHeight.value = convertToNumber(rangeItems(newValue?.label)?.cutLengths.indexOf(newValue?.pileheight))
+
 })
-const emits = defineEmits<Emits>()
+
+const emits = defineEmits<{
+  (e: "update:isOpen", button: false): void;
+  (e: "update:updateParameter", label: string | undefined, IndexOfrangeHeight: number | undefined, IndexOfrangeWeight: number | undefined): void;
+}>();
+
+
+const normal = ref(true);
+const info = (e: string) => console.log(e);
+const fabricWeights = [1300, 1800, 2300, 500, 1000, 1000, 1500];
+const cutLengths = [36, 53, 62, 71, 15, 22, 22, 27];
+const FabricDetails = [{
+  labels: "Fox",
+  cutLengths: [0, 1, 2, 3].map((i) => cutLengths[i]),
+  fabricWeights: [0, 1, 2].map((i) => fabricWeights[i]),
+}, {
+  labels: "Mink",
+  cutLengths: [4, 5].map((i) => cutLengths[i]),
+  fabricWeights: [3, 4].map((i) => fabricWeights[i]),
+}, {
+  labels: "Rabbit",
+  cutLengths: [6, 7].map((i) => cutLengths[i]),
+  fabricWeights: [5, 6].map((i) => fabricWeights[i]),
+}]
+
+
+const filterItems = (label: string) => FabricDetails.filter(i => i.labels.includes(label))
+
+const rangeItems = (label: string) => FabricDetails.find(i => i.labels.includes(label))
+
+const rangeWeight = rangeItems(props.item?.label)?.fabricWeights.indexOf(props.item.fabricWeight)
+const rangeHeight = rangeItems(props.item?.label)?.cutLengths.indexOf(props.item.pileheight)
+function convertToNumber(value: number | undefined): number {
+  if (typeof value === 'number') {
+    return value;
+  } else {
+    // もしくは適切なデフォルト値を返すなどの処理を行う
+    return 0; // ここではデフォルト値として0を返していますが、適宜変更してください
+  }
+}
+const convertedRangeWeight: number = convertToNumber(rangeWeight);
+const convertedRangeHeight: number = convertToNumber(rangeHeight);
+
+const IndexOfrangeWeight = ref(convertedRangeWeight)
+const IndexOfrangeHeight = ref(convertedRangeHeight)
 </script>
 
 <style lang="scss" scoped>
+.detail-title {
+  display: flex;
+  justify-content: center;
+
+  >h1 {
+    font: small-caps bold 24px/1 sans-serif;
+  }
+}
+
+.button-list {
+  padding-bottom: 7.5424rem;
+
+  .close {
+    cursor: pointer;
+    padding: 0 0 1.32rem 1.32rem;
+  }
+
+  >nav {
+    display: flex;
+    justify-content: space-around;
+    background-color: #e2e2e2;
+    padding: 10px;
+    align-items: center;
+
+    >div {
+      background-color: transparent;
+      color: #818181;
+      cursor: pointer;
+    }
+  }
+}
+
+.detail-contents {
+  display: flex;
+  padding-left: 3rem;
+
+
+
+  .parameter {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-left: 7rem;
+
+    details {
+      padding-bottom: 3rem;
+
+      >summary {
+        cursor: pointer;
+      }
+
+      >dl {
+        display: flex;
+        padding-top: 2rem;
+        margin-left: 2rem;
+
+        >dt {
+          padding-left: 2rem;
+        }
+
+        >dd {
+          padding-left: 1.768rem;
+          padding-bottom: 1.234121rem;
+
+          >span {
+            padding-left: 1.543rem;
+            ;
+          }
+        }
+      }
+
+      .color-modify {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+
+  }
+
+  .chipcolor {
+    width: 100px;
+    height: 50px;
+  }
+}
+
+
+
 article.Detail {
   display: grid;
   grid-template-columns: auto 1fr 1fr;
@@ -100,6 +312,8 @@ article.Detail {
     position: absolute;
     right: -2rem;
     top: -2rem;
+
+
   }
 
   .parameter {
@@ -141,6 +355,8 @@ article.Detail {
     grid-row: 1 / 3;
     grid-column: 2 / 4;
     position: relative;
+    background-color: #7f7f7f;
+
 
     >img {
       width: 60rem;
@@ -160,6 +376,9 @@ article.Detail {
     }
   }
 
+
+
+
   .info {
     padding: 1rem;
     border: 1px solid #818181;
@@ -178,6 +397,10 @@ article.Detail {
   }
 
   .download {
+    grid-column: 2 / 4;
+  }
+
+  .backimage {
     grid-column: 2 / 4;
   }
 }
