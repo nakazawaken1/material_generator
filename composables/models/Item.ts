@@ -856,7 +856,32 @@ export const Items: Item[] = [
     ClothImagePath: "./WT08-03.png",
     Imagepath: "./WT08-03.png",
     Order: 22,
-  },
+  },{
+    label: 'Mongolian',
+    FabricType: "TG021-19",
+    KnittingType: "none",
+    Silvernumbers: "none",
+    SharlingCur: "none",
+    Chipprint: "none",
+    width: 153,
+    fabricWeight: 1100,
+    minfabricWeight: 1100,
+    maxfabricWeight: 1100,
+    stepfabricWeight: 500,
+    pileheight: 110,
+    minpileheight: 110,
+    maxpileheight: 110,
+    steppileheight: 1,
+    ghFiness: 5,
+    ghRatio: 70,
+    Imagelabel: "png",
+    Color: "none",
+    ClothType: "TG021-19",
+    ClothImagePath: "./TG021-19.png",
+    Imagepath: "./TG021-19.png",
+    Order: 22,
+  }
+  
 ]
 
 export interface Filter {
