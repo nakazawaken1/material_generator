@@ -1,101 +1,23 @@
 <template>
-  <article v-if="item != null">
-    <div class="detail-header">
-      <div class="detail-title">
-        <h1>{{ item.FabricType }}</h1>
-      </div>
-      <div class="button-list">
-        <div class="close" @click="emits('update:isOpen', false), normal = true">
-          &lt;back</div>
-        <nav>
-          <div v-if="normal">View Fabric Motion</div>
-          <div @click="normal = false" v-if="normal">View Product Image</div>
-          <div v-if="normal">Download Production Details</div>
-          <div @click="normal = true" class="backimage" v-else>Back image Details
-          </div>
-          <div>Composition Check</div>
-          <div class="download" v-if="normal">Download File
-          </div>
-        </nav>
-      </div>
+  <article>
+    <div class="detail-title">
+      <h1>{{ item.FabricType }}</h1>
     </div>
     <div class="detail-contents">
       <div class="preview">
-        <div>CHIPCOLOR
-          <div class="chipcolor" :style="{ backgroundColor: '#' + rgb }"></div>
+        <div class="viewer">
+          <WebGLViewer2 :fabricType="normal ? item.FabricType : item.ClothType" :value="rgb2Value"
+            @update:info="info" />
         </div>
-        <WebGLViewer2 :fabricType="normal ? item.FabricType : item.ClothType" :value="rgb2Value" @update:info="info" />
-
+        <div class="chipcolor">
+          <header :style="{ backgroundColor: `rgb(${color.rgb})` }"></header>
+          <div>{{ color.code }}</div>
+          <label>{{ color.name }}</label>
+        </div>
       </div>
       <div class="parameter">
-        <template v-if="normal">
-          <div v-for="(value, index) in filterItems(item.label)" :key="value.labels">
-            <details>
-              <summary>
-                Fabric Modify
-              </summary>
-              <dl>
-                <dt> Fabric Weight</dt>
-                <!-- <dd>
-                  <template v-for="(fabricWeight, fabricWeightIndex) in value.fabricWeights" :key="fabricWeightIndex">
-                    <input type="radio" :value="fabricWeight" v-model="selectedFabricWeight"
-                      @change="emits('update:updateParameter', selectedPileHeight, selectedFabricWeight)" /><span>{{
-                        fabricWeight }}g/m</span>
-                  </template>
-</dd> -->
-                <dd>
-                  <RangeSlider v-model:range="IndexOfrangeWeight" :max="value.fabricWeights.length - 1"
-                    @update:range="emits('update:updateParameter', value.labels, value.cutLengths[IndexOfrangeHeight], value.fabricWeights[IndexOfrangeWeight])" />
-                  {{ value.fabricWeights[IndexOfrangeWeight] }}g/m
-                </dd>
-              </dl>
-              <dl>
-                <dt>Fabric Height</dt>
-                <!-- <dd>
-                  <template v-for="(cutLength, cutLengthIndex) in value.cutLengths" :key="cutLengthIndex">
-                    <input type="radio" :value="cutLength" v-model="selectedPileHeight"
-                      @change="emits('update:updateParameter', selectedPileHeight, selectedFabricWeight)" /><span>{{
-                        cutLength }}mm</span>
-                  </template>
-                </dd> -->
-                <dd>
-                  <RangeSlider v-model:range="IndexOfrangeHeight" :max="value.cutLengths.length - 1"
-                    @update:range="emits('update:updateParameter', value.labels, value.cutLengths[IndexOfrangeHeight], value.fabricWeights[IndexOfrangeWeight])" />
-                  {{ value.cutLengths[IndexOfrangeHeight] }}mm
-                </dd>
-              </dl>
-            </details>
-          </div>
-
-        </template>
-        <template v-else>
-          <h2>Product image Choose product design</h2>
-          <dl>
-            <dt></dt>
-            <dd>
-              <img :src="item.ClothImagePath" :width="50" />
-            </dd>
-          </dl>
-        </template>
-        <details>
-          <summary>
-            Color Modify
-          </summary>
-          <dl>
-            <dt></dt>
-            <dd v-if="useHue">
-              <input type="range" min="0" max="1" step="0.01" v-model.number="hue" />
-              <span>{{ hue }}</span>
-            </dd>
-            <dd v-else style="padding-left: 0">
-              <PantoneSelector @pickcolor="rgb = $event" @colorname=" pantoneName = $event" />
-            </dd>
-          </dl>
-        </details>
-
-        <details>
+        <details open>
           <summary>Fabric Information</summary>
-
           <dl>
             <dt>Fabric Number</dt>
             <dd>{{ item.FabricType }}</dd>
@@ -123,52 +45,84 @@
             </dd>
           </dl>
         </details>
-        <div class="info">
-          <footer></footer>
-        </div>
-      </div>
 
+        <template v-if="normal">
+          <div v-for="(value, index) in filterItems(item.label)" :key="value.labels">
+            <details>
+              <summary>
+                Fabric Modify
+              </summary>
+              <dl>
+                <dt>Fabric Weight</dt>
+                <dd>
+                  <RangeSlider v-model:range="IndexOfrangeWeight" :max="value.fabricWeights.length - 1"
+                    @update:range="emits('update:updateParameter', value.labels, value.cutLengths[IndexOfrangeHeight], value.fabricWeights[IndexOfrangeWeight])" />
+                  {{ value.fabricWeights[IndexOfrangeWeight] }}g/m
+                </dd>
+              </dl>
+              <dl>
+                <dt>Fabric Height</dt>
+                <dd>
+                  <RangeSlider v-model:range="IndexOfrangeHeight" :max="value.cutLengths.length - 1"
+                    @update:range="emits('update:updateParameter', value.labels, value.cutLengths[IndexOfrangeHeight], value.fabricWeights[IndexOfrangeWeight])" />
+                  {{ value.cutLengths[IndexOfrangeHeight] }}mm
+                </dd>
+              </dl>
+            </details>
+          </div>
+        </template>
+        <details>
+          <summary>
+            Color Modify
+          </summary>
+          <dl>
+            <dd v-if="useHue">
+              <input type="range" min="0" max="1" step="0.01" v-model.number="hue" />
+              <span>{{ hue }}</span>
+            </dd>
+            <dd v-else style="padding-left: 0">
+              <PantoneSelector v-model="color" />
+            </dd>
+          </dl>
+        </details>
+        <nav>
+          <Button @click.stop="normal = !normal">{{ normal ? 'Garment' : 'Fabric' }} simulation</Button>
+        </nav>
+      </div>
     </div>
   </article>
 </template>
 
 <script lang="ts" setup>
-import { emit } from "process";
-import { Item, } from "~~/composables/models/Item";
+import type { Item } from "@/composables/models/Item";
 
-const props = withDefaults(
-  defineProps<{
-    isOpen: boolean;
-    item: Item;
-  }>(),
-  {
-    isOpen: false,
-  }
-);
+const props = defineProps<{
+  modelValue: Item
+}>()
+const item = computed(() => props.modelValue)
 const hue = ref(0);
-const selectedPileHeight = ref(props.item?.pileheight);
-const selectedFabricWeight = ref(props.item?.fabricWeight);
-const a = props.item?.fabricWeight
+const selectedPileHeight = ref(item.value.pileheight);
+const selectedFabricWeight = ref(item.value.fabricWeight);
+const a = item.value.fabricWeight
 const useHue = false;
-const rgb = ref('e10600');
+const colors = useColors()
+const color = ref(colors[0]);
 const pantoneName = ref('PMS 2347 C');
 const rgb2Value = computed(() => {
-  const c = parseInt(rgb.value, 16);
-  return { r: (c >> 16 & 0xff) / 255, g: (c >> 8 & 0xff) / 255, b: (c & 0xff) / 255 }
+  const a = color.value.rgb.split(',').map(i => Number(i) / 255)
+  return { r: a[0], g: a[1], b: a[2] }
 });
-watch(() => props.item, (newValue) => {
+watch(() => item.value, (newValue) => {
   selectedPileHeight.value = newValue?.pileheight
   selectedFabricWeight.value = newValue?.fabricWeight
   IndexOfrangeWeight.value = convertToNumber(rangeItems(newValue?.label)?.fabricWeights.indexOf(newValue?.fabricWeight))
   IndexOfrangeHeight.value = convertToNumber(rangeItems(newValue?.label)?.cutLengths.indexOf(newValue?.pileheight))
-
 })
 
 const emits = defineEmits<{
-  (e: "update:isOpen", button: false): void;
+  (e: "update:modelValue", item: Item | null): void;
   (e: "update:updateParameter", label: string | undefined, IndexOfrangeHeight: number | undefined, IndexOfrangeWeight: number | undefined): void;
 }>();
-
 
 const normal = ref(true);
 const info = (e: string) => console.log(e);
@@ -193,8 +147,8 @@ const filterItems = (label: string) => FabricDetails.filter(i => i.labels.includ
 
 const rangeItems = (label: string) => FabricDetails.find(i => i.labels.includes(label))
 
-const rangeWeight = rangeItems(props.item?.label)?.fabricWeights.indexOf(props.item.fabricWeight)
-const rangeHeight = rangeItems(props.item?.label)?.cutLengths.indexOf(props.item.pileheight)
+const rangeWeight = rangeItems(item.value?.label)?.fabricWeights.indexOf(item.value.fabricWeight)
+const rangeHeight = rangeItems(item.value?.label)?.cutLengths.indexOf(item.value.pileheight)
 function convertToNumber(value: number | undefined): number {
   if (typeof value === 'number') {
     return value;
@@ -212,6 +166,7 @@ const IndexOfrangeHeight = ref(convertedRangeHeight)
 
 <style lang="scss" scoped>
 .detail-title {
+  padding-bottom: 1.5em;
   display: flex;
   justify-content: center;
 
@@ -220,40 +175,49 @@ const IndexOfrangeHeight = ref(convertedRangeHeight)
   }
 }
 
-.button-list {
-  padding-bottom: 7.5424rem;
+.detail-contents {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  position: relative;
 
-  .close {
-    cursor: pointer;
-    padding: 0 0 1.32rem 1.32rem;
+  nav {
+    padding: 14px 0 0 0;
   }
 
-  >nav {
+  .viewer {
     display: flex;
-    justify-content: space-around;
-    background-color: #e2e2e2;
-    padding: 10px;
-    align-items: center;
+    justify-content: center;
+  }
+
+  .chipcolor {
+    display: inline-flex;
+    flex-direction: column;
+    background-color: #fff;
+    position: absolute;
+    left: 20px;
+    top: -40px;
+    zoom: 80%;
+
+    >header {
+      height: 80px;
+    }
 
     >div {
-      background-color: transparent;
-      color: #818181;
-      cursor: pointer;
+      padding: 2px 5px;
+      color: #666;
+    }
+
+    >label {
+      padding: 2px 5px;
     }
   }
-}
-
-.detail-contents {
-  display: flex;
-  padding-left: 3rem;
-
-
 
   .parameter {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding-left: 7rem;
+    padding-left: 10px;
+    min-width: 460px;
 
     details {
       padding-bottom: 3rem;
@@ -269,6 +233,9 @@ const IndexOfrangeHeight = ref(convertedRangeHeight)
 
         >dt {
           padding-left: 2rem;
+          &::after {
+            content: " :";
+          }
         }
 
         >dd {
@@ -287,121 +254,6 @@ const IndexOfrangeHeight = ref(convertedRangeHeight)
         flex-direction: column;
       }
     }
-
-
-  }
-
-  .chipcolor {
-    width: 100px;
-    height: 50px;
-  }
-}
-
-
-
-article.Detail {
-  display: grid;
-  grid-template-columns: auto 1fr 1fr;
-  gap: 0.5rem;
-  background-color: #ffffff;
-  box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.4);
-  padding: 1rem 2rem;
-  position: relative;
-
-  .close {
-    position: absolute;
-    right: -2rem;
-    top: -2rem;
-
-
-  }
-
-  .parameter {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    border: 1px solid #818181;
-
-    >header {
-      padding: 1rem;
-
-      >dl {
-        margin: 1rem 0;
-
-        dd {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-        }
-      }
-
-      >ul {
-        display: flex;
-        gap: 1rem;
-      }
-    }
-
-    >footer {
-      padding: 1rem;
-      border-left: 1px solid #818181;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-evenly;
-    }
-  }
-
-  .preview {
-    border: 1px solid #818181;
-    grid-row: 1 / 3;
-    grid-column: 2 / 4;
-    position: relative;
-    background-color: #7f7f7f;
-
-
-    >img {
-      width: 60rem;
-    }
-
-    >ul {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-
-      >li {
-        >img {
-          width: 4rem;
-          cursor: pointer;
-        }
-      }
-    }
-  }
-
-
-
-
-  .info {
-    padding: 1rem;
-    border: 1px solid #818181;
-    grid-row: 2 / 4;
-
-    >dl {
-      margin: 1rem 0;
-      display: grid;
-      grid-template-columns: max-content 1fr;
-      gap: 0.5rem;
-    }
-
-    >footer {
-      text-align: center;
-    }
-  }
-
-  .download {
-    grid-column: 2 / 4;
-  }
-
-  .backimage {
-    grid-column: 2 / 4;
   }
 }
 </style>

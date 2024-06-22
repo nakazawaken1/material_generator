@@ -23,7 +23,8 @@ export interface Item {
   Imagepath: string,
   Order: number,
 }
-export const Empty_Items: Item = {
+
+export const emptyItem: Item = {
   label: 'noneitem',
   FabricType: "Noneitem",
   KnittingType: "none",
@@ -881,15 +882,13 @@ export const Items: Item[] = [
     Imagepath: "./TG021-19.png",
     Order: 22,
   }
-  
 ]
 
 export interface Filter {
-  labels?: string[];
-  searchWord?: string;
+  labels: string[];
+  searchWord: string;
 }
-export const filterItems = (filter: Filter) => Items.filter(i => (!filter?.labels || filter.labels.length == 0 || filter.labels.includes(i.label))
-  && (!filter?.searchWord || (i.label + "\t" + i.FabricType).toLowerCase().includes(filter.searchWord.toLowerCase())))
 
+export const filterItems = (filter: Filter) => filter.searchWord ? Items.filter(i => (i.label + "\t" + i.FabricType).toLowerCase().includes(filter.searchWord.toLowerCase())) : Items.filter(i => (filter.labels.length == 0 || filter.labels.includes(i.label)))
 
 export const updateItems = (label :string ,ePileHeight: number, eFabricWeight: number) => Items.find(i => i.label == label&&i.pileheight == ePileHeight && i.fabricWeight == eFabricWeight) || null

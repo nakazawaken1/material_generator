@@ -1,6 +1,6 @@
 <template>
   <div class="table-wrapper">
-    <table class="SearchedComposition" v-if="detail == null">
+    <table class="SearchedComposition">
       <thead>
         <tr>
           <th></th>
@@ -11,7 +11,7 @@
           <th>Image</th>
         </tr>
       </thead>
-      <tbody v-for="(item, n) in filterItems(props)" :key="n" @click="detail = item, emits('update:isClose', false)">
+      <tbody v-for="(item, n) in filterItems(props)" :key="n" @click="emits('update:modelValue', item)">
         <tr>
           <td>{{ n + 1 }}</td>
           <td>{{ item.FabricType }}</td>
@@ -25,30 +25,18 @@
       </tbody>
     </table>
   </div>
-  <Detail :item="detail" :isOpen="detail != null" @update:isOpen="detail = null, emits('update:isOpen', false)"
-    @update:updateParameter="updateParameter" />
 </template>
 
 <script lang="ts" setup>
-import { Item, filterItems, Items, updateItems, Empty_Items } from "~~/composables/models/Item";
+import type { Item } from "@/composables/models/Item";
+import { filterItems } from "@/composables/models/Item";
 const props = defineProps<{
-  labels?: string[];
-  searchWord?: string;
+  labels: string[];
+  searchWord: string;
 }>();
-const detail = ref<Item | null>(null);
 const emits = defineEmits<{
-  (e: "update:isOpen", button: false): void;
-  (e: "update:isClose", button: false): void;
+  (e: "update:modelValue", value: Item): void;
 }>();
-
-const updateParameter = (label: any, pileheightdata: any, fabricWeightdata: any) => {
-  detail.value = updateItems(label, pileheightdata, fabricWeightdata)
-  if (!detail.value) {
-    detail.value = Empty_Items
-  }
-}
-const detailItems = ref<Item | null>(null);
-
 </script>
 
 <style lang="scss" scoped>
@@ -107,9 +95,6 @@ const detailItems = ref<Item | null>(null);
       padding: 10px;
       text-align: center;
     }
-
-    th,
-    td.head {}
   }
 }
 </style>

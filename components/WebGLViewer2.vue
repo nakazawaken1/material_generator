@@ -411,6 +411,7 @@ function hsv2rgb(h: number, s: number, v: number) {
     align-items: center;
     justify-content: center;
     font-size: 20px;
+    background-color: rgba(255, 255, 255, 0.5);
   }
 
   >canvas {

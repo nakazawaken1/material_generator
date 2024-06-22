@@ -1,17 +1,16 @@
 <template>
   <ul class="PantoneSelector">
-    <li v-for="pair of PantoneRGBTable" :key="pair[0]" :style="{ '--color': '#' + pair[1] }"
-      @click="emits('pickcolor', pair[1]), emits('colorname', pair[0])"><a :title="pair[0]"></a>
+    <li v-for="color of colors" :key="color.code" :style="{ '--color': `rgb(${color.rgb})` }"
+      @click="emits('update:modelValue', color)"><a :title="color.code + ' ' + color.name"></a>
     </li>
   </ul>
 </template>
 
 <script setup lang="ts">
-import { PantoneRGBTable } from '~~/composables/PantoneRGBTable';
 const emits = defineEmits<{
-  (e: "pickcolor", color: string): void;
-  (e: "colorname", color: string): void;
-}>();
+  (e: "update:modelValue", modelValue: Color): void
+}>()
+const colors = useColors()
 </script>
 
 <style lang="scss" scoped>
