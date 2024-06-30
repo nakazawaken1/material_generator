@@ -8,11 +8,11 @@
 <script lang="ts" setup>
 const W = 1024;
 const H = 1024;
-const X = 17;
-const Y = 7;
+const X = 11;
+const Y = 6;
 const props = defineProps<{
   fabricType: string;
-  value: { r: number, g: number, b: number };
+  value: { r: number, g: number, b: number } | null;
   info?: string;
 }>();
 const emits = defineEmits<{
@@ -106,6 +106,7 @@ out vec4 oFragColor;
 uniform sampler2DArray uTexture;
 uniform vec3 uRGB;
 uniform float uIndex;
+uniform bool uOriginal;
 
 vec3 rgb2hsv(vec3 c)
 {
@@ -127,8 +128,7 @@ vec3 hsv2rgb(vec3 c)
 
 void main(void) {
     vec4 color = texture(uTexture, vec3(vTextureCoord, uIndex));
-    vec3 hsv = rgb2hsv(color.rgb);
-    oFragColor = vec4(uRGB * hsv.z, color.a);
+    oFragColor = uOriginal ? color.rgba : vec4(uRGB * rgb2hsv(color.rgb).z, color.a);
 }
 `
   );
@@ -156,6 +156,7 @@ void main(void) {
   const uRGB = gl.getUniformLocation(program, "uRGB");
   const uIndex = gl.getUniformLocation(program, "uIndex");
   const uTexture = gl.getUniformLocation(program, "uTexture");
+  const uOriginal = gl.getUniformLocation(program, "uOriginal");
 
   const positionBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
@@ -250,8 +251,7 @@ void main(void) {
     drawing = true;
     emits(
       "update:info",
-      `${props.fabricType} RGB(${Math.floor(props.value.r * 256)}, ${Math.floor(props.value.g * 256)
-      }, ${Math.floor(props.value.b * 256)}) x:${view.x.toFixed(1)} y:${view.y.toFixed(
+      `${props.fabricType} RGB(${props.value?.r}, ${props.value?.g}, ${props.value?.b}) x:${view.x.toFixed(1)} y:${view.y.toFixed(
         1
       )} z:${view.z.toFixed(1)} i:${Math.trunc(view.x) * Y + Math.trunc(view.y)}`
     );
@@ -277,7 +277,12 @@ void main(void) {
     gl.uniform2f(uResolution, W, H);
     gl.uniform1f(uIndex, Math.trunc(view.x) * Y + Math.trunc(view.y));
     gl.uniform1i(uTexture, 0);
-    gl.uniform3f(uRGB, props.value.r, props.value.g, props.value.b);
+    if(props.value) {
+      gl.uniform1i(uOriginal, 0);
+      gl.uniform3f(uRGB, props.value.r, props.value.g, props.value.b);
+    } else {
+      gl.uniform1i(uOriginal, 1);
+    }
 
     gl.drawArrays(gl.TRIANGLES, 0, 6);
     gl.flush();
@@ -289,8 +294,8 @@ void main(void) {
   canvas.onmousemove = (e: MouseEvent) => {
     if (view.dragging) {
       view.x += e.movementX / X;
-      while (view.x < 0) view.x += X;
-      while (view.x >= X) view.x -= X;
+      if(view.x < 0) view.x = 0;
+      else if(view.x >= X) view.x = X - 1;
       view.y += e.movementY / Y;
       if (view.y < 0) view.y = 0;
       else if (view.y >= Y) view.y = Y - 1;
@@ -397,8 +402,8 @@ function hsv2rgb(h: number, s: number, v: number) {
 
 <style lang="scss" scoped>
 .WebGLViewer {
-  width: 512px;
-  height: 512px;
+  width: 640px;
+  height: 640px;
   position: relative;
 
   >label {

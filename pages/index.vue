@@ -1,10 +1,10 @@
 <template>
   <div class="common" v-if="isLoggedIn()">
-    <Sidebar v-model:labels="labels" @update:labels="item = null" @top="item = null" />
+    <Sidebar v-model:labels="labels" @click="click" />
     <main>
       <div class="loading" :class="{ loaded }"></div>
       <div class="generator">
-        <nav class="search-navigation">
+        <nav class="search-navigation" v-if="!hasCatWalk">
           <div class="button-list" v-if="item">
             <div class="close" @click="item = null">
               &lt; back
@@ -18,24 +18,28 @@
           </div>
 
           <div class="show-button">
-            <input id="composition" type="radio" :value="true" v-model="isListView" />
-            <label class="composition" for="composition">
-              <i class="fa-regular fa-list" :class="{ checked: isListView }"></i>
+            <input id="image" type="radio" :value="false" v-model="isCloth" @change="item = null"/>
+            <label class="image" for="image">
+              <i class="fa-regular fa-border-all" :class="{ checked: !isCloth }"></i>
             </label>
 
-            <input id="image" type="radio" :value="false" v-model="isListView" />
-            <label class="image" for="image">
-              <i class="fa-regular fa-border-all" :class="{ checked: !isListView }"></i>
+            <input id="composition" type="radio" :value="true" v-model="isCloth" @change="item = null" />
+            <label class="composition" for="composition">
+              <i class="fa-regular fa-shirt" :class="{ checked: isCloth }"></i>
             </label>
           </div>
         </nav>
 
         <section class="summary" v-if="!item">
-          <SearchedComposition v-if="isListView" :labels="labels" :searchWord="searchWord" v-model="item" />
-          <SearchedImage v-else :labels="labels" :searchWord="searchWord" v-model="item" />
+          <div v-if="hasCatWalk">
+            <video src="/a.mov" muted autoplay loop></video>
+          </div>
+          <template v-else>
+            <List :cloth="isCloth" :labels="labels" :searchWord="searchWord" v-model="item" />
+          </template>
         </section>
       </div>
-      <Detail v-if="item" v-model="item" @update:updateParameter="updateParameter" />
+      <Detail v-if="item" v-model="item" v-model:cloth="isCloth" @update:updateParameter="updateParameter" />
     </main>
   </div>
 
@@ -53,7 +57,7 @@ import { updateItems, emptyItem } from "@/composables/models/Item";
 const { isLoggedIn } = useAuth();
 const labels = ref<string[]>([]);
 const item = ref<Item | null>(null);
-const isListView = ref(true)
+const isCloth = ref(true)
 const loaded = ref(false)
 const searchWord = ref("")
 
@@ -61,6 +65,23 @@ const updateParameter = (label: any, pileheightdata: any, fabricWeightdata: any)
   item.value = updateItems(label, pileheightdata, fabricWeightdata)
   if (!item.value) {
     item.value = emptyItem
+  }
+}
+
+const catWalk = "Cat walk"
+const hasCatWalk = computed(() => labels.value.includes(catWalk))
+
+const click = (label: string, on: boolean) => {
+  console.log({ label, on })
+  item.value = null
+  if (label == catWalk) {
+    if (on) {
+      labels.value = [label]
+    } else {
+      labels.value = labels.value.filter(i => i != label)
+    }
+  } else {
+    labels.value = labels.value.filter(i => i != catWalk)
   }
 }
 
@@ -200,10 +221,15 @@ watch(fablicWeight2, (value) => {
   display: flex;
   background-color: #f6f1ed;
 
+  video {
+    margin-left: 20px;
+    margin-top: 40px;
+  }
+
   >main {
     width: 100%;
     height: 100%;
-    padding-left: 280px;
+    padding-left: 210px;
 
     /* ローディング画面 */
     .loading {

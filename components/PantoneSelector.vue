@@ -1,5 +1,7 @@
 <template>
   <ul class="PantoneSelector">
+    <li @click="emits('update:modelValue', null)" :style="{ '--color': 'transparent' }"><a title="Original Color"></a>
+    </li>
     <li v-for="color of colors" :key="color.code" :style="{ '--color': `rgb(${color.rgb})` }"
       @click="emits('update:modelValue', color)"><a :title="color.code + ' ' + color.name"></a>
     </li>
@@ -7,10 +9,14 @@
 </template>
 
 <script setup lang="ts">
+const props = withDefaults(defineProps<{
+  colors: Color[]
+}>(), {
+  colors: () => useColors()
+})
 const emits = defineEmits<{
-  (e: "update:modelValue", modelValue: Color): void
+  (e: "update:modelValue", modelValue: Color | null): void
 }>()
-const colors = useColors()
 </script>
 
 <style lang="scss" scoped>

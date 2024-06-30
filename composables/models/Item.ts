@@ -196,7 +196,7 @@ export const Items: Item[] = [
     Imagelabel: "png",
     Color: "TCX Black",
     ClothType: "T2202-01C",
-    ClothImagePath: "./T2202-01C.",
+    ClothImagePath: "./T2202-01C.png",
     Imagepath: "./T2202-07.png",
     Order: 1,
   },
@@ -638,7 +638,7 @@ export const Items: Item[] = [
     Imagelabel: "png",
     Color: "none",
     ClothType: "Racoon-01C",
-    ClothImagePath: "./Racoon-01C.png",
+    ClothImagePath: "./Racoon-01.png",
     Imagepath: "./Racoon-01.png",
     Order: 17,
   }, {

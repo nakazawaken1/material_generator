@@ -6,10 +6,10 @@
     <div class="detail-contents">
       <div class="preview">
         <div class="viewer">
-          <WebGLViewer2 :fabricType="normal ? item.FabricType : item.ClothType" :value="rgb2Value"
+          <WebGLViewer2 :fabricType="cloth ? item.ClothType : item.FabricType" :value="rgb2Value"
             @update:info="info" />
         </div>
-        <div class="chipcolor">
+        <div class="chipcolor" v-if="color">
           <header :style="{ backgroundColor: `rgb(${color.rgb})` }"></header>
           <div>{{ color.code }}</div>
           <label>{{ color.name }}</label>
@@ -46,7 +46,7 @@
           </dl>
         </details>
 
-        <template v-if="normal">
+        <template v-if="!cloth">
           <div v-for="(value, index) in filterItems(item.label)" :key="value.labels">
             <details>
               <summary>
@@ -86,7 +86,7 @@
           </dl>
         </details>
         <nav>
-          <Button @click.stop="normal = !normal">{{ normal ? 'Garment' : 'Fabric' }} simulation</Button>
+          <Button @click.stop="emits('update:cloth', !cloth)">{{ cloth ? 'Fabric' : 'Garment' }} simulation</Button>
         </nav>
       </div>
     </div>
@@ -97,8 +97,15 @@
 import type { Item } from "@/composables/models/Item";
 
 const props = defineProps<{
+  cloth: boolean
   modelValue: Item
 }>()
+const emits = defineEmits<{
+  (e: "update:cloth", isCloth: boolean): void;
+  (e: "update:modelValue", item: Item | null): void;
+  (e: "update:updateParameter", label: string | undefined, IndexOfrangeHeight: number | undefined, IndexOfrangeWeight: number | undefined): void;
+}>();
+
 const item = computed(() => props.modelValue)
 const hue = ref(0);
 const selectedPileHeight = ref(item.value.pileheight);
@@ -106,9 +113,10 @@ const selectedFabricWeight = ref(item.value.fabricWeight);
 const a = item.value.fabricWeight
 const useHue = false;
 const colors = useColors()
-const color = ref(colors[0]);
+const color = ref<Color|null>(null);
 const pantoneName = ref('PMS 2347 C');
 const rgb2Value = computed(() => {
+  if(!color.value) return null
   const a = color.value.rgb.split(',').map(i => Number(i) / 255)
   return { r: a[0], g: a[1], b: a[2] }
 });
@@ -119,12 +127,6 @@ watch(() => item.value, (newValue) => {
   IndexOfrangeHeight.value = convertToNumber(rangeItems(newValue?.label)?.cutLengths.indexOf(newValue?.pileheight))
 })
 
-const emits = defineEmits<{
-  (e: "update:modelValue", item: Item | null): void;
-  (e: "update:updateParameter", label: string | undefined, IndexOfrangeHeight: number | undefined, IndexOfrangeWeight: number | undefined): void;
-}>();
-
-const normal = ref(true);
 const info = (e: string) => console.log(e);
 const fabricWeights = [1300, 1800, 2300, 500, 1000, 1000, 1500];
 const cutLengths = [36, 53, 62, 71, 15, 22, 22, 27];
@@ -195,7 +197,7 @@ const IndexOfrangeHeight = ref(convertedRangeHeight)
     background-color: #fff;
     position: absolute;
     left: 20px;
-    top: -40px;
+    top: 0;
     zoom: 80%;
 
     >header {
@@ -218,6 +220,8 @@ const IndexOfrangeHeight = ref(convertedRangeHeight)
     justify-content: flex-start;
     padding-left: 10px;
     min-width: 460px;
+    overflow: auto;
+    max-height: 640px;
 
     details {
       padding-bottom: 3rem;

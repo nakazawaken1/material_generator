@@ -2,7 +2,7 @@
   <div class="SearchedImage">
     <div class="SearchedImage-list" v-for="(item, n) in filterItems(props)" :key="n"
       @click="emits('update:modelValue', item)">
-      <img :src="item.Imagepath" />
+      <img :src="cloth ? item.ClothImagePath : item.Imagepath" />
       <ul v-if="false">
         <li><a href="#"><i class="fa-solid fa-heart"></i></a></li>
         <li><a href="#"><i class="fa-light fa-tags"></i></a></li>
@@ -17,6 +17,7 @@
 import type { Item } from "@/composables/models/Item";
 import { filterItems } from "@/composables/models/Item";
 const props = defineProps<{
+  cloth: boolean;
   labels: string[];
   searchWord: string;
 }>();
@@ -40,7 +41,7 @@ div.SearchedImage {
     justify-content: center;
     cursor: pointer;
     position: relative;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 
     &:hover {
       &::after {
@@ -57,7 +58,6 @@ div.SearchedImage {
 
     >img {
       width: 16rem;
-      margin-bottom: 20px;
     }
 
     >ul {
