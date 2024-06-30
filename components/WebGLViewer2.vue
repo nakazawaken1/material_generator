@@ -6,8 +6,8 @@
 </template>
 
 <script lang="ts" setup>
-const W = 2048;
-const H = 2048;
+const W = 1024;
+const H = 1024;
 const X = 11;
 const Y = 6;
 const props = defineProps<{
@@ -299,7 +299,7 @@ void main(void) {
       else if(view.x >= X) {
         while(view.x >= X) view.x -= X;
       }
-      view.y += e.movementY / Y;
+      view.y -= e.movementY / Y;
       if (view.y < 0) view.y = 0;
       else if (view.y >= Y) view.y = Y - 1;
       draw();
