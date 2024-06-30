@@ -1,6 +1,6 @@
 <template>
   <div class="SearchedImage">
-    <div class="SearchedImage-list" v-for="(item, n) in filterItems(props)" :key="n"
+    <div class="SearchedImage-list" v-for="(item, n) in items" :key="n"
       @click="emits('update:modelValue', item)">
       <img :src="cloth ? item.ClothImagePath : item.Imagepath" />
       <ul v-if="false">
@@ -15,11 +15,9 @@
 
 <script lang="ts" setup>
 import type { Item } from "@/composables/models/Item";
-import { filterItems } from "@/composables/models/Item";
 const props = defineProps<{
   cloth: boolean;
-  labels: string[];
-  searchWord: string;
+  items: Item[];
 }>();
 const emits = defineEmits<{
   (e: "update:modelValue", value: Item): void;

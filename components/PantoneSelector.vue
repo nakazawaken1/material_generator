@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
-  colors: Color[]
+  colors?: Color[]
 }>(), {
   colors: () => useColors()
 })

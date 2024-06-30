@@ -103,7 +103,7 @@ const props = defineProps<{
 const emits = defineEmits<{
   (e: "update:cloth", isCloth: boolean): void;
   (e: "update:modelValue", item: Item | null): void;
-  (e: "update:updateParameter", label: string | undefined, IndexOfrangeHeight: number | undefined, IndexOfrangeWeight: number | undefined): void;
+  (e: "update:updateParameter", label: string, IndexOfrangeHeight: number, IndexOfrangeWeight: number): void;
 }>();
 
 const item = computed(() => props.modelValue)

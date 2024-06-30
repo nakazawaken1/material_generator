@@ -35,7 +35,7 @@
             <video src="/a.mov" muted autoplay loop></video>
           </div>
           <template v-else>
-            <List :cloth="isCloth" :labels="labels" :searchWord="searchWord" v-model="item" />
+            <List :cloth="isCloth" :items="filterItems" v-model="item" />
           </template>
         </section>
       </div>
@@ -51,18 +51,23 @@
 </template>
 
 <script setup lang="ts">
-import type { Item } from '~/composables/models/Item';
-import { updateItems, emptyItem } from "@/composables/models/Item";
+import type { Item, Filter } from '~/composables/models/Item';
+import { emptyItem } from "@/composables/models/Item";
 
 const { isLoggedIn } = useAuth();
 const labels = ref<string[]>([]);
 const item = ref<Item | null>(null);
-const isCloth = ref(true)
+const isCloth = ref(false)
 const loaded = ref(false)
 const searchWord = ref("")
 
-const updateParameter = (label: any, pileheightdata: any, fabricWeightdata: any) => {
-  item.value = updateItems(label, pileheightdata, fabricWeightdata)
+const items = ref<Item[]>([])
+const filterItems = computed(() => (searchWord.value
+ ? items.value.filter(i => (i.label + "\t" + i.FabricType).toLowerCase().includes(searchWord.value.toLowerCase()))
+ : items.value.filter(i => (labels.value.length == 0 || labels.value.includes(i.label)))) || [])
+
+const updateParameter = (label: string, pileheight: number, fabricWeight: number) => {
+  item.value = items.value.find(i => i.label == label&&i.pileheight == pileheight && i.fabricWeight == fabricWeight) || null
   if (!item.value) {
     item.value = emptyItem
   }
@@ -186,6 +191,10 @@ const changeFabricType = () => {
   );
 };
 
+onMounted(async () => {
+  const data: Item[] = await $fetch("data.json")
+  items.value = data
+})
 onMounted(() => changeFabricType());
 onMounted(() => setTimeout(() => {
   loaded.value = true
