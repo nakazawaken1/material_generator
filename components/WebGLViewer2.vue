@@ -293,8 +293,12 @@ void main(void) {
   canvas.onmousemove = (e: MouseEvent) => {
     if (view.dragging) {
       view.x += e.movementX / X;
-      if(view.x < 0) view.x = 0;
-      else if(view.x >= X) view.x = X - 1;
+      if(view.x < 0) {
+        while(view.x < 0) view.x += X;
+      }
+      else if(view.x >= X) {
+        while(view.x >= X) view.x -= X;
+      }
       view.y += e.movementY / Y;
       if (view.y < 0) view.y = 0;
       else if (view.y >= Y) view.y = Y - 1;

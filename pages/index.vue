@@ -64,9 +64,9 @@ const searchWord = ref("")
 const items = ref<Item[]>([])
 const filterItems = computed(() => {
   const a = (searchWord.value
-    ? items.value.filter(i => (i.label + "\t" + i.FabricType).toLowerCase().includes(searchWord.value.toLowerCase()))
-    : items.value.filter(i => (labels.value.length == 0 || labels.value.includes(i.label)))) || []
-  if(isCloth.value) {
+    ? items.value.filter(i => ([i.label, i.clothLabel || '', i.FabricType, i.ClothType].join("¥t")).toLowerCase().includes(searchWord.value.toLowerCase()))
+    : items.value.filter(i => (labels.value.length == 0 || labels.value.includes(i.label) || (i.clothLabel && labels.value.includes(i.clothLabel))))) || []
+  if (isCloth.value) {
     return a.filter(i => i.ClothType && i.Imagepath != i.ClothImagePath)
   } else {
     return a.filter(i => i.FabricType)
@@ -84,7 +84,6 @@ const catWalk = "Cat walk"
 const hasCatWalk = computed(() => labels.value.includes(catWalk))
 
 const click = (label: string, on: boolean) => {
-  console.log({ label, on })
   item.value = null
   if (label == catWalk) {
     if (on) {
@@ -94,6 +93,14 @@ const click = (label: string, on: boolean) => {
     }
   } else {
     labels.value = labels.value.filter(i => i != catWalk)
+    if (label == 'Fabric') {
+      labels.value = labels.value.filter(i => i != 'Garment')
+      isCloth.value = false
+    }
+    else if (label == 'Garment') {
+      labels.value = labels.value.filter(i => i != 'Fabric')
+      isCloth.value = true
+    }
   }
 }
 

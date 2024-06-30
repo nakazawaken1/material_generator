@@ -8,7 +8,7 @@
         <li><a href="#"><i class="fa-light fa-tags"></i></a></li>
         <li><a href="#"><i class="fa-light fa-download"></i></a></li>
       </ul>
-      <label>{{ item.FabricType }}<span>{{ item.label }}</span></label>
+      <label>{{ item.FabricType || item.ClothType }}<span>{{ item.label }}</span></label>
     </div>
   </div>
 </template>

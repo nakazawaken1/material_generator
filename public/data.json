@@ -1,6 +1,7 @@
 [
   {
     "label": "Fox",
+    "clothLabel": "Half coat",
     "KnittingType": "none",
     "Silvernumbers": "none",
     "SharlingCur": "none",
@@ -426,6 +427,7 @@
   },
   {
     "label": "Mink",
+    "clothLabel": "Long coat",
     "KnittingType": "none",
     "Silvernumbers": "none",
     "SharlingCur": "none",

@@ -79,7 +79,7 @@
             </dd>
           </dl>
         </details>
-        <nav>
+        <nav v-if="modelValue.ClothType && modelValue.FabricType">
           <Button @click.stop="emits('update:cloth', !cloth)">{{ cloth ? 'Fabric' : 'Garment' }} simulation</Button>
         </nav>
       </div>

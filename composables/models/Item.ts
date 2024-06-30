@@ -1,5 +1,6 @@
 export interface Item {
   label: string,
+  clothLabel?: string,
   FabricType: string,
   KnittingType: string,
   Silvernumbers: string,
