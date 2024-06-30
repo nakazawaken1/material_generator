@@ -6,8 +6,8 @@
 </template>
 
 <script lang="ts" setup>
-const W = 1024;
-const H = 1024;
+const W = 2048;
+const H = 2048;
 const X = 11;
 const Y = 6;
 const props = defineProps<{
@@ -51,7 +51,7 @@ async function initialize(canvas: HTMLCanvasElement): Promise<() => void> {
     name: props.fabricType,
     folder: "alpha/",
     extension: "png",
-    x: 0,
+    x: X - 1,
     y: 0,
     z: 0,
     dragging: false,
@@ -218,8 +218,7 @@ void main(void) {
   for (let x = 0; x < X; x++) {
     for (let y = 0; y < Y; y++) {
       const image = await load(
-        `${view.folder}${view.name}/x-${Math.floor(y) % Y}_${view.name}_1.${X - (Math.floor(x) % X)
-        }.${view.extension}`
+        `${view.folder}${view.name}/x-${y}_${view.name}_1.${X - x}.${view.extension}`
       );
       context.drawImage(image, 0, 0, W, H);
       gl.texSubImage3D(

@@ -38,12 +38,6 @@
             <dt>Fabric Weight</dt>
             <dd>{{ item.fabricWeight }}g/m(width: {{ item.width }})</dd>
           </dl>
-          <dl>
-            <dt>Color</dt>
-            <dd>
-              {{ pantoneName }}
-            </dd>
-          </dl>
         </details>
 
         <template v-if="!cloth">
@@ -114,7 +108,6 @@ const a = item.value.fabricWeight
 const useHue = false;
 const colors = useColors()
 const color = ref<Color|null>(null);
-const pantoneName = ref('PMS 2347 C');
 const rgb2Value = computed(() => {
   if(!color.value) return null
   const a = color.value.rgb.split(',').map(i => Number(i) / 255)

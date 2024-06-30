@@ -18,7 +18,7 @@
           </div>
 
           <div class="show-button">
-            <input id="image" type="radio" :value="false" v-model="isCloth" @change="item = null"/>
+            <input id="image" type="radio" :value="false" v-model="isCloth" @change="item = null" />
             <label class="image" for="image">
               <i class="fa-regular fa-border-all" :class="{ checked: !isCloth }"></i>
             </label>
@@ -62,12 +62,19 @@ const loaded = ref(false)
 const searchWord = ref("")
 
 const items = ref<Item[]>([])
-const filterItems = computed(() => (searchWord.value
- ? items.value.filter(i => (i.label + "\t" + i.FabricType).toLowerCase().includes(searchWord.value.toLowerCase()))
- : items.value.filter(i => (labels.value.length == 0 || labels.value.includes(i.label)))) || [])
+const filterItems = computed(() => {
+  const a = (searchWord.value
+    ? items.value.filter(i => (i.label + "\t" + i.FabricType).toLowerCase().includes(searchWord.value.toLowerCase()))
+    : items.value.filter(i => (labels.value.length == 0 || labels.value.includes(i.label)))) || []
+  if(isCloth.value) {
+    return a.filter(i => i.ClothType && i.Imagepath != i.ClothImagePath)
+  } else {
+    return a.filter(i => i.FabricType)
+  }
+})
 
 const updateParameter = (label: string, pileheight: number, fabricWeight: number) => {
-  item.value = items.value.find(i => i.label == label&&i.pileheight == pileheight && i.fabricWeight == fabricWeight) || null
+  item.value = items.value.find(i => i.label == label && i.pileheight == pileheight && i.fabricWeight == fabricWeight) || null
   if (!item.value) {
     item.value = emptyItem
   }
