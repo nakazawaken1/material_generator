@@ -873,5 +873,30 @@
     "ClothImagePath": "./TG021-19.png",
     "Imagepath": "./TG021-19.png",
     "Order": 22
+  },
+  {
+    "label": "Raccoon",
+    "FabricType": "TL232",
+    "KnittingType": "none",
+    "Silvernumbers": "none",
+    "SharlingCur": "none",
+    "Chipprint": "none",
+    "width": 153,
+    "fabricWeight": 1600,
+    "minfabricWeight": 1600,
+    "maxfabricWeight": 1600,
+    "stepfabricWeight": 500,
+    "pileheight": 90,
+    "minpileheight": 110,
+    "maxpileheight": 110,
+    "steppileheight": 1,
+    "ghFiness": 5,
+    "ghRatio": 70,
+    "Imagelabel": "png",
+    "Color": "none",
+    "ClothType": "TL232",
+    "ClothImagePath": "",
+    "Imagepath": "./TL232.png",
+    "Order": 22
   }
 ]
