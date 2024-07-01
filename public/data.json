@@ -573,7 +573,7 @@
  },
  {
    "label": "Goat",
-   "clothLabel": "",
+   "clothLabel": "Long coat",
    "KnittingType": "none",
    "Silvernumbers": "none",
    "SharlingCur": "none",
@@ -592,9 +592,9 @@
    "Imagelabel": "png",
    "Color": "none",
    "FabricType": "TG041-39",
-   "ClothType": "",
+   "ClothType": "TG041-39Longcoat",
    "Imagepath": "./TG041-39.png",
-   "ClothImagePath": "",
+   "ClothImagePath": "./TG041-39Longcoat.png",
    "Order": 22
  },
  {
@@ -937,7 +937,7 @@
  },
  {
    "label": "Fox",
-   "clothLabel": "",
+   "clothLabel": "Long coat",
    "KnittingType": "none",
    "Silvernumbers": "none",
    "SharlingCur": "none",
@@ -956,9 +956,9 @@
    "Imagelabel": "png",
    "Color": "none",
    "FabricType": "SL103-16",
-   "ClothType": "",
+   "ClothType": "SL103-16Longcoat",
    "Imagepath": "./SL103-16.png",
-   "ClothImagePath": "",
+   "ClothImagePath": "./SL103-16Longcoat.png",
    "Order": 22
  },
  {
