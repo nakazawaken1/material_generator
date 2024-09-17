@@ -616,4 +616,16 @@ watch(fablicWeight2, (value) => {
     flex-direction: column-reverse;
   }
 }
+
+@media only screen and (max-width:599px) {
+  .common{
+    display: flex;
+    background-color: #f6f1ed;
+    flex-direction: column;
+      >main{
+        padding-left:0px
+    }
+  
+  }
+}
 </style>

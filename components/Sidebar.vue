@@ -157,4 +157,19 @@ aside {
     }
   }
 }
+
+@media only screen and (max-width:599px) {
+
+aside{
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: auto;
+  overflow: auto;
+  box-shadow: 0 10px 25px 0 rgba(0, 0, 0, 0.5);
+  background-color: #c4bfb9;
+  }
+}
+
 </style>

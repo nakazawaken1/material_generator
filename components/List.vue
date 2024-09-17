@@ -90,4 +90,6 @@ div.SearchedImage {
     }
   }
 }
+
+
 </style>
