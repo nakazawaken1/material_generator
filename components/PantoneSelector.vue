@@ -55,4 +55,23 @@ const emits = defineEmits<{
     }
   }
 }
+
+
+@media only screen and (max-width: 1024px) {
+  .PantoneSelector {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 450px;
+
+  li {
+    width: 15px;
+    height: 15px;
+    background-color: var(--color);
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    cursor: pointer;
+  }
+}
+}
 </style>

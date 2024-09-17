@@ -245,6 +245,7 @@ watch(fablicWeight2, (value) => {
   background-color: #f6f1ed;
 
   video {
+    width: 90%;
     margin-left: 20px;
     margin-top: 40px;
   }
@@ -615,6 +616,7 @@ watch(fablicWeight2, (value) => {
     display: flex;
     flex-direction: column-reverse;
   }
+  
 }
 
 @media only screen and (max-width:599px) {
@@ -623,8 +625,29 @@ watch(fablicWeight2, (value) => {
     background-color: #f6f1ed;
     flex-direction: column;
       >main{
-        padding-left:0px
+        padding-left:0px;
+
+        .search-navigation{
+          .search-container{
+            .search-bar{
+              display: flex;
+              align-items: center;
+              justify-content: flex-start;
+              padding-left: 10px;
+              width: 40vw;
+              height: 35px;
+              background: #f8f8f8;
+              border-top: none;
+              border-right: none;
+              border-left: 1.3px solid #dedddd;
+              border-bottom: none;
+              border-radius: 0px 5px 5px 0px;
+            }
+          }
+        }
     }
+
+    
   
   }
 }

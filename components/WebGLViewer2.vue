@@ -10,6 +10,13 @@ const W = 1024;
 const H = 1024;
 const X = 11;
 const Y = 6;
+// 前回の2本指の距離を記録する変数
+let previousDistance: number | null = null;
+// 前回のタッチ位置を保持する変数
+let previousX: number | null = null;
+let previousY: number | null = null;
+// ズーム倍率の初期値
+let scale = 1;
 const props = defineProps<{
   fabricType: string;
   value: { r: number, g: number, b: number } | null;
@@ -287,6 +294,66 @@ void main(void) {
     gl.flush();
     drawing = false;
   };
+
+  // 2本指の距離を計算する関数
+function getDistance(touch1: Touch, touch2: Touch): number {
+  const dx = touch2.clientX - touch1.clientX;
+  const dy = touch2.clientY - touch1.clientY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+
+  canvas.ontouchstart = (e: TouchEvent) => {
+    const touch = e.touches[0];
+    previousX = touch.clientX;
+    previousY = touch.clientY;
+    view.dragging = true
+    console.log(`Touch started at: (${previousX}, ${previousY})`);
+  };
+
+  canvas.ontouchend = (e: TouchEvent) => {
+  console.log('Touch ended');
+  previousX = null;
+  previousY = null;
+  view.dragging = false
+  };
+
+  // タッチ移動時に移動量を計算
+canvas.ontouchmove = (e: TouchEvent) => {
+  if (previousX !== null && previousY !== null) {
+    const touch = e.touches[0];
+    const currentX = touch.clientX;
+    const currentY = touch.clientY;
+
+    // 移動量を計算
+    const deltaX = currentX - previousX;
+    const deltaY = currentY - previousY;
+
+    console.log(`Movement: ΔX = ${deltaX}, ΔY = ${deltaY}`);
+
+    // 現在の位置を次の比較のために保存
+    previousX = currentX;
+    previousY = currentY;
+
+    if (view.dragging) {
+      view.x += deltaX / X;
+      if(view.x < 0) {
+        while(view.x < 0) view.x += X;
+      }
+      else if(view.x >= X) {
+        while(view.x >= X) view.x -= X;
+      }
+      view.y -=  deltaY  / Y;
+      if (view.y < 0) view.y = 0;
+      else if (view.y >= Y) view.y = Y - 1;
+      draw();
+    }
+  }
+
+  // デフォルトの動作を防ぐ（例: スクロール）
+  e.preventDefault();
+};
+
   canvas.onmousedown = (e: MouseEvent) => (view.dragging = true);
   canvas.onmouseleave = canvas.onmouseup = (e: MouseEvent) =>
     (view.dragging = false);
@@ -305,11 +372,11 @@ void main(void) {
       draw();
     }
   };
-  canvas.onwheel = (e: WheelEvent) => {
-    view.z += e.deltaY / 10;
-    if (view.z > W / 2) view.z = W / 2;
-    draw();
-  };
+  // canvas.onwheel = (e: WheelEvent) => {
+  //   view.z += e.deltaY / 10;
+  //   if (view.z > W / 2) view.z = W / 2;
+  //   draw();
+  // };
   draw();
   needInitializeCount--;
   if (needInitializeCount > 0 && canvasElement.value) {
@@ -426,6 +493,21 @@ function hsv2rgb(h: number, s: number, v: number) {
     width: 100%;
     height: 100%;
     display: block;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .WebGLViewer{
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    >canvas {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1/1;
+    display: block;
+  }
   }
 }
 </style>

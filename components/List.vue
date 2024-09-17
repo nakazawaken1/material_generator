@@ -91,5 +91,20 @@ div.SearchedImage {
   }
 }
 
+@media only screen and (max-width:599px) {
+  div.SearchedImage {
+    padding-left: 0rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    &-list {
+      >img {
+        width: 50rem;
+      }
+    }
+}
+}
+
 
 </style>

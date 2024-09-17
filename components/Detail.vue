@@ -253,4 +253,93 @@ const IndexOfrangeHeight = ref(convertedRangeHeight)
     }
   }
 }
+
+
+@media only screen and (max-width: 1024px) {
+  .detail-contents {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+
+  nav {
+    padding: 14px 0 0 0;
+  }
+
+  .viewer {
+    display: flex;
+    justify-content: center;
+  }
+
+  .chipcolor {
+    display: inline-flex;
+    flex-direction: column;
+    background-color: #fff;
+    position: absolute;
+    left: 0px;
+    top: 0;
+    zoom: 50%;
+
+    >header {
+      height: 80px;
+    }
+
+    >div {
+      padding: 2px 5px;
+      color: #666;
+    }
+
+    >label {
+      padding: 2px 5px;
+    }
+  }
+
+  .parameter {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 30px;
+    padding-left: 10px;
+    padding-bottom: 300px;
+    min-width: 300px;
+    overflow: auto;
+    max-height: 640px;
+
+    details {
+      padding-bottom: 3rem;
+
+      >summary {
+        cursor: pointer;
+      }
+
+      >dl {
+        display: flex;
+        padding-top: 2rem;
+        margin-left: 2rem;
+
+        >dt {
+          padding-left: 2rem;
+          &::after {
+            content: " :";
+          }
+        }
+
+        >dd {
+          padding-left: 1.768rem;
+          padding-bottom: 1.234121rem;
+
+          >span {
+            padding-left: 1.543rem;
+            ;
+          }
+        }
+      }
+
+      .color-modify {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+}
+}
 </style>
