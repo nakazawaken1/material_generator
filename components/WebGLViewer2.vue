@@ -372,11 +372,11 @@ canvas.ontouchmove = (e: TouchEvent) => {
       draw();
     }
   };
-  // canvas.onwheel = (e: WheelEvent) => {
-  //   view.z += e.deltaY / 10;
-  //   if (view.z > W / 2) view.z = W / 2;
-  //   draw();
-  // };
+  canvas.onwheel = (e: WheelEvent) => {
+    view.z += e.deltaY / 10;
+    if (view.z > W / 2) view.z = W / 2;
+    draw();
+  };
   draw();
   needInitializeCount--;
   if (needInitializeCount > 0 && canvasElement.value) {
