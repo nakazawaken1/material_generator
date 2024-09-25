@@ -11,7 +11,9 @@ const H = 1024;
 const X = 11;
 const Y = 6;
 // 前回の2本指の距離を記録する変数
-let previousDistance: number | null = null;
+let initialDistance = 0;
+let isPinching = false;
+
 // 前回のタッチ位置を保持する変数
 let previousX: number | null = null;
 let previousY: number | null = null;
@@ -304,22 +306,46 @@ function getDistance(touch1: Touch, touch2: Touch): number {
 
 
   canvas.ontouchstart = (e: TouchEvent) => {
+    e.preventDefault();
+    if (e.touches.length === 1) {
     const touch = e.touches[0];
     previousX = touch.clientX;
     previousY = touch.clientY;
     view.dragging = true
     console.log(`Touch started at: (${previousX}, ${previousY})`);
+    } else if (e.touches.length === 2) {
+    // 二本指でピンチ開始
+    const touch1 = e.touches[0];
+    const touch2 = e.touches[1];
+    initialDistance = Math.hypot(
+      touch2.clientX - touch1.clientX,
+      touch2.clientY - touch1.clientY
+    );
+    isPinching = true;
+    console.log('Pinch started');
+  }
   };
 
   canvas.ontouchend = (e: TouchEvent) => {
-  console.log('Touch ended');
-  previousX = null;
-  previousY = null;
-  view.dragging = false
+    if (e.touches.length === 0) {
+      console.log('Touch ended');
+      isPinching = false;
+      previousX = null;
+      previousY = null;
+      view.dragging = false
+    }else if (e.touches.length === 1) {
+    // 一本指だけが残っている場合はドラッグに戻る
+    const touch = e.touches[0];
+    previousX = touch.clientX;
+    previousY = touch.clientY;
+    view.dragging = true;
+  }
   };
 
   // タッチ移動時に移動量を計算
 canvas.ontouchmove = (e: TouchEvent) => {
+  e.preventDefault();
+  if (e.touches.length === 1 && view.dragging) {
   if (previousX !== null && previousY !== null) {
     const touch = e.touches[0];
     const currentX = touch.clientX;
@@ -346,8 +372,32 @@ canvas.ontouchmove = (e: TouchEvent) => {
       view.y -=  deltaY  / Y;
       if (view.y < 0) view.y = 0;
       else if (view.y >= Y) view.y = Y - 1;
+      
       draw();
     }
+  }
+  }
+  else if(e.touches.length === 2 && isPinching){
+    if(view.z > 0){
+      view.z = 0
+    }
+    console.log("PinchingMove")
+    const touch1 = e.touches[0];
+    const touch2 = e.touches[1];
+    const currentDistance = Math.hypot(
+      touch2.clientX - touch1.clientX,
+      touch2.clientY - touch1.clientY
+    );
+    const scale = currentDistance / initialDistance;
+    console.log(`Pinching with scale: ${scale}`);
+    // ピンチズームの処理を追加
+    if (scale > 1) {
+    view.z += scale * -10 ;
+    if (view.z > W / 2) view.z = W / 2;
+    }else {
+      view.z += scale * 30;
+    }
+    draw();
   }
 
   // デフォルトの動作を防ぐ（例: スクロール）

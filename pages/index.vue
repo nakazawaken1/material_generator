@@ -1,5 +1,5 @@
 <template>
-  <div class="common" v-if="isLoggedIn()">
+  <div class="common" v-if="!isLoggedIn()">
     <Sidebar v-model:labels="labels" @click="click" />
     <main>
       <div class="loading" :class="{ loaded }"></div>
