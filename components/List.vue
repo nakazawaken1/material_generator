@@ -22,6 +22,15 @@ const props = defineProps<{
 const emits = defineEmits<{
   (e: "update:modelValue", value: Item): void;
 }>();
+
+const imagepathes = computed(() => {
+  return props.items
+})
+
+const uniqueUsers  =  Array.from(
+  new Map(props.items.map((user) => [user.FabricType, user])).values()
+);
+
 </script>
 
 <style lang="scss" scoped>

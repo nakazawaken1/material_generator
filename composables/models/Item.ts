@@ -1,17 +1,19 @@
 export interface Item {
   label: string,
+  FabricName: string,
   clothLabel?: string,
   FabricType: string,
   KnittingType: string,
   Silvernumbers: string,
   SharlingCur: string,
   Chipprint: string,
-  width: number,
+  width: string,
+  comp_1:string,
   fabricWeight: number,
   minfabricWeight: number,
   maxfabricWeight: number,
   stepfabricWeight: number,
-  pileheight: number,
+  pileheight: string,
   minpileheight: number,
   maxpileheight: number,
   steppileheight: number,
@@ -22,22 +24,24 @@ export interface Item {
   ClothType: string,
   ClothImagePath: string,
   Imagepath: string,
-  Order: number,
+  Order: number
 }
 
 export const emptyItem: Item = {
   label: 'noneitem',
+  FabricName:'Noneitem',
   FabricType: "Noneitem",
   KnittingType: "none",
   Silvernumbers: "none",
   SharlingCur: "none",
   Chipprint: "none",
-  width: 0,
+  width: "0",
+  comp_1:"Nonitem",
   fabricWeight: 0,
   minfabricWeight: 0,
   maxfabricWeight: 0,
   stepfabricWeight: 0,
-  pileheight: 0,
+  pileheight: "0",
   minpileheight: 0,
   maxpileheight: 0,
   steppileheight: 0,
@@ -48,7 +52,7 @@ export const emptyItem: Item = {
   ClothType: "NoneItem",
   ClothImagePath: "NoneItem",
   Imagepath: "NoneItem",
-  Order: 0,
+  Order: 0
 }
 
 export interface Filter {

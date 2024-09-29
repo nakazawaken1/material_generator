@@ -23,12 +23,8 @@
             <dd>{{ item.FabricType }}</dd>
           </dl>
           <dl>
-            <dt>Modacrylic</dt>
-            <dd>{{ item.ghRatio }}%</dd>
-          </dl>
-          <dl>
-            <dt>Recycled polyester</dt>
-            <dd>{{ 100 - item.ghRatio }}%</dd>
+            <dt>Composition</dt>
+            <dd>{{ item.comp_1 }}</dd>
           </dl>
           <dl>
             <dt>Pile Height</dt>
@@ -36,7 +32,7 @@
           </dl>
           <dl>
             <dt>Fabric Weight</dt>
-            <dd>{{ item.fabricWeight }}g/m(width: {{ item.width }})</dd>
+            <dd>{{ item.fabricWeight }}gms/m(width: {{ item.width }}cm)</dd>
           </dl>
         </details>
 
@@ -124,15 +120,15 @@ const info = (e: string) => console.log(e);
 const fabricWeights = [1300, 1800, 2300, 500, 1000, 1000, 1500];
 const cutLengths = [36, 53, 62, 71, 15, 22, 22, 27];
 const FabricDetails = [{
-  labels: "Fox",
+  labels: "",
   cutLengths: [0, 1, 2, 3].map((i) => cutLengths[i]),
   fabricWeights: [0, 1, 2].map((i) => fabricWeights[i]),
 }, {
-  labels: "Mink",
+  labels: "",
   cutLengths: [4, 5].map((i) => cutLengths[i]),
   fabricWeights: [3, 4].map((i) => fabricWeights[i]),
 }, {
-  labels: "Rabbit",
+  labels: "",
   cutLengths: [6, 7].map((i) => cutLengths[i]),
   fabricWeights: [5, 6].map((i) => fabricWeights[i]),
 }]

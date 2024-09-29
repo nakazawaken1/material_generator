@@ -48,11 +48,30 @@ const menuItems: MenuItem[] = [{
     { label: "Rabbit" },
     { label: "Mongolia" },
     { label: "Sherpa" },
-    { label: "Cheetah" },
+    { label: "Spots" },
     {
       label: "Others", children: [
         { label: "Raccoon" },
-        { label: "Marmot" }]
+        { label: "Marmot" },
+        { label: "Bear" },
+        { label:"Chinchila" },
+        { label: "Jackal" },
+        { label: "Ermine" },
+        { label: "Beaver" },
+        { label: "Otter" },
+        { label: "Wolf" },
+        { label: "Coyote" },
+        { label: "Marten" },
+        { label: "Kidassia" },
+        { label: "Karakul" },
+        { label: "Camel" },
+        { label: "Opposum" },
+        { label: "Ferret" },
+        { label: "Short-Poly" },
+        { label: "Quill" },
+        { label: "Goat" },
+        { label: "Lamb" },
+      ]
     }]
 },
 {
